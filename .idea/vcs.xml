@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../GroceryStore" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../JobTest/merqueoTest" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../StoreBrakeFast" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../TestChiper" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../WeatherApp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../dilan629.github.io" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../dv-ex/ms-clientes" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../dv-ex/ms-usuarios" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../dvex-ms-user-net-core" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../evertec-test" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../loginapp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../mercado-libre-test" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../merqueo-test" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../merqueoTest" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../ms-user-net-core" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../openpgpjs" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../px-android" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../security_service" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../servicio_base" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../store_service" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../testChiper-final---" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../testMuy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../unittesting/basic-android-kotlin-compose-training-unscramble" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../valid-test" vcs="Git" />
+  </component>
+</project>

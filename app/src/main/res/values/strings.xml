@@ -1,0 +1,45 @@
+<resources>
+    <!--Login Screen-->
+    <string name="app_name">complexparking</string>
+    <string name="login_screen_user_title" translatable="false">Ingrese su usuario</string>
+    <string name="login_screen_password_title" translatable="false">Ingrese su password</string>
+    <string name="login_screen_button_access" translatable="false">Ingresar</string>
+    <string name="login_screen_email_error" translatable="false">El email ingresado no es válido</string>
+    <string name="login_screen_wrong_email_password" translatable="false">El correo o el password no son correctos</string>
+    <string name="login_screen_no_error" translatable="false" />
+
+    <!--endregion-->
+    <!--Home Screen-->
+    <string name="home_screen_header_title" translatable="false">Ingreso vehicular</string>
+    <string name="home_screen_plate_title" translatable="false">Ingrese la placa</string>
+    <string name="home_screen_complex_unit_to_visit" translatable="false">Unidad a visitar</string>
+    <string name="home_screen_plate_access_hour" translatable="false">Hora de ingreso</string>
+    <string name="home_screen_plate_access_date" translatable="false">Fecha de ingreso</string>
+    <string name="home_screen_plate_exit_hour" translatable="false">Hora de salida</string>
+    <string name="home_screen_button_register" translatable="false">Registrar</string>
+    <string name="home_screen_unit_empty_error" translatable="false">Ingrese la unidad a visitar</string>
+    <string name="home_screen_invalid_unit_error" translatable="false">La unidad ingresada no existe</string>
+    <string name="home_screen_plate_empty_error" translatable="false">Ingrese la placa del vehículo</string>
+    <string name="home_screen_invalid_plate_error" translatable="false">La placa ingresada no es válida</string>
+    <string name="bottom_navigation_view_home">Home</string>
+    <string name="bottom_navigation_view_search">Buscar</string>
+    <string name="bottom_navigation_view_edit">Editar</string>
+    <string name="bottom_navigation_view_menu">Menu</string>
+    <!--endregion-->
+
+    <!--Wizard Screen-->
+    <string name="wizard_complex_configuration_title" translatable="false">Configuración conjunto</string>
+    <string name="wizard_upload_complex_data_title" translatable="false">Subir información unidades</string>
+    <string name="wizard_create_user_title" translatable="false">Crear usuarios</string>
+
+    <string name="wizard_complex_configuration_name" translatable="false">Nombre del conjunto</string>
+    <string name="wizard_complex_configuration_quantity_units" translatable="false">Cantidad de apartamentos/casas</string>
+    <string name="wizard_complex_configuration_address" translatable="false">Dirección</string>
+    <string name="wizard_complex_configuration_quantity_parking" translatable="false">Cantidad de parqueaderos</string>
+
+    <string name="wizard_complex_configuration_previous_button" translatable="false">Atrás</string>
+    <string name="wizard_complex_configuration_next_button" translatable="false">Siguiente</string>
+    <string name="wizard_complex_configuration_finish_button" translatable="false">Finalizar</string>
+
+    <!---->
+</resources>
