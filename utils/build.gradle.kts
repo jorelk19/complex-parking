@@ -80,6 +80,11 @@ dependencies {
     implementation(libs.org.apache.poi)
     implementation(libs.org.apache.poi.oxml)
 
+    //compose
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+
     //datastore
     implementation(libs.androidx.datastore.preference)
 

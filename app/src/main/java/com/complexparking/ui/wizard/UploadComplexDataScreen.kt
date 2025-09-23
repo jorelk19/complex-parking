@@ -10,10 +10,13 @@ import com.complexparking.R
 import com.complexparking.ui.base.CustomHeader
 import com.complexparking.ui.base.MainContainer
 import com.complexparking.ui.theme.LocalCustomColors
+import com.complexparking.ui.widgets.PermissionView
+import com.complexparking.ui.widgets.Permissions
 
 @Composable
 fun UploadComplexDataScreen(navController: NavController) {
     val colors = LocalCustomColors.current
+    PermissionView()
     MainContainer(
         header = {
             CustomHeader(

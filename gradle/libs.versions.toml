@@ -18,6 +18,7 @@ roomVersion = "2.7.2"
 datastoreVersion = "1.1.7"
 kspVersion = "2.0.20-RC-1.0.24"
 apachePoiVersion = "5.2.5"
+androidPermissionVersion = "0.37.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -51,6 +52,8 @@ androidx-koin-navigation = { group = "io.insert-koin", name="koin-androidx-navig
 
 org-apache-poi = { group = "org.apache.poi", name = "poi", version.ref = "apachePoiVersion" }
 org-apache-poi-oxml = { group = "org.apache.poi", name = "poi-ooxml", version.ref = "apachePoiVersion" }
+
+google-permission = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref="androidPermissionVersion"  }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

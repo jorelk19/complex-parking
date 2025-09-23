@@ -7,6 +7,7 @@
     <mapping directory="$PROJECT_DIR$/../StoreBrakeFast" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../TestChiper" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../WeatherApp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../dilan629.github.io" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../dv-ex/ms-clientes" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../dv-ex/ms-usuarios" vcs="Git" />

@@ -36,6 +36,7 @@ import com.complexparking.ui.base.FlatContainer
 import com.complexparking.ui.navigation.AppScreens
 import com.complexparking.ui.utilities.LoadingManager
 import com.complexparking.ui.utilities.PulseLoader
+import com.complexparking.ui.widgets.PermissionView
 import com.complexparking.ui.wizard.WizardActivity
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
@@ -65,6 +66,7 @@ private fun SplashFooter() {
 @Composable
 private fun SplashBody(navController: NavController, splashViewModel: SplashScreenViewModel) {
     ScreenObserver(splashViewModel)
+    PermissionView()
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -97,8 +99,10 @@ private fun SplashBody(navController: NavController, splashViewModel: SplashScre
         val coroutineScope = rememberCoroutineScope()
         val context = LocalContext.current
         val activity = context as? Activity
+
         Handler(Looper.getMainLooper()).postDelayed({
             LoadingManager.hideLoader()
+
             if (splashViewModel.isWizardCompleted.value) {
                 navController.navigate(route = AppScreens.LOGINSCREEN.route)
             } else {

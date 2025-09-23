@@ -77,6 +77,7 @@ dependencies {
     implementation(libs.androidx.koin)
     implementation(libs.androidx.koin.workmanager)
     implementation(libs.androidx.koin.navigation)
+    implementation(libs.google.permission)
    /* implementation(libs.org.apache.poi)
     implementation(libs.org.apache.poi.oxml)*/
 

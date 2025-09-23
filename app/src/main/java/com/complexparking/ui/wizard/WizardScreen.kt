@@ -112,8 +112,7 @@ private fun WizardFooter(wizardScreenViewModel: WizardScreenViewModel, wizardMod
                         pagerState.animateScrollToPage(wizardScreenViewModel.currentIndex.value)
                     }
                 },
-                buttonText = stringResource(id = R.string.wizard_complex_configuration_previous_button),
-                isEnabled = wizardModel.value.isButtonEnabled
+                buttonText = stringResource(id = R.string.wizard_complex_configuration_previous_button)
             )
         }
         CustomButton(

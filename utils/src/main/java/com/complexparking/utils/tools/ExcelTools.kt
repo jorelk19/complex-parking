@@ -5,7 +5,7 @@ import java.io.InputStream
 import org.apache.poi.ss.usermodel.WorkbookFactory
 
 object ExcelTools {
-    fun readExcelFileFromAssets(context: Context, fileName: String) {
+    fun readExcelFile(context: Context, fileName: String) {
         try {
             val inputStream: InputStream = context.assets.open(fileName)
             val workbook = WorkbookFactory.create(inputStream)
