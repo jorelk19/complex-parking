@@ -1,11 +1,13 @@
 package com.complexparking.ui.wizard
 
+import android.net.Uri
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.complexparking.R
 import com.complexparking.domain.interfaces.ISplashScreenUseCase
+import com.complexparking.utils.tools.ExcelTools
 import kotlinx.coroutines.launch
 
 class WizardScreenViewModel(
@@ -41,16 +43,26 @@ class WizardScreenViewModel(
             complexAddress = "",
             parkingQuantity = "",
             isButtonEnabled = false,
+            pathFile = "",
+            uploadButtonVisibility = false,
             buttonText = R.string.wizard_complex_configuration_next_button,
             onComplexNameChange = { onComplexNameChange(it) },
             onUnitChange = { onUnitChange(it) },
             onAddressChange = { onAddressChange(it) },
             onParkingChange = { onParkingChange(it) },
             onClickNextStep = { onClickNextStep(it) },
-            onClickPreviousStep = { onClickPreviousStep(it) }
+            onClickPreviousStep = { onClickPreviousStep(it) },
+            onSearchFileButton = { onFileChange(it) }
         )
     }
 
+    private fun onFileChange(uri: Uri?) {
+        val path = uri?.path ?: ""
+        _wizardModel.value = _wizardModel.value.copy(
+            pathFile = path,
+            uploadButtonVisibility = path.isNotEmpty()
+        )
+    }
     private fun onParkingChange(parkingQuantity: String) {
         _wizardModel.value = _wizardModel.value.copy(
             parkingQuantity = parkingQuantity

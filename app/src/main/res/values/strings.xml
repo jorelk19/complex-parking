@@ -41,5 +41,9 @@
     <string name="wizard_complex_configuration_next_button" translatable="false">Siguiente</string>
     <string name="wizard_complex_configuration_finish_button" translatable="false">Finalizar</string>
 
+    <string name="wizard_upload_complex_file_title" translatable="false">Seleccione el archivo CSV a cargar</string>
+    <string name="wizard_upload_complex_file_button" translatable="false">Examinar</string>
+    <string name="wizard_upload_complex_file_load_button" translatable="false">Cargar</string>
+
     <!---->
 </resources>

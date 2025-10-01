@@ -19,7 +19,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Complexparking">
+        android:theme="@style/Theme.Complexparking"
+        android:requestLegacyExternalStorage="true">
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"

@@ -2,11 +2,9 @@ package com.complexparking.ui.widgets
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import java.security.Permission
 
 
 @OptIn(ExperimentalPermissionsApi::class)
