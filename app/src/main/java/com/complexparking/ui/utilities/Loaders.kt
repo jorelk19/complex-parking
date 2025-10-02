@@ -105,12 +105,16 @@ object LinearProgressManager {
     fun updateProgress(counter: Float) {
         progress.floatValue = counter
     }
+
+    fun progressStatus(): MutableState<Float> {
+        return progress
+    }
 }
 
 @Composable
 fun AnimateLinearProgressBarControl() {
     val isLoading by LinearProgressManager.loaderState()
-    var progress by remember { mutableFloatStateOf(0f) }
+    val progress by LinearProgressManager.progressStatus()
     //var loading by remember { mutableStateOf(false) }
 
     val animatedProgress by animateFloatAsState(
@@ -138,10 +142,9 @@ fun AnimateLinearProgressBarControl() {
                 trackColor = ProgressIndicatorDefaults.linearTrackColor,
                 strokeCap = ProgressIndicatorDefaults.LinearStrokeCap,
             )
-            if (animatedProgress == 1.0f) {
+            if (animatedProgress == 100f) {
                 CustomTextMedium("Loading Complete!")
                 LinearProgressManager.hideLoader() // Reset loading state
-                progress = 0f // Reset progress for next use
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.complexparking.ui.wizard
 
 import android.net.Uri
+import com.complexparking.utils.tools.FileData
 
 data class WizardScreenModel(
     val complexName: String = "",
@@ -10,7 +11,7 @@ data class WizardScreenModel(
     val onComplexNameChange: (String) -> Unit = {},
     val isButtonEnabled: Boolean = false,
     val buttonText: Int = 0,
-    val pathFile: String = "",
+    val pathFile: Uri? = null,
     val uploadButtonVisibility: Boolean = false,
     val onUnitChange: (String) -> Unit = {},
     val onAddressChange: (String) -> Unit = {},
@@ -18,5 +19,5 @@ data class WizardScreenModel(
     val onSearchFileButton: (Uri) -> Unit = {},
     val onClickNextStep: (EnumWizardStep) -> Unit = {},
     val onClickPreviousStep: (EnumWizardStep) -> Unit = {},
-    val onUploadFileClick: () -> Unit = {}
+    val onUploadFileClick: (ArrayList<FileData>) -> Unit = {}
 )

@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.core.net.toUri
 import androidx.navigation.NavController
 import com.complexparking.R
 import com.complexparking.ui.base.CustomButton
@@ -59,7 +60,7 @@ private fun UploadComplexDataBody(wizardScreenViewModel: WizardScreenViewModel) 
         CustomTextMedium(
             text = stringResource(id = R.string.wizard_upload_complex_file_title)
         )
-        CustomTextMedium(text = wizardScreenViewModel.wizardModel.value.pathFile)
+        CustomTextMedium(text = wizardScreenViewModel.wizardModel.value.pathFile?.path ?: "")
         HorizontalDivider(Modifier.height(size5dp))
         FilePickerButton(
             wizardScreenViewModel.wizardModel.value
@@ -76,23 +77,8 @@ fun FilePickerButton(model: WizardScreenModel) {
     ) { uri ->
         uri?.let {
             model.onSearchFileButton(uri)
-            if(!uri.path.isNullOrEmpty()) {
-                val result = ExcelTools.readExcelFile(context, uri)
-            }
         }
     }
-    /*val launcher = rememberLauncherForActivityResult(
-       ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-       if (result.resultCode == Activity.RESULT_OK) {
-           val uri = result.data?.data
-           model.onSearchFileButton(uri)
-       }
-    }
-    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-       addCategory(Intent.CATEGORY_OPENABLE)
-       type = fileType
-    }*/
 
     Row(modifier = Modifier.fillMaxWidth()) {
         CustomButton(
@@ -105,8 +91,15 @@ fun FilePickerButton(model: WizardScreenModel) {
             CustomButton(
                 buttonText = stringResource(R.string.wizard_upload_complex_file_load_button),
                 onClick = {
-                    model.onUploadFileClick()
                     LinearProgressManager.showLoader()
+                    model.pathFile?.let {
+                        if (!it.path.isNullOrEmpty()) {
+                            val result = ExcelTools.readExcelFile(context, model.pathFile) {
+                                LinearProgressManager.updateProgress(it)
+                            }
+                            model.onUploadFileClick(result)
+                        }
+                    }
                 }
             )
         }

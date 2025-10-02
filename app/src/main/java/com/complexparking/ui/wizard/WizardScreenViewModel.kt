@@ -6,12 +6,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.complexparking.R
+import com.complexparking.domain.interfaces.ILoadComplexUnitDataUseCase
 import com.complexparking.domain.interfaces.ISplashScreenUseCase
 import com.complexparking.utils.tools.ExcelTools
+import com.complexparking.utils.tools.FileData
 import kotlinx.coroutines.launch
 
 class WizardScreenViewModel(
-    private val splashScreenUseCase: ISplashScreenUseCase
+    private val splashScreenUseCase: ISplashScreenUseCase,
+    private val loadComplexUnitDataUseCase: ILoadComplexUnitDataUseCase
 ): ViewModel() {
     private val _gotoConfigComplex = mutableStateOf(false)
     val gotoConfigComplex get() = _gotoConfigComplex
@@ -43,7 +46,7 @@ class WizardScreenViewModel(
             complexAddress = "",
             parkingQuantity = "",
             isButtonEnabled = false,
-            pathFile = "",
+            pathFile = null,
             uploadButtonVisibility = false,
             buttonText = R.string.wizard_complex_configuration_next_button,
             onComplexNameChange = { onComplexNameChange(it) },
@@ -52,14 +55,27 @@ class WizardScreenViewModel(
             onParkingChange = { onParkingChange(it) },
             onClickNextStep = { onClickNextStep(it) },
             onClickPreviousStep = { onClickPreviousStep(it) },
-            onSearchFileButton = { onFileChange(it) }
+            onSearchFileButton = { onFileChange(it) },
+            onUploadFileClick = { onUploadFileAction(it) }
         )
+    }
+
+    private fun onUploadFileAction(fileDataList: ArrayList<FileData>) {
+        viewModelScope.launch {
+            runCatching {
+
+            }.onSuccess {
+
+            }.onFailure {
+
+            }
+        }
     }
 
     private fun onFileChange(uri: Uri?) {
         val path = uri?.path ?: ""
         _wizardModel.value = _wizardModel.value.copy(
-            pathFile = path,
+            pathFile = uri,
             uploadButtonVisibility = path.isNotEmpty()
         )
     }

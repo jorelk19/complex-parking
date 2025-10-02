@@ -6,9 +6,11 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 
 object ExcelTools {
-    fun readExcelFile(context: Context, filePath: Uri): ArrayList<FileData> {
+    fun readExcelFile(context: Context, filePath: Uri, onFileAction: (counter: Float) -> Unit = {}): ArrayList<FileData> {
         val dataList = arrayListOf<FileData>()
         val rawList = arrayListOf<String>()
+        var counter = 10f
+        onFileAction(counter)
         return try {
             //val documentsPath = Environment.getExternalStoragePublicDirectory(null).absolutePath
             val inputStream = context.contentResolver.openInputStream(filePath)
@@ -31,12 +33,13 @@ object ExcelTools {
             var lineNumber = 1
             rawList.forEach { line ->
                 if (lineNumber > 1) {
+                    counter = 50f
+                    onFileAction(counter)
                     dataList.add(mapData(line))
                 } else {
                     lineNumber++
                 }
             }
-
             dataList
         } catch (e: Exception) {
             e.printStackTrace()
