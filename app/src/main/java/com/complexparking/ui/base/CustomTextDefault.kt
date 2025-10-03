@@ -6,6 +6,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.complexparking.ui.theme.LocalCustomColors
 
@@ -36,13 +39,28 @@ fun CustomTextMedium(
     Text(
         text = text,
         color = color,
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = modifier,
         fontSize = Dimensions.text14sp,
         textAlign = textAlign
     )
 }
 
+@Composable
+fun CustomTextMediumBold(
+    text: String,
+    color: Color = LocalCustomColors.current.colorPrimaryText,
+    textAlign: TextAlign = TextAlign.Start,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = text,
+        color = color,
+        modifier = modifier,
+        fontSize = Dimensions.text14sp,
+        textAlign = textAlign,
+        fontWeight = FontWeight.Bold
+    )
+}
 @Composable
 fun CustomTextLage(
     text: String,

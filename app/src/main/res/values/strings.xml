@@ -44,6 +44,9 @@
     <string name="wizard_upload_complex_file_title" translatable="false">Seleccione el archivo CSV a cargar</string>
     <string name="wizard_upload_complex_file_button" translatable="false">Examinar</string>
     <string name="wizard_upload_complex_file_load_button" translatable="false">Cargar</string>
-
+    <string name="wizard_upload_complex_file_column_unit" translatable="false">Unidad</string>
+    <string name="wizard_upload_complex_file_column_name" translatable="false">Nombre</string>
+    <string name="wizard_upload_complex_file_column_last_name" translatable="false">Apellido</string>
+    <string name="wizard_upload_complex_file_column_plate" translatable="false">Placa</string>
     <!---->
 </resources>

@@ -2,25 +2,33 @@ package com.complexparking.ui.wizard
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.core.net.toUri
 import androidx.navigation.NavController
 import com.complexparking.R
 import com.complexparking.ui.base.CustomButton
 import com.complexparking.ui.base.CustomHeader
 import com.complexparking.ui.base.CustomTextMedium
+import com.complexparking.ui.base.CustomTextMediumBold
+import com.complexparking.ui.base.Dimensions.size2dp
 import com.complexparking.ui.base.Dimensions.size30dp
 import com.complexparking.ui.base.Dimensions.size5dp
+import com.complexparking.ui.base.Dimensions.size80dp
 import com.complexparking.ui.base.MainContainer
 import com.complexparking.ui.theme.LocalCustomColors
 import com.complexparking.ui.utilities.AnimateLinearProgressBarControl
@@ -28,7 +36,6 @@ import com.complexparking.ui.utilities.LinearProgressManager
 import com.complexparking.ui.widgets.PermissionView
 import com.complexparking.utils.tools.ExcelTools
 import org.koin.java.KoinJavaComponent.inject
-import kotlin.arrayOf
 
 @Composable
 fun UploadComplexDataScreen(navController: NavController) {
@@ -65,6 +72,51 @@ private fun UploadComplexDataBody(wizardScreenViewModel: WizardScreenViewModel) 
         FilePickerButton(
             wizardScreenViewModel.wizardModel.value
         )
+        if (wizardScreenViewModel.wizardModel.value.showPreviousList) {
+            Column(
+                modifier = Modifier
+                    .border(
+                        width = size2dp,
+                        color = LocalCustomColors.current.colorNeutralBorder,
+                        shape = RoundedCornerShape(size2dp)
+                    )
+                    .padding(top = size5dp)
+            ) {
+
+                Column {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .horizontalScroll(rememberScrollState())
+                            .border(
+                                width = size2dp,
+                                color = LocalCustomColors.current.colorNeutralBorder,
+                                shape = RoundedCornerShape(size2dp)
+                            )
+                    ) {
+                        CustomTextMediumBold(stringResource(R.string.wizard_upload_complex_file_column_unit), modifier = Modifier.width(size80dp))
+                        CustomTextMediumBold(stringResource(R.string.wizard_upload_complex_file_column_name), modifier = Modifier.width(size80dp))
+                        CustomTextMediumBold(stringResource(R.string.wizard_upload_complex_file_column_last_name), modifier = Modifier.width(size80dp))
+                        CustomTextMediumBold(stringResource(R.string.wizard_upload_complex_file_column_plate), modifier = Modifier.width(size80dp))
+                    }
+                    wizardScreenViewModel.wizardModel.value.previousList.forEach { data ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .horizontalScroll(rememberScrollState())
+                        ) {
+                            CustomTextMedium(data.complexUnit.toString(), modifier = Modifier.width(size80dp))
+                            VerticalDivider(modifier = Modifier.width(size5dp))
+                            CustomTextMedium(data.residentName, modifier = Modifier.width(size80dp))
+                            VerticalDivider(modifier = Modifier.width(size5dp))
+                            CustomTextMedium(data.residentLastName, modifier = Modifier.width(size80dp))
+                            VerticalDivider(modifier = Modifier.width(size5dp))
+                            CustomTextMedium(data.plate, modifier = Modifier.width(size80dp))
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

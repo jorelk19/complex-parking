@@ -13,6 +13,8 @@ data class WizardScreenModel(
     val buttonText: Int = 0,
     val pathFile: Uri? = null,
     val uploadButtonVisibility: Boolean = false,
+    val previousList: ArrayList<PreviousFileData> = arrayListOf(),
+    val showPreviousList: Boolean = false,
     val onUnitChange: (String) -> Unit = {},
     val onAddressChange: (String) -> Unit = {},
     val onParkingChange: (String) -> Unit = {},

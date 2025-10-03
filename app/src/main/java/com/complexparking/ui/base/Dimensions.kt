@@ -21,6 +21,8 @@ object Dimensions {
     val size10dp = 10.dp
     val size5dp = 5.dp
 
+    val size2dp = 2.dp
+
     val text12sp = 12.sp
     val text14sp = 14.sp
     val text16sp = 16.sp
