@@ -47,6 +47,8 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref="r
 androidx-datastore-preference = { group="androidx.datastore", name="datastore-preferences", version.ref="datastoreVersion"}
 
 androidx-koin = { group = "io.insert-koin", name="koin-android", version.ref = "koinVersion" }
+androidx-koin-core = { group = "io.insert-koin", name="koin-core", version.ref = "koinVersion" }
+androidx-koin-compose = { group = "io.insert-koin", name="koin-androidx-compose", version.ref = "koinVersion" }
 androidx-koin-workmanager = { group = "io.insert-koin", name="koin-androidx-workmanager", version.ref = "koinVersion" }
 androidx-koin-navigation = { group = "io.insert-koin", name="koin-androidx-navigation", version.ref = "koinVersion" }
 

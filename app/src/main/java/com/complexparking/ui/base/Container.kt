@@ -54,7 +54,7 @@ fun MainContainer(
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                     bottom.linkTo(parent.bottom)
-                }
+                }.background(LocalCustomColors.current.colorPrimaryBg)
             ) {
                 footer()
             }

@@ -75,6 +75,8 @@ dependencies {
     implementation(libs.androidx.constraintLayout)
     implementation(libs.androidx.serializable)
     implementation(libs.androidx.koin)
+    implementation(libs.androidx.koin.core)
+    implementation(libs.androidx.koin.compose)
     implementation(libs.androidx.koin.workmanager)
     implementation(libs.androidx.koin.navigation)
     implementation(libs.google.permission)

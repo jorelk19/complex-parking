@@ -48,5 +48,13 @@
     <string name="wizard_upload_complex_file_column_name" translatable="false">Nombre</string>
     <string name="wizard_upload_complex_file_column_last_name" translatable="false">Apellido</string>
     <string name="wizard_upload_complex_file_column_plate" translatable="false">Placa</string>
+
+    <string name="wizard_user_creation_admin_user" translatable="false">Ingrese el correo del administrador</string>
+    <string name="wizard_user_creation_admin_password" translatable="false">Ingrese el password del administrador</string>
+    <string name="wizard_user_creation_admin_repeat_password" translatable="false">Repita el password del administrador</string>
+
+    <string name="wizard_user_creation_user" translatable="false">Ingrese el correo del usuario</string>
+    <string name="wizard_user_creation_user_password" translatable="false">Ingrese el password del usuario</string>
+    <string name="wizard_user_creation_user_repeat_password" translatable="false">Repita el password del usuario</string>
     <!---->
 </resources>
