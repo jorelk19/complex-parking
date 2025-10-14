@@ -6,11 +6,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.complexparking.R
 import com.complexparking.ui.base.CustomButton
@@ -21,11 +24,13 @@ import com.complexparking.ui.base.Dimensions.spacingMedium
 import com.complexparking.ui.base.EnumEditTextType
 import com.complexparking.ui.base.MainContainer
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 import org.koin.java.KoinJavaComponent.inject
 
 @Composable
-fun WizardComplexConfigurationScreen(navController: NavController) {
-    val wizardScreenViewModel: WizardScreenViewModel by inject(WizardScreenViewModel::class.java)
+fun WizardComplexConfigurationScreen() {
+    val wizardScreenViewModel: WizardScreenViewModel = koinViewModel()
+    val model = wizardScreenViewModel.wizardModel.collectAsStateWithLifecycle()
     MainContainer(
         header = {
             CustomHeader(
@@ -35,15 +40,24 @@ fun WizardComplexConfigurationScreen(navController: NavController) {
         },
         body = {
             WizardComplexConfigurationBody(
-                navController,
-                wizardScreenViewModel.wizardModel.value
+                model.value,
+                onComplexNameChange = { wizardScreenViewModel.onComplexNameChange(it) },
+                onUnitChange = { wizardScreenViewModel.onUnitChange(it) },
+                onParkingChange = { wizardScreenViewModel.onParkingChange(it) },
+                onAddressChange = { wizardScreenViewModel.onAddressChange(it) }
             )
         }
     )
 }
 
 @Composable
-private fun WizardComplexConfigurationBody(navController: NavController, wizardScreenModel: WizardScreenModel) {
+private fun WizardComplexConfigurationBody(
+    wizardScreenModel: WizardScreenModel,
+    onComplexNameChange: (String) -> Unit,
+    onUnitChange: (String) -> Unit,
+    onParkingChange: (String) -> Unit,
+    onAddressChange: (String) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -53,7 +67,7 @@ private fun WizardComplexConfigurationBody(navController: NavController, wizardS
             text = wizardScreenModel.complexName,
             titleText = stringResource(id = R.string.wizard_complex_configuration_name),
             onValueChange = { text ->
-                wizardScreenModel.onComplexNameChange(text)
+                onComplexNameChange(text)
             },
             imageStart = ImageVector.vectorResource(R.drawable.ic_house),
             hasFocus = true,
@@ -67,7 +81,7 @@ private fun WizardComplexConfigurationBody(navController: NavController, wizardS
             text = wizardScreenModel.quantityUnit,
             titleText = stringResource(id = R.string.wizard_complex_configuration_quantity_units),
             onValueChange = { text ->
-                wizardScreenModel.onUnitChange(text)
+                onUnitChange(text)
             },
             imageStart = ImageVector.vectorResource(R.drawable.ic_house_quantities),
             hasFocus = false,
@@ -82,7 +96,7 @@ private fun WizardComplexConfigurationBody(navController: NavController, wizardS
             text = wizardScreenModel.parkingQuantity,
             titleText = stringResource(id = R.string.wizard_complex_configuration_quantity_parking),
             onValueChange = { text ->
-                wizardScreenModel.onParkingChange(text)
+                onParkingChange(text)
             },
             imageStart = ImageVector.vectorResource(R.drawable.ic_parking_quantities),
             hasFocus = false,
@@ -97,7 +111,7 @@ private fun WizardComplexConfigurationBody(navController: NavController, wizardS
             text = wizardScreenModel.complexAddress,
             titleText = stringResource(id = R.string.wizard_complex_configuration_address),
             onValueChange = { text ->
-                wizardScreenModel.onAddressChange(text)
+                onAddressChange(text)
             },
             imageStart = ImageVector.vectorResource(R.drawable.ic_address),
             hasFocus = false,
@@ -105,4 +119,16 @@ private fun WizardComplexConfigurationBody(navController: NavController, wizardS
             typeText = EnumEditTextType.DEFAULT
         )
     }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun WizardComplexConfigurationBodyPreview() {
+    WizardComplexConfigurationBody(
+        WizardScreenModel(),
+        {},
+        {},
+        {},
+        {}
+    )
 }

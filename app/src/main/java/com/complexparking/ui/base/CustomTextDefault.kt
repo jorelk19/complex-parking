@@ -34,6 +34,7 @@ fun CustomTextMedium(
     text: String,
     color: Color = LocalCustomColors.current.colorPrimaryText,
     textAlign: TextAlign = TextAlign.Start,
+    fontWeight: FontWeight = FontWeight.Normal,
     modifier: Modifier = Modifier
 ) {
     Text(
@@ -41,7 +42,8 @@ fun CustomTextMedium(
         color = color,
         modifier = modifier,
         fontSize = Dimensions.text14sp,
-        textAlign = textAlign
+        textAlign = textAlign,
+        fontWeight = fontWeight
     )
 }
 

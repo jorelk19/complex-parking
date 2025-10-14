@@ -40,6 +40,7 @@ import com.complexparking.ui.base.Dimensions.size30dp
 import com.complexparking.ui.base.Dimensions.size50dp
 import com.complexparking.ui.base.EnumEditTextType
 import com.complexparking.ui.theme.LocalCustomColors
+import com.complexparking.ui.utilities.formatPlate
 import com.complexparking.ui.validateError
 import java.util.Date
 import org.koin.java.KoinJavaComponent.inject
@@ -87,7 +88,7 @@ fun HomeBody(
             modifier = Modifier.height(size50dp)
         )
         CustomText6XLage(
-            text = formatPlate(plate),
+            text = plate.formatPlate(),
             textAlign = TextAlign.Center
         )
         Spacer(
@@ -179,16 +180,6 @@ fun HomeBody(
             buttonText = stringResource(id = R.string.home_screen_button_register),
             isEnabled = homeScreenModel.isButtonRegisterEnabled
         )
-    }
-}
-
-fun formatPlate(plate: String): String {
-    return if (plate.length > 3) {
-        val sb = StringBuilder(plate)
-        sb.insert(3, "-")
-        sb.toString().uppercase()
-    } else {
-        plate.uppercase()
     }
 }
 

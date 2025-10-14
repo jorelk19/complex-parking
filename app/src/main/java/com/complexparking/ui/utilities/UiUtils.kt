@@ -39,3 +39,13 @@ fun String.isValidPassword(onTrue: (input: String) -> Unit = {}, onFalse: () -> 
         }
     }
 }
+
+fun String.formatPlate(): String {
+    return if (this.length > 3) {
+        val sb = StringBuilder(this)
+        sb.insert(3, "-")
+        sb.toString().uppercase()
+    } else {
+        this.uppercase()
+    }
+}

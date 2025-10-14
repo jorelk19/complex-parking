@@ -2,6 +2,7 @@ package com.complexparking.ui.wizard
 
 import android.app.Activity
 import android.content.Intent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,59 +14,71 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.complexparking.R
 import com.complexparking.ui.base.CustomButton
 import com.complexparking.ui.base.Dimensions.size150dp
-import com.complexparking.ui.base.Dimensions.size80dp
 import com.complexparking.ui.base.Dimensions.spacingMedium
 import com.complexparking.ui.base.FlatContainer
 import com.complexparking.ui.base.SimpleContainer
 import com.complexparking.ui.splash.SplashActivity
 import com.complexparking.ui.theme.LocalCustomColors
 import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent.inject
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun WizardScreen(navController: NavController) {
+    val viewModel: WizardScreenViewModel = koinViewModel()
+    val index = viewModel.currentIndex.value
+    val buttonEnabled by viewModel.isButtonEnabled.collectAsState()
     val colors = LocalCustomColors.current
+    if (viewModel.gotoLoginScreen.value) {
+        val context = LocalContext.current
+        val activity = context as? Activity
+        val intent = Intent(context, SplashActivity::class.java)
+        context.startActivity(intent)
+        //wizardScreenViewModel.gotoLoginScreen.value = false
+        activity?.finish()
+    }
     FlatContainer {
         WizardScreenBody(
-            navController
+            buttonText = viewModel.buttonText.value,
+            isButtonPreviousVisible = viewModel.isButtonPreviousVisible.value,
+            currentIndex = index,
+            isButtonEnabled = buttonEnabled,
+            onClickNextStep = { viewModel.onNextIndex() },
+            onClickPreviousStep = { viewModel.onPreviousIndex() }
         )
     }
 }
 
 @Composable
-private fun WizardScreenBody(navController: NavController) {
-    val wizardScreenViewModel: WizardScreenViewModel by inject(WizardScreenViewModel::class.java)
-    val wizardModel = wizardScreenViewModel.wizardModel
+private fun WizardScreenBody(
+    isButtonPreviousVisible: Boolean,
+    isButtonEnabled: Boolean,
+    currentIndex: Int,
+    buttonText: Int,
+    onClickNextStep: () -> Int,
+    onClickPreviousStep: () -> Int,
+) {
 
-    if (wizardScreenViewModel.gotoLoginScreen.value) {
-        val context = LocalContext.current
-        val activity = context as? Activity
-        val intent = Intent(context, SplashActivity::class.java)
-        context.startActivity(intent)
-        wizardScreenViewModel.gotoLoginScreen.value = false
-        activity?.finish()
-    }
+    val currentPage = remember { mutableStateOf(currentIndex) }
 
     val pagerState = rememberPagerState(
-        initialPage = 0,
+        initialPage = currentPage.value,
         pageCount = { 3 }
     )
-
-    var userScrollEnabled by remember { mutableStateOf(false) }
 
     SimpleContainer(
         body = {
@@ -73,62 +86,121 @@ private fun WizardScreenBody(navController: NavController) {
                 state = pagerState,
                 pageSpacing = spacingMedium,
                 pageSize = PageSize.Fill,
-                userScrollEnabled = userScrollEnabled,
+                userScrollEnabled = false,
                 modifier = Modifier.wrapContentSize()
             ) { index ->
                 when (index) {
                     0 -> {
-                        WizardComplexConfigurationScreen(navController)
+                        WizardComplexConfigurationScreen()
                     }
 
                     1 -> {
-                        UploadComplexDataScreen(navController)
+                        UploadComplexDataScreen()
                     }
 
                     2 -> {
-                        WizardUserCreationScreen(navController)
+                        WizardUserCreationScreen()
                     }
                 }
             }
         },
         footer = {
-            WizardFooter(wizardScreenViewModel, wizardModel, pagerState)
+            WizardFooter(
+                isButtonPreviousVisible = isButtonPreviousVisible,
+                currentIndex = currentPage.value,
+                pagerState = pagerState,
+                buttonText = buttonText,
+                isButtonEnabled = isButtonEnabled,
+                onClickNextStep = onClickNextStep,
+                onClickPreviousStep = onClickPreviousStep
+            )
         }
     )
 }
 
 @Composable
-private fun WizardFooter(wizardScreenViewModel: WizardScreenViewModel, wizardModel: MutableState<WizardScreenModel>, pagerState: PagerState) {
+private fun WizardFooter(
+    isButtonPreviousVisible: Boolean,
+    buttonText: Int,
+    isButtonEnabled: Boolean,
+    pagerState: PagerState,
+    onClickNextStep: () -> Int,
+    onClickPreviousStep: () -> Int,
+    currentIndex: Int,
+) {
     val coroutineScope = rememberCoroutineScope()
-    Row(modifier = Modifier.padding(start = spacingMedium, end = spacingMedium).fillMaxWidth()) {
-        if (wizardScreenViewModel.isButtonPreviousVisible.value) {
+    //val index = remember { mutableStateOf(currentIndex) }
+
+    /*LaunchedEffect(Unit) {
+        coroutineScope.launch {
+            pagerState.animateScrollToPage(index.value)
+        }
+    }*/
+    Row(
+        modifier = Modifier
+            .padding(start = spacingMedium, end = spacingMedium)
+            .fillMaxWidth()
+            .background(LocalCustomColors.current.colorPrimaryBg)
+    ) {
+        ConstraintLayout(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            val (previousButton, nextButton) = createRefs()
+            if (isButtonPreviousVisible) {
+                CustomButton(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .width(size150dp)
+                        .constrainAs(previousButton) {
+                            start.linkTo(parent.start)
+                            top.linkTo(parent.top)
+                        },
+                    onClick = {
+                        coroutineScope.launch {
+                            val index = onClickPreviousStep()
+                            pagerState.scrollToPage(index)
+                            //pagerState.animateScrollToPage(getPreviousIndex(index.value))
+                        }
+                    },
+                    buttonText = stringResource(id = R.string.wizard_complex_configuration_previous_button)
+                )
+            }
             CustomButton(
                 modifier = Modifier
                     .wrapContentSize()
-                    .width(size150dp),
+                    .width(size150dp)
+                    .constrainAs(nextButton) {
+                        end.linkTo(parent.end)
+                        top.linkTo(parent.top)
+                    },
                 onClick = {
-                    wizardModel.value.onClickPreviousStep(wizardScreenViewModel.currentStep.value)
                     coroutineScope.launch {
-                        pagerState.animateScrollToPage(wizardScreenViewModel.currentIndex.value)
+                        val index = onClickNextStep()
+                        pagerState.scrollToPage(index)
+                        //pagerState.animateScrollToPage(getNextIndex(index.value))
                     }
                 },
-                buttonText = stringResource(id = R.string.wizard_complex_configuration_previous_button)
+                buttonText = stringResource(id = buttonText),
+                isEnabled = isButtonEnabled
             )
         }
-        CustomButton(
-            modifier = Modifier
-                .wrapContentSize()
-                .width(size150dp),
-            onClick = {
-                wizardModel.value.onClickNextStep(wizardScreenViewModel.currentStep.value)
-                coroutineScope.launch {
-                    pagerState.animateScrollToPage(wizardScreenViewModel.currentIndex.value)
-                }
-            },
-            buttonText = stringResource(id = wizardModel.value.buttonText),
-            isEnabled = wizardModel.value.isButtonEnabled
-        )
     }
+}
+
+fun getNextIndex(currentPage: Int): Int {
+    var index = currentPage
+    if (index >= 0 && index < 2) {
+        index = index + 1
+    }
+    return index
+}
+
+fun getPreviousIndex(currentPage: Int): Int {
+    var index = currentPage
+    if (index >= 0 && index < 2) {
+        index = index - 1
+    }
+    return index
 }
 
 fun navigateTo(currentStep: MutableState<EnumWizardStep>): Int {
@@ -139,8 +211,15 @@ fun navigateTo(currentStep: MutableState<EnumWizardStep>): Int {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun PreviewWizardScreen() {
-    WizardScreen(rememberNavController())
+    WizardScreenBody(
+        isButtonPreviousVisible = true,
+        currentIndex = 0,
+        isButtonEnabled = true,
+        buttonText = R.string.wizard_complex_configuration_next_button,
+        onClickNextStep = { 0 },
+        onClickPreviousStep = { 0 }
+    )
 }

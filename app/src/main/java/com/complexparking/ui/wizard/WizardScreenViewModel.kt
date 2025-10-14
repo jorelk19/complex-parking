@@ -2,18 +2,22 @@ package com.complexparking.ui.wizard
 
 import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.complexparking.R
 import com.complexparking.domain.interfaces.ILoadComplexUnitDataUseCase
 import com.complexparking.domain.interfaces.ISplashScreenUseCase
+import com.complexparking.ui.controls.SnackBarController
+import com.complexparking.ui.controls.SnackBarEvents
+import com.complexparking.ui.utilities.LinearProgressManager
 import com.complexparking.utils.tools.FileData
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class WizardScreenViewModel(
     private val splashScreenUseCase: ISplashScreenUseCase,
     private val loadComplexUnitDataUseCase: ILoadComplexUnitDataUseCase,
-) : ViewModel() {
+) : BaseWizardViewModel() {
     private val _gotoConfigComplex = mutableStateOf(false)
     val gotoConfigComplex get() = _gotoConfigComplex
     private val _gotoUploadUnitsData = mutableStateOf(false)
@@ -21,40 +25,68 @@ class WizardScreenViewModel(
     private val _gotoLoginScreen = mutableStateOf(false)
     val gotoLoginScreen get() = _gotoLoginScreen
 
-    private val _currentIndex = mutableStateOf(0)
-    val currentIndex get() = _currentIndex
-
     private val _currentStep = mutableStateOf(EnumWizardStep.STEP1)
     val currentStep get() = _currentStep
-
-    private val _wizardModel = mutableStateOf(WizardScreenModel())
-    val wizardModel get() = _wizardModel
-
-    private val _isButtonPreviousVisible = mutableStateOf(false)
-    val isButtonPreviousVisible get() = _isButtonPreviousVisible
 
     private val _fileData = mutableStateOf(ArrayList<FileData>())
     val fileData get() = _fileData
 
+    private val _wizardModel = MutableStateFlow(WizardScreenModel())
+    val wizardModel get() = _wizardModel.asStateFlow()
+
     init {
         loadData()
+        setIndexChangeAction {
+            updateStep()
+        }
     }
 
     private fun loadData() {
-        _wizardModel.value = WizardScreenModel(
-            buttonText = R.string.wizard_complex_configuration_next_button,
-            onComplexNameChange = { onComplexNameChange(it) },
-            onUnitChange = { onUnitChange(it) },
-            onAddressChange = { onAddressChange(it) },
-            onParkingChange = { onParkingChange(it) },
-            onClickNextStep = { onClickNextStep(it) },
-            onClickPreviousStep = { onClickPreviousStep(it) },
-            onSearchFileButton = { onFileChange(it) },
-            onUploadFileClick = { onUploadDataFile(it) }
-        )
+        _wizardModel.value = WizardScreenModel()
     }
 
-    private fun onUploadDataFile(fileData: ArrayList<FileData>) {
+    fun onParkingChange(parkingQuantity: String) {
+        _wizardModel.value = _wizardModel.value.copy(
+            parkingQuantity = parkingQuantity
+        )
+        validateComplexConfiguration()
+    }
+
+    fun onAddressChange(address: String) {
+        _wizardModel.value = _wizardModel.value.copy(
+            complexAddress = address
+        )
+        validateComplexConfiguration()
+    }
+
+    fun onUnitChange(unit: String) {
+        _wizardModel.value = _wizardModel.value.copy(
+            quantityUnit = unit
+        )
+        validateComplexConfiguration()
+    }
+
+    fun onComplexNameChange(name: String) {
+        _wizardModel.value = _wizardModel.value.copy(
+            complexName = name
+        )
+        validateComplexConfiguration()
+    }
+
+    private fun validateComplexConfiguration() {
+        val isButtonEnabled = if (_wizardModel.value.complexName.isEmpty() ||
+            _wizardModel.value.complexAddress.isEmpty() ||
+            _wizardModel.value.parkingQuantity.isEmpty() ||
+            _wizardModel.value.quantityUnit.isEmpty()
+        ) {
+            false
+        } else {
+            true
+        }
+        setButtonEnabled(isButtonEnabled)
+    }
+
+    fun onUploadDataFile(fileData: ArrayList<FileData>) {
         _fileData.value = fileData
         val data = if (fileData.size > 5) fileData.subList(0, 5) else fileData
         _wizardModel.value = _wizardModel.value.copy(
@@ -83,7 +115,7 @@ class WizardScreenViewModel(
         }
     }
 
-    private fun onFileChange(uri: Uri?) {
+    fun onFileChange(uri: Uri?) {
         val path = uri?.path ?: ""
         _wizardModel.value = _wizardModel.value.copy(
             pathFile = uri,
@@ -91,139 +123,85 @@ class WizardScreenViewModel(
         )
     }
 
-    private fun onParkingChange(parkingQuantity: String) {
-        _wizardModel.value = _wizardModel.value.copy(
-            parkingQuantity = parkingQuantity
-        )
-        validateComplexConfiguration()
-    }
-
-    private fun onAddressChange(address: String) {
-        _wizardModel.value = _wizardModel.value.copy(
-            complexAddress = address
-        )
-        validateComplexConfiguration()
-    }
-
-    private fun onUnitChange(unit: String) {
-        _wizardModel.value = _wizardModel.value.copy(
-            quantityUnit = unit
-        )
-        validateComplexConfiguration()
-    }
-
-    private fun onComplexNameChange(name: String) {
-        _wizardModel.value = _wizardModel.value.copy(
-            complexName = name
-        )
-        validateComplexConfiguration()
-    }
-
-    private fun onClickNextStep(step: EnumWizardStep) {
+    /*private fun onClickNextStep(step: EnumWizardStep) {
+        evaluateNextIndex()
+        updateStep()
         when (step) {
             EnumWizardStep.STEP1 -> {
-                //validateComplexConfiguration()
+                validateComplexConfiguration()
                 _wizardModel.value = _wizardModel.value.copy(
                     buttonText = R.string.wizard_complex_configuration_next_button
                 )
             }
 
             EnumWizardStep.STEP2 -> {
+                validateUploadComplexData()
                 _wizardModel.value = _wizardModel.value.copy(
                     buttonText = R.string.wizard_complex_configuration_finish_button
                 )
                 _wizardModel.value = _wizardModel.value.copy(
                     isButtonEnabled = false
                 )
-                //validateUploadComplexData()
             }
 
             EnumWizardStep.STEP3 -> {
+                validateUserCreation()
                 finishWizardFlow()
-                //validateUserCreation()
             }
         }
-        evaluateNextIndex()
-    }
+    }*/
+    /*
+        private fun onClickPreviousStep(step: EnumWizardStep) {
+            when (step) {
+                EnumWizardStep.STEP1 -> {
+                    _wizardModel.value = _wizardModel.value.copy(
+                        buttonText = R.string.wizard_complex_configuration_next_button
+                    )
+                    validateComplexConfiguration()
+                }
 
-    private fun evaluateNextIndex() {
-        if (currentIndex.value <= 2) {
-            currentIndex.value = currentIndex.value + 1
-            _isButtonPreviousVisible.value = true
-        }
-        updateStep()
-    }
+                EnumWizardStep.STEP2 -> {
+                    _wizardModel.value = _wizardModel.value.copy(
+                        buttonText = R.string.wizard_complex_configuration_next_button
+                    )
+                    validateUploadComplexData()
+                }
 
-    private fun onClickPreviousStep(step: EnumWizardStep) {
-        when (step) {
-            EnumWizardStep.STEP1 -> {
-                _wizardModel.value = _wizardModel.value.copy(
-                    buttonText = R.string.wizard_complex_configuration_next_button
-                )
-                validateComplexConfiguration()
+                EnumWizardStep.STEP3 -> {}
             }
-
-            EnumWizardStep.STEP2 -> {
-                _wizardModel.value = _wizardModel.value.copy(
-                    buttonText = R.string.wizard_complex_configuration_next_button
-                )
-                validateUploadComplexData()
-            }
-
-            EnumWizardStep.STEP3 -> {}
-        }
-        evaluatePreviousIndex()
-    }
-
-    private fun evaluatePreviousIndex() {
-        if (currentIndex.value > 0) {
-            currentIndex.value = currentIndex.value - 1
-            if (currentIndex.value == 0) {
-                _isButtonPreviousVisible.value = false
-            } else {
-                _isButtonPreviousVisible.value = true
-            }
-            _wizardModel.value = _wizardModel.value.copy(
-                buttonText = R.string.wizard_complex_configuration_next_button
-            )
-        }
-        updateStep()
-    }
+            evaluatePreviousIndex()
+        }*/
 
     private fun updateStep() {
-        _currentStep.value = when (currentIndex.value) {
+        val step = when (currentIndex.value) {
             0 -> {
-                _wizardModel.value = _wizardModel.value.copy(
-                    isButtonEnabled = false
-                )
+                setButtonEnabled(false)
                 validateComplexConfiguration()
                 EnumWizardStep.STEP1
             }
 
             1 -> {
-                _wizardModel.value = _wizardModel.value.copy(
-                    isButtonEnabled = false
-                )
+                setButtonEnabled(false)
                 validateUploadComplexData()
                 EnumWizardStep.STEP2
             }
 
             2 -> {
-                _wizardModel.value = _wizardModel.value.copy(
-                    isButtonEnabled = false
-                )
+                setButtonEnabled(false)
+
                 validateUserCreation()
                 EnumWizardStep.STEP3
             }
 
             else -> {
-                _wizardModel.value = _wizardModel.value.copy(
-                    isButtonEnabled = false
-                )
+                setButtonEnabled(false)
+
                 EnumWizardStep.STEP1
             }
         }
+        _currentStep.value = step
     }
+
 
     private fun finishWizardFlow() {
         viewModelScope.launch {
@@ -235,28 +213,30 @@ class WizardScreenViewModel(
         }
     }
 
-    private fun validateComplexConfiguration() {
-        val isButtonEnabled = if (_wizardModel.value.complexName.isEmpty() ||
-            _wizardModel.value.complexAddress.isEmpty() ||
-            _wizardModel.value.parkingQuantity.isEmpty() ||
-            _wizardModel.value.quantityUnit.isEmpty()
-        ) {
-            false
-        } else {
-            true
-        }
-        _wizardModel.value = _wizardModel.value.copy(
-            isButtonEnabled = isButtonEnabled
-        )
-    }
 
     private fun validateUploadComplexData() {
-        _wizardModel.value = _wizardModel.value.copy(
-            isButtonEnabled = _fileData.value.isNotEmpty()
-        )
+        setButtonEnabled(_fileData.value.isNotEmpty())
+        LinearProgressManager.hideLoader()
+        viewModelScope.launch {
+            SnackBarController.sendEvent(
+                SnackBarEvents(
+                    titleId = R.string.wizard_user_creation_snack_success_title,
+                    subTitleId = R.string.wizard_user_creation_snack_success_message,
+                    iconId = R.drawable.ic_circle_check,
+                    buttonIconId = R.drawable.ic_close
+                )
+            )
+        }
     }
 
     private fun validateUserCreation() {
-
+        setButtonEnabled(true)
     }
+
+    fun onAdminEmailChange(email: String) {}
+    fun onAdminPasswordChange(email: String) {}
+    fun onRepeatAdminPasswordChange(email: String) {}
+    fun onUserEmailChange(email: String) {}
+    fun onUserPasswordChange(email: String) {}
+    fun onRepeatUserPasswordChange(email: String) {}
 }

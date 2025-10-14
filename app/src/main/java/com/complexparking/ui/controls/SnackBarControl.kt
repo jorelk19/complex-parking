@@ -16,6 +16,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension.Companion.fillToConstraints
 import com.complexparking.R
@@ -33,10 +34,10 @@ fun SnackBarControl(
         val scope = rememberCoroutineScope()
         SnackbarHost(hostState = snackBarHostState) { snackbarData ->
             CustomSnackBar(
-                drawableId = R.drawable.ic_launcher_foreground,
-                title = "",
-                message = "",
-                containerColor = Color.Red,
+                drawableId = SnackBarController.snackData.value.iconId,
+                title = stringResource(SnackBarController.snackData.value.titleId),
+                message = stringResource(SnackBarController.snackData.value.subTitleId),
+                containerColor = Color.Blue,
                 buttonIconId = SnackBarController.snackData.value.buttonIconId,
                 action = {
                     snackBarHostState.currentSnackbarData?.dismiss()

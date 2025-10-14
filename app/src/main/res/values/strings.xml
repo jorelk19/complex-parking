@@ -56,5 +56,10 @@
     <string name="wizard_user_creation_user" translatable="false">Ingrese el correo del usuario</string>
     <string name="wizard_user_creation_user_password" translatable="false">Ingrese el password del usuario</string>
     <string name="wizard_user_creation_user_repeat_password" translatable="false">Repita el password del usuario</string>
+
+    <string name="wizard_user_creation_snack_success_title" translatable="false">Terminado</string>
+    <string name="wizard_user_creation_snack_success_message" translatable="false">Registros cargados correctamente</string>
     <!---->
+
+
 </resources>
