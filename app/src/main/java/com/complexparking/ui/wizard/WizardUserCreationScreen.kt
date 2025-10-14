@@ -96,7 +96,10 @@ private fun WizardCreateUserBody(
         CustomEditText(
             text = adminPassText.value,
             titleText = stringResource(id = R.string.wizard_user_creation_admin_password),
-            bottomText = "",
+            bottomText = validateError(
+                hasError = model.errorAdminPassword,
+                errorType = model.adminPasswordErrorType
+            ),
             onValueChange = { text ->
                 onAdminPasswordChange(text)
                 adminPassText.value = text
@@ -139,7 +142,10 @@ private fun WizardCreateUserBody(
         CustomEditText(
             text = userPassText.value,
             titleText = stringResource(id = R.string.wizard_user_creation_user_password),
-            bottomText = "",
+            bottomText = validateError(
+                hasError = model.errorUserPassword,
+                errorType = model.userPasswordErrorType
+            ),
             onValueChange = { text ->
                 userPassText.value = text
                 onUserPasswordChange(text)

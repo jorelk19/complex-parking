@@ -8,7 +8,10 @@ import com.complexparking.domain.interfaces.ILoadComplexUnitDataUseCase
 import com.complexparking.domain.interfaces.ISplashScreenUseCase
 import com.complexparking.ui.controls.SnackBarController
 import com.complexparking.ui.controls.SnackBarEvents
+import com.complexparking.ui.utilities.ErrorType
 import com.complexparking.ui.utilities.LinearProgressManager
+import com.complexparking.ui.utilities.isValidEmail
+import com.complexparking.ui.utilities.isValidPassword
 import com.complexparking.utils.tools.FileData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -233,10 +236,74 @@ class WizardScreenViewModel(
         setButtonEnabled(true)
     }
 
-    fun onAdminEmailChange(email: String) {}
-    fun onAdminPasswordChange(email: String) {}
-    fun onRepeatAdminPasswordChange(email: String) {}
-    fun onUserEmailChange(email: String) {}
-    fun onUserPasswordChange(email: String) {}
-    fun onRepeatUserPasswordChange(email: String) {}
+    fun onAdminEmailChange(email: String) {
+        email.isValidEmail(
+            onTrue = {
+                _wizardModel.value = _wizardModel.value.copy(
+                    adminEmailError = false,
+                    adminEmailErrorType = ErrorType.NONE
+                )
+            },
+            onFalse = {
+                _wizardModel.value = _wizardModel.value.copy(
+                    adminEmailError = true,
+                    adminEmailErrorType = ErrorType.INVALID_EMAIL
+                )
+            }
+        )
+    }
+    fun onAdminPasswordChange(password: String) {
+        password.isValidPassword(
+            onTrue = {
+                _wizardModel.value = _wizardModel.value.copy(
+                    errorAdminPassword = false,
+                    adminPasswordErrorType = ErrorType.NONE
+                )
+            },
+            onFalse = {
+                _wizardModel.value = _wizardModel.value.copy(
+                    errorAdminPassword = true,
+                    adminPasswordErrorType = ErrorType.INVALID_PASSWORD
+                )
+            }
+        )
+    }
+    fun onRepeatAdminPasswordChange(password: String) {
+
+    }
+    fun onUserEmailChange(email: String) {
+        email.isValidEmail(
+            onTrue = {
+                _wizardModel.value = _wizardModel.value.copy(
+                    userEmailError = false,
+                    userEmailErrorType = ErrorType.NONE
+                )
+            },
+            onFalse = {
+                _wizardModel.value = _wizardModel.value.copy(
+                    userEmailError = true,
+                    userEmailErrorType = ErrorType.INVALID_EMAIL
+                )
+            }
+        )
+    }
+    fun onUserPasswordChange(password: String) {
+        password.isValidPassword(
+            onTrue = {
+                _wizardModel.value = _wizardModel.value.copy(
+                    errorUserPassword = false,
+                    userPasswordErrorType = ErrorType.NONE
+                )
+            },
+            onFalse = {
+                _wizardModel.value = _wizardModel.value.copy(
+                    errorUserPassword = true,
+                    userPasswordErrorType = ErrorType.INVALID_PASSWORD
+                )
+            }
+        )
+    }
+    fun onRepeatUserPasswordChange(password: String) {
+
+    }
 }

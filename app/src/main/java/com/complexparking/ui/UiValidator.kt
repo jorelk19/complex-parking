@@ -12,7 +12,7 @@ fun validateError(hasError: Boolean, errorType: ErrorType): String {
             ErrorType.WRONG_USER_PASSWORD -> stringResource(R.string.login_screen_wrong_email_password)
             ErrorType.INVALID_EMAIL -> stringResource(R.string.login_screen_email_error)
             ErrorType.NONE -> stringResource(R.string.login_screen_no_error)
-            ErrorType.INVALID_PASSWORD -> stringResource(R.string.login_screen_no_error)
+            ErrorType.INVALID_PASSWORD -> stringResource(R.string.invalid_password)
             ErrorType.EMPTY_UNIT -> stringResource(R.string.home_screen_unit_empty_error)
             ErrorType.INVALID_UNIT -> stringResource(R.string.home_screen_invalid_unit_error)
             ErrorType.EMPTY_PLATE -> stringResource(R.string.home_screen_plate_empty_error)
