@@ -53,11 +53,11 @@ object ExcelTools {
             throw Exception("Numero de columnas en el archivo son incorrectas")
         }
         return FileData(
-            unit = fields[0],
+            unit = fields[0].toInt(),
             cellphone = fields[1],
             name = fields[2],
             lastName = fields[3],
-            identification = fields[4],
+            document = fields[4],
             documentType = fields[5],
             plate = fields[6],
             model = fields[7],

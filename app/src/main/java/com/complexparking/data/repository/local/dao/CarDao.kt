@@ -1,8 +1,11 @@
 package com.complexparking.data.repository.local.dao
 
 import androidx.room.Dao
+import androidx.room.Upsert
+import com.complexparking.data.repository.local.dto.CarDto
 
 @Dao
 interface CarDao {
-    fun insertCar()
+    @Upsert
+    fun insertCar(cartDto: CarDto)
 }

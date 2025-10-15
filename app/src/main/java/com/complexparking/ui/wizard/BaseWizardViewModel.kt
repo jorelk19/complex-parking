@@ -13,6 +13,9 @@ open class BaseWizardViewModel : ViewModel() {
     private val _currentIndex = mutableStateOf(0)
     val currentIndex get() = _currentIndex
 
+    private val _isFinalStep = mutableStateOf(false)
+    val isFinalStep get() = _isFinalStep
+
     private val _buttonText = mutableStateOf(0)
     val buttonText get() = _buttonText
 
@@ -35,11 +38,14 @@ open class BaseWizardViewModel : ViewModel() {
 
     fun onNextIndex(): Int {
         if (_currentIndex.value < 2) {
+            _isFinalStep.value = false
             _currentIndex.value = _currentIndex.value + 1
             _isButtonPreviousVisible.value = true
             if (_currentIndex.value == 2) {
                 _buttonText.value = R.string.wizard_complex_configuration_finish_button
             }
+        } else {
+            _isFinalStep.value = true
         }
         _onIndexChangeAction.invoke()
         return _currentIndex.value
@@ -47,6 +53,7 @@ open class BaseWizardViewModel : ViewModel() {
 
     fun onPreviousIndex(): Int {
         if (_currentIndex.value > 0) {
+            _isFinalStep.value = false
             _currentIndex.value = _currentIndex.value - 1
             if (_currentIndex.value == 0) {
                 _isButtonPreviousVisible.value = false

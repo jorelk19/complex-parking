@@ -51,7 +51,6 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun UploadComplexDataScreen() {
-    val colors = LocalCustomColors.current
     val wizardScreenViewModel: WizardScreenViewModel = koinViewModel()
     val model by wizardScreenViewModel.wizardModel.collectAsState()
     PermissionView()
@@ -151,6 +150,7 @@ fun FilePickerButton(
 ) {
     val context = LocalContext.current
     val fileType = "*/*"
+
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument()
     ) { uri ->

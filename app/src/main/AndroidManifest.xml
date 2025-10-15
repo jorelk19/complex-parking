@@ -38,7 +38,7 @@
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".ui.wizard.WizardActivity"
-            android:windowSoftInputMode="adjustNothing" />
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

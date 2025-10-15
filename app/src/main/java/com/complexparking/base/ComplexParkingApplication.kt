@@ -40,7 +40,7 @@ open class ComplexParkingApplication: BaseApplication() {
      * */
     override fun onAppStart() {
         appContext = this
-        val db = ParkingDatabase.getDatabase(appContext)
+        val db = ParkingDatabase.buildDatabase(appContext)
         KoinManager.initKoin(appContext, db)
         providerBase.addListener(connectivityStateListener)
     }

@@ -1,0 +1,23 @@
+package com.complexparking.entities
+
+import com.complexparking.data.repository.local.dto.ComplexDto
+import kotlin.String
+
+data class ComplexData(
+    val complexUnit: Int,
+    val complexName: String,
+    val complexAddress: String,
+    val parkingQuantity: Int,
+    val adminEmail: String,
+    val adminPassword: String,
+    val userEmail: String,
+    val userPassword: String
+)
+fun ComplexData.toComplexDto(): ComplexDto {
+    return ComplexDto(
+        complexName = this.complexName,
+        complexUnits = this.complexUnit,
+        complexAddress = this.complexAddress,
+        quantityParking = this.parkingQuantity
+    )
+}

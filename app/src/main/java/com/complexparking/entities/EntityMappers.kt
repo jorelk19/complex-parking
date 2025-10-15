@@ -1,9 +1,9 @@
 package com.complexparking.entities
 
-import com.complexparking.data.repository.local.dto.CarVisitorDto
+import com.complexparking.data.repository.local.dto.CarGuestDto
 
-fun Visitor.visitorToDto(): CarVisitorDto {
-    return CarVisitorDto(
+fun Visitor.visitorToDto(): CarGuestDto {
+    return CarGuestDto(
         date = this.date,
         hourStart = this.hourStart,
         hourEnd = this.hourEnd,

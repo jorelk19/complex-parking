@@ -4,8 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
 
-@Entity
-data class CarVisitorDto(
+@Entity(tableName = "carGuest")
+data class CarGuestDto(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val plate: String,

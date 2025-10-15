@@ -7,6 +7,8 @@
     <string name="login_screen_email_error" translatable="false">El email ingresado no es válido</string>
     <string name="login_screen_wrong_email_password" translatable="false">El correo o el password no son correctos</string>
     <string name="invalid_password" translatable="false">El password debe contener mayusculas, minuscula, numeros y caracteres especiales</string>
+    <string name="repeat_password_invalid" translatable="false">Las contraseña no coinciden</string>
+    <string name="same_user_admin_email" translatable="false">El correo del usuario y el administrador no pueden ser iguales</string>
     <string name="login_screen_no_error" translatable="false" />
 
     <!--endregion-->

@@ -80,6 +80,8 @@ dependencies {
     implementation(libs.androidx.koin.workmanager)
     implementation(libs.androidx.koin.navigation)
     implementation(libs.google.permission)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.google.gson)
    /* implementation(libs.org.apache.poi)
     implementation(libs.org.apache.poi.oxml)*/
 

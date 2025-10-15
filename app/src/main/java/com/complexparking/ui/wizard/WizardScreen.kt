@@ -34,6 +34,7 @@ import com.complexparking.ui.base.FlatContainer
 import com.complexparking.ui.base.SimpleContainer
 import com.complexparking.ui.splash.SplashActivity
 import com.complexparking.ui.theme.LocalCustomColors
+import com.complexparking.ui.utilities.ObservableScreen
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -73,7 +74,7 @@ private fun WizardScreenBody(
     onClickPreviousStep: () -> Int,
 ) {
 
-    val currentPage = remember { mutableStateOf(currentIndex) }
+    val currentPage = remember { mutableStateOf(0) }
 
     val pagerState = rememberPagerState(
         initialPage = currentPage.value,
@@ -107,7 +108,7 @@ private fun WizardScreenBody(
         footer = {
             WizardFooter(
                 isButtonPreviousVisible = isButtonPreviousVisible,
-                currentIndex = currentPage.value,
+                currentIndex = currentIndex,
                 pagerState = pagerState,
                 buttonText = buttonText,
                 isButtonEnabled = isButtonEnabled,
@@ -129,13 +130,16 @@ private fun WizardFooter(
     currentIndex: Int,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    //val index = remember { mutableStateOf(currentIndex) }
+    val index = remember { mutableStateOf(0) }
 
-    /*LaunchedEffect(Unit) {
-        coroutineScope.launch {
-            pagerState.animateScrollToPage(index.value)
+    ObservableScreen(
+        onResume = {
+            index.value = currentIndex
+            coroutineScope.launch {
+                pagerState.scrollToPage(index.value)
+            }
         }
-    }*/
+    )
     Row(
         modifier = Modifier
             .padding(start = spacingMedium, end = spacingMedium)
@@ -157,9 +161,8 @@ private fun WizardFooter(
                         },
                     onClick = {
                         coroutineScope.launch {
-                            val index = onClickPreviousStep()
-                            pagerState.scrollToPage(index)
-                            //pagerState.animateScrollToPage(getPreviousIndex(index.value))
+                            index.value = onClickPreviousStep()
+                            pagerState.scrollToPage(index.value)
                         }
                     },
                     buttonText = stringResource(id = R.string.wizard_complex_configuration_previous_button)
@@ -175,9 +178,8 @@ private fun WizardFooter(
                     },
                 onClick = {
                     coroutineScope.launch {
-                        val index = onClickNextStep()
-                        pagerState.scrollToPage(index)
-                        //pagerState.animateScrollToPage(getNextIndex(index.value))
+                        index.value = onClickNextStep()
+                        pagerState.scrollToPage(index.value)
                     }
                 },
                 buttonText = stringResource(id = buttonText),

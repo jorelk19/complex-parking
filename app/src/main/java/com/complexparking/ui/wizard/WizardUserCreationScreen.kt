@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.complexparking.R
 import com.complexparking.ui.base.CustomEditText
 import com.complexparking.ui.base.CustomHeader
@@ -25,15 +24,12 @@ import com.complexparking.ui.base.Dimensions.size40dp
 import com.complexparking.ui.base.Dimensions.size5dp
 import com.complexparking.ui.base.EnumEditTextType
 import com.complexparking.ui.base.MainContainer
-import com.complexparking.ui.theme.LocalCustomColors
 import com.complexparking.ui.validateError
-import org.koin.java.KoinJavaComponent.inject
-import kotlin.getValue
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun WizardUserCreationScreen() {
-    val colors = LocalCustomColors.current
-    val wizardScreenViewModel: WizardScreenViewModel by inject(WizardScreenViewModel::class.java)
+    val wizardScreenViewModel: WizardScreenViewModel = koinViewModel()
     val model by wizardScreenViewModel.wizardModel.collectAsState()
     MainContainer(
         header = {
@@ -112,10 +108,13 @@ private fun WizardCreateUserBody(
         CustomEditText(
             text = repeatAdminPassText.value,
             titleText = stringResource(id = R.string.wizard_user_creation_admin_repeat_password),
-            bottomText = "",
+            bottomText = validateError(
+                hasError = model.errorRepeatAdminPassword,
+                errorType = model.repeatAdminPasswordErrorType
+            ),
             onValueChange = { text ->
-                    repeatAdminPassText.value = text
-                    onRepeatAdminPasswordChange(text)
+                repeatAdminPassText.value = text
+                onRepeatAdminPasswordChange(text)
             },
             imageStart = ImageVector.vectorResource(R.drawable.ic_padlock),
             hasFocus = false,
@@ -131,7 +130,7 @@ private fun WizardCreateUserBody(
                 onUserEmailChange(text)
             },
             imageStart = ImageVector.vectorResource(R.drawable.ic_email),
-            hasFocus = true,
+            hasFocus = false,
             bottomText = validateError(
                 hasError = model.userEmailError,
                 errorType = model.userEmailErrorType
@@ -158,7 +157,10 @@ private fun WizardCreateUserBody(
         CustomEditText(
             text = repeatUserPassText.value,
             titleText = stringResource(id = R.string.wizard_user_creation_user_repeat_password),
-            bottomText = "",
+            bottomText = validateError(
+                hasError = model.errorRepeatUserPassword,
+                errorType = model.repeatUserPasswordErrorType
+            ),
             onValueChange = { text ->
                 repeatUserPassText.value = text
                 onRepeatUserPasswordChange(text)

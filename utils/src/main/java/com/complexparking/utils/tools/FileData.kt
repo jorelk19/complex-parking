@@ -1,11 +1,11 @@
 package com.complexparking.utils.tools
 
 data class FileData(
-    val unit: String,
+    val unit: Int,
     val cellphone: String,
     val name: String,
     val lastName: String,
-    val identification: String,
+    val document: String,
     val documentType: String,
     val plate: String,
     val model: String,
