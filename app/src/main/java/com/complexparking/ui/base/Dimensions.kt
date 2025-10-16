@@ -4,29 +4,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 object Dimensions {
-    val size180dp = 180.dp
-    val size100dp = 100.dp
-    val size60dp = 60.dp
-    val size50dp = 50.dp
-
-    val size80dp = 80.dp
-
-    val size150dp = 150.dp
-    val size48dp = 48.dp
-    val size40dp = 40.dp
-    val size30dp = 30.dp
-    val size24dp = 24.dp
-    val size20dp = 20.dp
-    val size15dp = 15.dp
-    val size10dp = 10.dp
-
-    val size16dp = 16.dp
-    val size8dp = 8.dp
-    val size5dp = 5.dp
-
     val size1dp = 1.dp
     val size2dp = 2.dp
+    val size5dp = 5.dp
+    val size8dp = 8.dp
+    val size10dp = 10.dp
+    val size15dp = 15.dp
+    val size16dp = 16.dp
+    val size20dp = 20.dp
+    val size24dp = 24.dp
+    val size30dp = 30.dp
+    val size40dp = 40.dp
+    val size48dp = 48.dp
+    val size50dp = 50.dp
+    val size60dp = 60.dp
+    val size80dp = 80.dp
+    val size180dp = 180.dp
+    val size100dp = 100.dp
+    val size150dp = 150.dp
 
+    /*Text Size*/
     val text12sp = 12.sp
     val text14sp = 14.sp
     val text16sp = 16.sp

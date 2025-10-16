@@ -8,10 +8,9 @@ data class ComplexData(
     val complexName: String,
     val complexAddress: String,
     val parkingQuantity: Int,
+    val adminName: String,
     val adminEmail: String,
-    val adminPassword: String,
-    val userEmail: String,
-    val userPassword: String
+    val adminPassword: String
 )
 fun ComplexData.toComplexDto(): ComplexDto {
     return ComplexDto(

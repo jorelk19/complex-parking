@@ -1,6 +1,6 @@
 package com.complexparking.di
 
-import com.complexparking.domain.interfaces.ICreateVisitorUnitUseCase
+import com.complexparking.domain.interfaces.ICreateGuestUnitUseCase
 import com.complexparking.domain.interfaces.ILoadComplexUnitDataUseCase
 import com.complexparking.domain.interfaces.ILoginUseCase
 import com.complexparking.domain.interfaces.ISplashScreenUseCase
@@ -13,9 +13,9 @@ import com.complexparking.domain.useCase.ValidateUnitUseCase
 import org.koin.dsl.module
 
 val useCaseModule = module {
+    single<ICreateGuestUnitUseCase> { CreateGuestUseCase(get()) }
     single<ILoginUseCase> { LoginUseCase() }
     single<IValidateUnitUseCase> { ValidateUnitUseCase() }
-    single<ICreateVisitorUnitUseCase> { CreateGuestUseCase(get()) }
     single<ISplashScreenUseCase> { SplashScreenUseCase(get()) }
     single<ILoadComplexUnitDataUseCase> { LoadComplexUnitDataUseCase(get(), get()) }
 }

@@ -49,7 +49,6 @@ fun WizardScreen(navController: NavController) {
         val activity = context as? Activity
         val intent = Intent(context, SplashActivity::class.java)
         context.startActivity(intent)
-        //wizardScreenViewModel.gotoLoginScreen.value = false
         activity?.finish()
     }
     FlatContainer {

@@ -70,9 +70,11 @@ private fun WizardCreateUserBody(
         val adminUserText = remember { mutableStateOf("") }
         val adminPassText = remember { mutableStateOf("") }
         val repeatAdminPassText = remember { mutableStateOf("") }
+        val adminName = remember { mutableStateOf("") }
         val userText = remember { mutableStateOf("") }
         val userPassText = remember { mutableStateOf("") }
         val repeatUserPassText = remember { mutableStateOf("") }
+        HorizontalDivider(modifier = Modifier.height(size2dp))
         CustomEditText(
             text = adminUserText.value,
             titleText = stringResource(id = R.string.wizard_user_creation_admin_user),
@@ -121,8 +123,7 @@ private fun WizardCreateUserBody(
             hasError = model.errorRepeatAdminPassword,
             typeText = EnumEditTextType.PASSWORD
         )
-        HorizontalDivider(modifier = Modifier.height(size2dp))
-        CustomEditText(
+        /*CustomEditText(
             text = userText.value,
             titleText = stringResource(id = R.string.wizard_user_creation_user),
             onValueChange = { text ->
@@ -169,7 +170,7 @@ private fun WizardCreateUserBody(
             hasFocus = false,
             hasError = model.errorRepeatUserPassword,
             typeText = EnumEditTextType.PASSWORD
-        )
+        )*/
     }
 }
 

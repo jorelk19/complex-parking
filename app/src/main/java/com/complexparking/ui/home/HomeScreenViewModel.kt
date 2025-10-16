@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.complexparking.domain.interfaces.ICreateVisitorUnitUseCase
+import com.complexparking.domain.interfaces.ICreateGuestUnitUseCase
 import com.complexparking.domain.interfaces.IValidateUnitUseCase
 import com.complexparking.entities.Visitor
 import com.complexparking.ui.utilities.ErrorType
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class HomeScreenViewModel(
     private val validateUnitUseCase: IValidateUnitUseCase,
-    private val createVisitorUnitUseCase: ICreateVisitorUnitUseCase,
+    private val createVisitorUnitUseCase: ICreateGuestUnitUseCase,
 ) : ViewModel() {
 
     private val _homeScreenModel = mutableStateOf(HomeScreenModel())

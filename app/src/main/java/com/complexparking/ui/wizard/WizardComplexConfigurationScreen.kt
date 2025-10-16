@@ -44,7 +44,8 @@ fun WizardComplexConfigurationScreen() {
                 onComplexNameChange = { wizardScreenViewModel.onComplexNameChange(it) },
                 onUnitChange = { wizardScreenViewModel.onUnitChange(it) },
                 onParkingChange = { wizardScreenViewModel.onParkingChange(it) },
-                onAddressChange = { wizardScreenViewModel.onAddressChange(it) }
+                onAddressChange = { wizardScreenViewModel.onAddressChange(it) },
+                onAdminChange = { wizardScreenViewModel.onAdminChange(it) }
             )
         }
     )
@@ -56,7 +57,8 @@ private fun WizardComplexConfigurationBody(
     onComplexNameChange: (String) -> Unit,
     onUnitChange: (String) -> Unit,
     onParkingChange: (String) -> Unit,
-    onAddressChange: (String) -> Unit
+    onAddressChange: (String) -> Unit,
+    onAdminChange: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -118,6 +120,20 @@ private fun WizardComplexConfigurationBody(
             bottomText = "",
             typeText = EnumEditTextType.DEFAULT
         )
+        Spacer(
+            modifier = Modifier.height(size5dp)
+        )
+        CustomEditText(
+            text = wizardScreenModel.adminName,
+            titleText = stringResource(id = R.string.wizard_complex_configuration_admin_name),
+            onValueChange = { text ->
+                onAdminChange(text)
+            },
+            imageStart = ImageVector.vectorResource(R.drawable.ic_user_admin),
+            hasFocus = false,
+            bottomText = "",
+            typeText = EnumEditTextType.DEFAULT
+        )
     }
 }
 
@@ -126,6 +142,7 @@ private fun WizardComplexConfigurationBody(
 fun WizardComplexConfigurationBodyPreview() {
     WizardComplexConfigurationBody(
         WizardScreenModel(),
+        {},
         {},
         {},
         {},

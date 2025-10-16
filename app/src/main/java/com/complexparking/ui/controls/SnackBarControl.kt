@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
@@ -17,12 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension.Companion.fillToConstraints
 import com.complexparking.R
 import com.complexparking.ui.base.CustomTextMedium
 import com.complexparking.ui.base.Dimensions
 import com.complexparking.ui.base.Dimensions.size10dp
+import com.complexparking.ui.base.Dimensions.size60dp
 import kotlinx.coroutines.launch
 
 
@@ -67,11 +70,14 @@ private fun CustomSnackBar(
     message: String,
     containerColor: Color,
     buttonIconId: Int,
-    action: () -> Unit
+    action: () -> Unit,
 ) {
     Snackbar(
         containerColor = containerColor,
-        modifier = Modifier.padding(Dimensions.size8dp).wrapContentSize()
+        modifier = Modifier
+            .padding(Dimensions.size8dp)
+            .fillMaxWidth()
+            .height(size60dp)
     ) {
         ConstraintLayout(
             modifier = Modifier.fillMaxWidth()
@@ -105,13 +111,15 @@ private fun CustomSnackBar(
                 CustomTextMedium(message, modifier = Modifier.fillMaxWidth())
             }
             Column(
-                modifier = Modifier.clickable{
-                    action()
-                }.constrainAs(iconEnd) {
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                }
+                modifier = Modifier
+                    .clickable {
+                        action()
+                    }
+                    .constrainAs(iconEnd) {
+                        end.linkTo(parent.end)
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                    }
             ) {
                 Icon(
                     painterResource(buttonIconId),
@@ -120,4 +128,17 @@ private fun CustomSnackBar(
             }
         }
     }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun SnackBarControlPreview() {
+    CustomSnackBar(
+        drawableId = R.drawable.ic_circle_check,
+        title = "Titulo",
+        message = "Subtitulo",
+        containerColor = Color.Blue,
+        buttonIconId = R.drawable.ic_close,
+        action = {}
+    )
 }

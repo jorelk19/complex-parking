@@ -1,17 +1,18 @@
 package com.complexparking.data.repository.local.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Transaction
-import androidx.room.Upsert
 import com.complexparking.data.repository.local.dto.ComplexDto
 import com.complexparking.data.repository.local.dto.PersonDto
 
 @Dao
 abstract class ComplexDao {
-    @Upsert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertComplexData(complexDto: ComplexDto)
 
-    @Upsert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertPersonList(personList: List<PersonDto>)
 
     @Transaction

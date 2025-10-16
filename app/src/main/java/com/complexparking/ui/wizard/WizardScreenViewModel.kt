@@ -68,6 +68,13 @@ class WizardScreenViewModel(
         validateComplexConfiguration()
     }
 
+    fun onAdminChange(adminName: String) {
+        _wizardModel.value = _wizardModel.value.copy(
+            adminName = adminName
+        )
+        validateComplexConfiguration()
+    }
+
     fun onUnitChange(unit: String) {
         _wizardModel.value = _wizardModel.value.copy(
             quantityUnit = unit
@@ -86,7 +93,8 @@ class WizardScreenViewModel(
         val isButtonEnabled = if (_wizardModel.value.complexName.isEmpty() ||
             _wizardModel.value.complexAddress.isEmpty() ||
             _wizardModel.value.parkingQuantity.isEmpty() ||
-            _wizardModel.value.quantityUnit.isEmpty()
+            _wizardModel.value.quantityUnit.isEmpty() ||
+            _wizardModel.value.adminName.isEmpty()
         ) {
             false
         } else {
@@ -124,11 +132,11 @@ class WizardScreenViewModel(
                         parkingQuantity = _wizardModel.value.parkingQuantity.toInt(),
                         adminEmail = _wizardModel.value.adminEmail,
                         adminPassword = _wizardModel.value.adminPassword,
-                        userEmail = _wizardModel.value.userEmail,
-                        userPassword = _wizardModel.value.userPassword
+                        adminName = _wizardModel.value.adminName
                     )
                 )
             }.onSuccess {
+                finishWizardFlow()
                 SnackBarController.sendEvent(
                     SnackBarEvents(
                         titleId = R.string.wizard_user_creation_snack_success_title,
@@ -215,16 +223,10 @@ class WizardScreenViewModel(
 
     private fun validateUserCreation() {
         if (
-            !_wizardModel.value.errorUserPassword &&
-            _wizardModel.value.userPassword.isNotEmpty() &&
             !_wizardModel.value.errorAdminPassword &&
             _wizardModel.value.adminPassword.isNotEmpty() &&
-            !_wizardModel.value.userEmailError &&
-            _wizardModel.value.userEmail.isNotEmpty() &&
             !_wizardModel.value.adminEmailError &&
             _wizardModel.value.adminEmail.isNotEmpty() &&
-            !_wizardModel.value.errorRepeatUserPassword &&
-            _wizardModel.value.repeatUserPassword.isNotEmpty() &&
             !_wizardModel.value.errorRepeatAdminPassword &&
             _wizardModel.value.repeatAdminPassword.isNotEmpty()
         ) {

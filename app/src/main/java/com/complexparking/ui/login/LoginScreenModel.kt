@@ -7,8 +7,6 @@ import kotlinx.serialization.Serializable
 data class LoginScreenModel(
     val emailError: Boolean = false,
     val passwordError: Boolean = false,
-    val onTextEmailChange: (String) -> Unit = {},
-    val onTextPasswordChange: (String) -> Unit = {},
     val onClickAccess: () -> Unit = {},
     val emailErrorType: ErrorType = ErrorType.NONE,
     val passwordErrorType: ErrorType = ErrorType.NONE,

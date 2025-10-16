@@ -2,6 +2,6 @@ package com.complexparking.domain.interfaces
 
 import com.complexparking.entities.Visitor
 
-interface ICreateVisitorUnitUseCase {
+interface ICreateGuestUnitUseCase {
     suspend fun createVisitor(visitor: Visitor): Boolean
 }

@@ -9,6 +9,7 @@ data class WizardScreenModel(
     val quantityUnit: String = "",
     val complexAddress: String = "",
     val parkingQuantity: String = "",
+    val adminName: String = "",
     val pathFile: Uri? = null,
     val userPassword: String = "",
     val adminPassword: String = "",

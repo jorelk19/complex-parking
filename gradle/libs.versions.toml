@@ -21,6 +21,8 @@ apachePoiVersion = "5.4.1"
 androidPermissionVersion = "0.37.3"
 lifecycleRuntimeCompose = "2.9.4"
 gsonVersion = "2.13.2"
+sqlCipherVersion = "4.5.4"
+sqliteVersion= "2.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -45,8 +47,13 @@ androidx-navigation = { group = "androidx.navigation", name = "navigation-compos
 androidx-constraintLayout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintLayoutVersion" }
 androidx-serializable = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.9.0" }
 androidx-foundation = { group = "androidx.compose.foundation", name = "foundation"}
+
+
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref="roomVersion"}
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref="roomVersion"}
+database-cipher = { group="net.zetetic", name = "android-database-sqlcipher", version.ref="sqlCipherVersion"}
+androidx-sqlite = { group="androidx.sqlite", name = "sqlite", version.ref="sqliteVersion"}
+
 androidx-datastore-preference = { group="androidx.datastore", name="datastore-preferences", version.ref="datastoreVersion"}
 google-gson = { group="com.google.code.gson", name="gson", version.ref="gsonVersion"}
 

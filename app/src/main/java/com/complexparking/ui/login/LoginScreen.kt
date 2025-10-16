@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.complexparking.R
 import com.complexparking.ui.base.CustomButton
@@ -31,13 +32,14 @@ import com.complexparking.ui.base.MainContainer
 import com.complexparking.ui.main.MainActivity
 import com.complexparking.ui.theme.LocalCustomColors
 import com.complexparking.ui.validateError
-import org.koin.java.KoinJavaComponent.inject
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreen(
     navController: NavController,
 ) {
-    val loginScreenViewModel: LoginScreenViewModel by inject(LoginScreenViewModel::class.java)
+    val loginScreenViewModel: LoginScreenViewModel = koinViewModel()
+    val model = loginScreenViewModel.loginScreenModel.value
     if (loginScreenViewModel.goToHome.value) {
         loginScreenViewModel.goToHome.value = false
         val context = LocalContext.current
@@ -46,71 +48,94 @@ fun LoginScreen(
     }
     MainContainer(
         body = {
-            val userText = remember { mutableStateOf("") }
-            val passText = remember { mutableStateOf("") }
-            val colors = LocalCustomColors.current
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(start = size50dp, end = size50dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.parking_complex_logo),
-                    contentDescription = null,
-                    modifier = Modifier.size(size100dp)
-                )
-                Spacer(
-                    modifier = Modifier.height(size30dp)
-                )
-                CustomEditText(
-                    text = userText.value,
-                    titleText = stringResource(id = R.string.login_screen_user_title),
-                    onValueChange = { text ->
-                        loginScreenViewModel.loginScreenModel.value.let { textChange ->
-                            userText.value = text
-                            textChange.onTextEmailChange(text)
-                        }
-                    },
-                    imageStart = ImageVector.vectorResource(R.drawable.ic_email),
-                    hasFocus = true,
-                    bottomText = validateError(
-                        hasError = loginScreenViewModel.loginScreenModel.value.emailError,
-                        errorType = loginScreenViewModel.loginScreenModel.value.emailErrorType
-                    ),
-                    hasError = loginScreenViewModel.loginScreenModel.value.emailError,
-                    typeText = EnumEditTextType.EMAIL
-                )
-                Spacer(
-                    modifier = Modifier.height(size30dp)
-                )
-                CustomEditText(
-                    text = passText.value,
-                    titleText = stringResource(id = R.string.login_screen_password_title),
-                    bottomText = "",
-                    onValueChange = { text ->
-                        loginScreenViewModel.loginScreenModel.let { textChange ->
-                            passText.value = text
-                            textChange.value.onTextPasswordChange(text)
-                        }
-                    },
-                    imageStart = ImageVector.vectorResource(R.drawable.ic_padlock),
-                    hasFocus = false,
-                    hasError = loginScreenViewModel.loginScreenModel.value.passwordError,
-                    typeText = EnumEditTextType.PASSWORD
-                )
-                Spacer(
-                    modifier = Modifier.height(size30dp)
-                )
-                CustomButton(
-                    onClick = {
-                        loginScreenViewModel.goToHome.value = true
-                    },
-                    buttonText = stringResource(id = R.string.login_screen_button_access),
-                    isEnabled = loginScreenViewModel.loginScreenModel.value.isButtonAccessEnabled
-                )
-            }
+            LoginScreenBody(
+                model = model,
+                onGoToHome = { loginScreenViewModel.goToHome.value = it },
+                onPasswordChange = { loginScreenViewModel.onPasswordChange(it) },
+                onEmailChange = { loginScreenViewModel.onEmailChange(it) }
+            )
         }
+    )
+}
+
+@Composable
+fun LoginScreenBody(
+    model: LoginScreenModel,
+    onGoToHome: (Boolean) -> Unit = {},
+    onPasswordChange: (String) -> Unit = {},
+    onEmailChange: (String) -> Unit = {}
+) {
+    val userText = remember { mutableStateOf("") }
+    val passText = remember { mutableStateOf("") }
+    val colors = LocalCustomColors.current
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = size50dp, end = size50dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.parking_complex_logo),
+            contentDescription = null,
+            modifier = Modifier.size(size100dp)
+        )
+        Spacer(
+            modifier = Modifier.height(size30dp)
+        )
+        CustomEditText(
+            text = userText.value,
+            titleText = stringResource(id = R.string.login_screen_user_title),
+            onValueChange = { text ->
+                model.let { textChange ->
+                    userText.value = text
+                    onEmailChange(text)
+                }
+            },
+            imageStart = ImageVector.vectorResource(R.drawable.ic_email),
+            hasFocus = true,
+            bottomText = validateError(
+                hasError = model.emailError,
+                errorType = model.emailErrorType
+            ),
+            hasError = model.emailError,
+            typeText = EnumEditTextType.EMAIL
+        )
+        Spacer(
+            modifier = Modifier.height(size30dp)
+        )
+        CustomEditText(
+            text = passText.value,
+            titleText = stringResource(id = R.string.login_screen_password_title),
+            bottomText = "",
+            onValueChange = { text ->
+                model.let { textChange ->
+                    passText.value = text
+                    onPasswordChange(text)
+                }
+            },
+            imageStart = ImageVector.vectorResource(R.drawable.ic_padlock),
+            hasFocus = false,
+            hasError = model.passwordError,
+            typeText = EnumEditTextType.PASSWORD
+        )
+        Spacer(
+            modifier = Modifier.height(size30dp)
+        )
+        CustomButton(
+            onClick = {
+               onGoToHome(true)
+            },
+            buttonText = stringResource(id = R.string.login_screen_button_access),
+            isEnabled = model.isButtonAccessEnabled
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun LoginScreenBodyPreview() {
+    LoginScreenBody(
+        LoginScreenModel()
     )
 }

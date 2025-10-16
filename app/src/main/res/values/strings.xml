@@ -33,12 +33,13 @@
     <!--Wizard Screen-->
     <string name="wizard_complex_configuration_title" translatable="false">Configuración conjunto</string>
     <string name="wizard_upload_complex_data_title" translatable="false">Subir información unidades</string>
-    <string name="wizard_create_user_title" translatable="false">Crear usuarios</string>
+    <string name="wizard_create_user_title" translatable="false">Crear usuario administrador</string>
 
     <string name="wizard_complex_configuration_name" translatable="false">Nombre del conjunto</string>
     <string name="wizard_complex_configuration_quantity_units" translatable="false">Cantidad de apartamentos/casas</string>
     <string name="wizard_complex_configuration_address" translatable="false">Dirección</string>
     <string name="wizard_complex_configuration_quantity_parking" translatable="false">Cantidad de parqueaderos</string>
+    <string name="wizard_complex_configuration_admin_name" translatable="false">Nombre administrador</string>
 
     <string name="wizard_complex_configuration_previous_button" translatable="false">Atrás</string>
     <string name="wizard_complex_configuration_next_button" translatable="false">Siguiente</string>

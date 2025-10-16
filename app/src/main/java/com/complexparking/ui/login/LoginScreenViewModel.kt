@@ -24,8 +24,6 @@ class LoginScreenViewModel(
 
     private fun loadLoginModel() {
         loginScreenModel.value = LoginScreenModel(
-            onTextEmailChange = { onEmailChange(it) },
-            onTextPasswordChange = { onPasswordChange(it) },
             onClickAccess = { onClickAccess() },
             emailError = false,
             passwordError = false,
@@ -53,7 +51,7 @@ class LoginScreenViewModel(
 
     }
 
-    private fun onEmailChange(text: String) {
+    fun onEmailChange(text: String) {
         email.value = text
         text.isValidEmail(
             onFalse = {
@@ -78,7 +76,7 @@ class LoginScreenViewModel(
         validateButton()
     }
 
-    private fun onPasswordChange(text: String) {
+    fun onPasswordChange(text: String) {
         password.value = text
         text.isValidPassword(
             onFalse = {

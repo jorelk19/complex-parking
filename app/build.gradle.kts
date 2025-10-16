@@ -1,9 +1,18 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.jetbrainsKotlinSerialization)
     alias(libs.plugins.kapt)
+    alias(libs.plugins.ksp)
+}
+
+val dbKey = Properties()
+val dbFile = File("db.properties")
+dbFile.inputStream().use {
+    dbKey.load(it)
 }
 
 android {
@@ -30,11 +39,13 @@ android {
             dimension = "mode"
             buildConfigField("String", "URL_TU_RECIBO_WEB_BASE_URL", "\"https://web.stage.turecibo.com\"")
             buildConfigField("String", "API_BASE_URL", "\"https://api.stage.turecibo.com/\"")
+            buildConfigField("String", "DB_CONFIG", "\"${dbKey.getProperty("property")}\"")
         }
         create("qa") {
             dimension = "mode"
             buildConfigField("String", "URL_TU_RECIBO_WEB_BASE_URL", "\"https://web.stage.turecibo.com\"")
             buildConfigField("String", "API_BASE_URL", "\"https://api.stage.turecibo.com/\"")
+            buildConfigField("String", "DB_CONFIG", "\"${dbKey.getProperty("property")}\"")
         }
     }
 
@@ -96,5 +107,7 @@ dependencies {
     //Room
     annotationProcessor(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.database.cipher)
+    implementation(libs.androidx.sqlite)
     kapt(libs.androidx.room.compiler)
 }
