@@ -2,22 +2,26 @@ package com.complexparking.ui.base
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.complexparking.ui.base.Dimensions.size20dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.complexparking.ui.controls.SnackBarControl
+import com.complexparking.ui.navigation.bottomNavigationBar.BottomBarControl
+import com.complexparking.ui.theme.ComplexParkingTheme
 import com.complexparking.ui.theme.LocalCustomColors
 
 @Composable
@@ -39,22 +43,26 @@ fun MainContainer(
         ) {
             val (bodyContainer, footerContainer) = createRefs()
             ScrollContainer(
-                modifier = Modifier.constrainAs(bodyContainer) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }.fillMaxSize()
+                modifier = Modifier
+                    .constrainAs(bodyContainer) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+                    .fillMaxSize()
             ) {
                 Column {
                     body()
                 }
             }
             Column(
-                modifier = Modifier.constrainAs(footerContainer) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                }.background(LocalCustomColors.current.colorPrimaryBg)
+                modifier = Modifier
+                    .constrainAs(footerContainer) {
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(parent.bottom)
+                    }
+                    .background(LocalCustomColors.current.colorPrimaryBg)
             ) {
                 footer()
             }
@@ -65,10 +73,10 @@ fun MainContainer(
 @Composable
 fun CustomContainer(
     statusBarColor: Color = LocalCustomColors.current.colorPrimaryBg,
-    bodyColor: Color  = LocalCustomColors.current.colorPrimaryBg,
+    bodyColor: Color = LocalCustomColors.current.colorPrimaryBg,
     header: @Composable () -> Unit = {},
     body: @Composable () -> Unit = {},
-    footer: @Composable () -> Unit = {}
+    footer: @Composable () -> Unit = {},
 ) {
     SystemBarColorManager(
         statusBarColorColor = statusBarColor
@@ -113,7 +121,7 @@ fun CustomContainer(
 fun FlatContainer(
     statusBarColor: Color = LocalCustomColors.current.colorPrimaryBg,
     bodyColor: Color = LocalCustomColors.current.colorPrimaryBg,
-    content: @Composable () -> Unit = {}
+    content: @Composable () -> Unit = {},
 ) {
     val colors = LocalCustomColors.current
     SystemBarColorManager(
@@ -145,7 +153,7 @@ private fun ScrollContainer(modifier: Modifier, content: @Composable () -> Unit)
 fun SimpleContainer(
     header: @Composable () -> Unit = {},
     body: @Composable () -> Unit = {},
-    footer: @Composable () -> Unit = {}
+    footer: @Composable () -> Unit = {},
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -160,23 +168,53 @@ fun SimpleContainer(
         ) {
             val (bodyContainer, footerContainer) = createRefs()
             Column(
-                modifier = Modifier.constrainAs(bodyContainer) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }.fillMaxSize()
+                modifier = Modifier
+                    .constrainAs(bodyContainer) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+                    .fillMaxSize()
             ) {
                 body()
             }
             Column(
-                modifier = Modifier.constrainAs(footerContainer) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                }.fillMaxWidth()
+                modifier = Modifier
+                    .constrainAs(footerContainer) {
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(parent.bottom)
+                    }
+                    .fillMaxWidth()
             ) {
                 footer()
             }
         }
+    }
+}
+
+@Composable
+fun BaseContainer(
+    statusBarColor: Color = LocalCustomColors.current.colorPrimaryBg,
+    bottomBar: @Composable () -> Unit = {},
+    content: @Composable () -> Unit
+) {
+    val colors = LocalCustomColors.current
+    SystemBarColorManager(
+        statusBarColorColor = statusBarColor
+    )
+    val snackbarHostState = remember { SnackbarHostState() }
+    ComplexParkingTheme {
+        Scaffold(
+            snackbarHost = {
+                SnackBarControl(snackbarHostState)
+            },
+            content = {
+                Column(modifier = Modifier.padding(it)) {
+                    content()
+                }
+            },
+            bottomBar = { bottomBar() }
+        )
     }
 }

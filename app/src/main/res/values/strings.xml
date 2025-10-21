@@ -65,5 +65,14 @@
     <string name="wizard_user_creation_snack_success_message" translatable="false">Registros cargados correctamente</string>
     <!---->
 
+    <!--Search Screen-->
+    <string name="search_screen_guest_title" translatable="false">Registro salida vehicular</string>
+    <!---->
 
+    <!--Error Message-->
+    <string name="app_error_generic_title_use_case" translatable="false">Error</string>
+    <string name="app_error_generic_message_use_case" translatable="false">Se presento un error en el proceso</string>
+    <string name="app_error_process_use_case" translatable="false">Error en el proceso</string>
+
+    <!---->
 </resources>

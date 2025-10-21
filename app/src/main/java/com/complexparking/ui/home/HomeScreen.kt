@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -42,16 +43,24 @@ import com.complexparking.ui.base.EnumEditTextType
 import com.complexparking.ui.theme.LocalCustomColors
 import com.complexparking.ui.utilities.formatPlate
 import com.complexparking.ui.validateError
+import com.complexparking.utils.pdfTools.generatePDF
+import java.io.File
 import java.util.Date
+import org.koin.androidx.compose.koinViewModel
 import org.koin.java.KoinJavaComponent.inject
 
 @Composable
 fun HomeScreen(
     navController: NavController,
 ) {
-    val homeScreenViewModel: HomeScreenViewModel by inject(HomeScreenViewModel::class.java)
+    val homeScreenViewModel: HomeScreenViewModel = koinViewModel()
     val homeModel by homeScreenViewModel.homeScreenModel
     val colors = LocalCustomColors.current
+    val context = LocalContext.current
+
+    if(homeScreenViewModel.printFile.value) {
+        generatePDF(context, GetDirectory())
+    }
 
     CustomContainer(
         statusBarColor = colors.colorNeutralBg,
@@ -181,6 +190,16 @@ fun HomeBody(
             isEnabled = homeScreenModel.isButtonRegisterEnabled
         )
     }
+}
+
+@Composable
+private fun GetDirectory(): File {
+    val mediaDir = LocalContext.current.externalMediaDirs.firstOrNull()?.let {
+        File(it, stringResource(R.string.app_name)).apply {
+            mkdirs()
+        }
+    }
+    return mediaDir ?: LocalContext.current.filesDir
 }
 
 @Preview(showBackground = true)

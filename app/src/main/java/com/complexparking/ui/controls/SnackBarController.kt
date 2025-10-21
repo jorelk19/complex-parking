@@ -5,11 +5,19 @@ import com.complexparking.R
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 
+
+enum class SnackType(value: String) {
+    ERROR("ERROR"),
+    INFO("INFO"),
+    WARNING("WARNING")
+}
 data class SnackBarEvents(
-    val titleId: Int = R.string.wizard_user_creation_admin_repeat_password,
-    val subTitleId: Int = R.string.wizard_user_creation_user_repeat_password,
+    val titleId: Int = 0,
+    val messageId: Int = 0,
+    val textMessage: String = "",
     val iconId: Int = R.drawable.ic_email,
     val buttonIconId: Int = R.drawable.ic_padlock,
+    val snackType: SnackType = SnackType.ERROR,
     val action: () -> Unit = {}
 )
 

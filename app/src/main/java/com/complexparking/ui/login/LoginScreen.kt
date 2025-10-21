@@ -50,7 +50,7 @@ fun LoginScreen(
         body = {
             LoginScreenBody(
                 model = model,
-                onGoToHome = { loginScreenViewModel.goToHome.value = it },
+                onClickAccess = { model.onClickAccess() },
                 onPasswordChange = { loginScreenViewModel.onPasswordChange(it) },
                 onEmailChange = { loginScreenViewModel.onEmailChange(it) }
             )
@@ -61,7 +61,7 @@ fun LoginScreen(
 @Composable
 fun LoginScreenBody(
     model: LoginScreenModel,
-    onGoToHome: (Boolean) -> Unit = {},
+    onClickAccess: () -> Unit = {},
     onPasswordChange: (String) -> Unit = {},
     onEmailChange: (String) -> Unit = {}
 ) {
@@ -124,7 +124,7 @@ fun LoginScreenBody(
         )
         CustomButton(
             onClick = {
-               onGoToHome(true)
+                onClickAccess()
             },
             buttonText = stringResource(id = R.string.login_screen_button_access),
             isEnabled = model.isButtonAccessEnabled

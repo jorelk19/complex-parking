@@ -1,18 +1,18 @@
 package com.complexparking.ui.login
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.complexparking.domain.interfaces.ILoginUseCase
-import com.complexparking.domain.useCase.LoginState
+import com.complexparking.domain.useCase.LoginUseCase
+import com.complexparking.entities.LoginDataAccess
+import com.complexparking.ui.base.BaseViewModel
 import com.complexparking.ui.utilities.ErrorType
 import com.complexparking.ui.utilities.isValidEmail
 import com.complexparking.ui.utilities.isValidPassword
 import kotlinx.coroutines.launch
 
 class LoginScreenViewModel(
-    val loginUseCase: ILoginUseCase,
-) : ViewModel() {
+    private val loginUseCase: LoginUseCase,
+) : BaseViewModel() {
     var loginScreenModel = mutableStateOf(LoginScreenModel())
     val email = mutableStateOf("")
     val password = mutableStateOf("")
@@ -33,22 +33,14 @@ class LoginScreenViewModel(
 
     private fun onClickAccess() {
         viewModelScope.launch {
-            runCatching {
-                loginUseCase.validateUser(email.value, password.value)
-            }.onSuccess {
-                when(it){
-                    LoginState.LoginError -> {
-
-                    }
-                    LoginState.LoginSuccess -> {
-                        goToHome.value = true
-                    }
+            loginUseCase.execute(
+                LoginDataAccess(user = email.value, password = password.value)
+            ).collect { resultUseCase ->
+                validateUseCaseResult(resultUseCase) { result ->
+                    goToHome.value = result
                 }
-            }.onFailure {
-
             }
         }
-
     }
 
     fun onEmailChange(text: String) {

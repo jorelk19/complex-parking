@@ -1,9 +1,8 @@
 package com.complexparking.entities
 
-import java.time.LocalTime
 import java.util.Date
 
-data class Visitor(
+data class CarGuest(
     val plate: String,
     val house: Int,
     val date: Date,

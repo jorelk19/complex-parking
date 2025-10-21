@@ -13,5 +13,5 @@ val viewModelModule = module {
     viewModel { HomeScreenViewModel(get(), get()) }
     viewModel { BaseWizardViewModel() }
     viewModel { WizardScreenViewModel(get(), get()) }
-    viewModel { SplashScreenViewModel(get()) }
+    viewModel { SplashScreenViewModel(get(), get() ) }
 }

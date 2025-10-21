@@ -1,6 +1,7 @@
 package com.complexparking.entities
 
 import com.complexparking.data.repository.local.dto.ComplexDto
+import com.complexparking.utils.excelTools.FileData
 import kotlin.String
 
 data class ComplexData(
@@ -10,7 +11,8 @@ data class ComplexData(
     val parkingQuantity: Int,
     val adminName: String,
     val adminEmail: String,
-    val adminPassword: String
+    val adminPassword: String,
+    val fileDataList: ArrayList<FileData>
 )
 fun ComplexData.toComplexDto(): ComplexDto {
     return ComplexDto(

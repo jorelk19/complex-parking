@@ -33,6 +33,7 @@ import com.complexparking.R
 import com.complexparking.ui.base.Dimensions.size100dp
 import com.complexparking.ui.base.Dimensions.size180dp
 import com.complexparking.ui.base.FlatContainer
+import com.complexparking.ui.main.MainActivity
 import com.complexparking.ui.navigation.AppScreens
 import com.complexparking.ui.utilities.LoadingManager
 import com.complexparking.ui.utilities.PulseLoader
@@ -102,15 +103,21 @@ private fun SplashBody(navController: NavController, splashViewModel: SplashScre
 
         Handler(Looper.getMainLooper()).postDelayed({
             LoadingManager.hideLoader()
-
             if (splashViewModel.isWizardCompleted.value) {
-                navController.navigate(route = AppScreens.LOGINSCREEN.route)
+                if (splashViewModel.goToHome.value) {
+                    val activity = context as? Activity
+                    val intent = Intent(context, MainActivity::class.java)
+                    context.startActivity(intent)
+                    activity?.finish()
+                } else {
+                    navController.navigate(route = AppScreens.LOGINSCREEN.route)
+                }
             } else {
                 val intent = Intent(context, WizardActivity::class.java)
                 context.startActivity(intent)
-                coroutineScope.launch {
-                    activity?.finish()
-                }
+                //coroutineScope.launch {
+                activity?.finish()
+                //}
             }
         }, 2500)
     }

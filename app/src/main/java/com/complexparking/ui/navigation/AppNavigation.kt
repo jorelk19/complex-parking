@@ -10,7 +10,7 @@ import com.complexparking.ui.home.HomeScreen
 import com.complexparking.ui.search.SearchScreen
 
 @Composable
-fun AppNavigation(modifier: Modifier, navController: NavHostController) {
+fun AppNavigation(modifier: Modifier = Modifier, navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = AppScreens.HOMESCREEN.route,

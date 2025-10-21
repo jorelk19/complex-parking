@@ -3,7 +3,7 @@ package com.complexparking.ui.theme
 val lightColors = CustomColorScheme(
     colorPrimaryBg = ColorGray1,
     colorPrimaryText = ColorGray8,
-    colorPrimary = ColorBlue6,
+    colorPrimary = ColorBlue7,
     colorBgIcon = ColorGray4,
     colorBgButton = ColorBlue6,
     colorStroke = ColorOrange1,

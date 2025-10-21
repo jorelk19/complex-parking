@@ -10,6 +10,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.complexparking.ui.base.BaseContainer
 import com.complexparking.ui.controls.SnackBarControl
 import com.complexparking.ui.theme.ComplexParkingTheme
 import com.complexparking.ui.utilities.LoadingManager
@@ -19,7 +20,11 @@ class WizardActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navHostController = rememberNavController()
-            val snackbarHostState = remember { SnackbarHostState() }
+            BaseContainer {
+                LoadingManager.showLoader()
+                WizardScreen(navHostController)
+            }
+           /* val snackbarHostState = remember { SnackbarHostState() }
             ComplexParkingTheme {
                 Scaffold(
                     snackbarHost = {
@@ -27,12 +32,11 @@ class WizardActivity : ComponentActivity() {
                     },
                     content = {
                         Column(modifier = Modifier.padding(it)) {
-                            LoadingManager.showLoader()
-                            WizardScreen(navHostController)
+
                         }
                     }
                 )
-            }
+            }*/
         }
     }
 }

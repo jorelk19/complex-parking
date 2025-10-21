@@ -4,8 +4,8 @@ import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.complexparking.R
-import com.complexparking.domain.interfaces.ILoadComplexUnitDataUseCase
-import com.complexparking.domain.interfaces.ISplashScreenUseCase
+import com.complexparking.domain.useCase.LoadComplexUnitDataUseCase
+import com.complexparking.domain.useCase.SplashScreenSetWizardCompleteUseCase
 import com.complexparking.entities.ComplexData
 import com.complexparking.ui.controls.SnackBarController
 import com.complexparking.ui.controls.SnackBarEvents
@@ -13,15 +13,14 @@ import com.complexparking.ui.utilities.ErrorType
 import com.complexparking.ui.utilities.LinearProgressManager
 import com.complexparking.ui.utilities.isValidEmail
 import com.complexparking.ui.utilities.isValidPassword
-import com.complexparking.utils.tools.FileData
+import com.complexparking.utils.excelTools.FileData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlin.String
 
 class WizardScreenViewModel(
-    private val splashScreenUseCase: ISplashScreenUseCase,
-    private val loadComplexUnitDataUseCase: ILoadComplexUnitDataUseCase,
+    private val splashScreenSetWizardCompleteUseCase: SplashScreenSetWizardCompleteUseCase,
+    private val loadComplexUnitDataUseCase: LoadComplexUnitDataUseCase,
 ) : BaseWizardViewModel() {
     private val _gotoConfigComplex = mutableStateOf(false)
     val gotoConfigComplex get() = _gotoConfigComplex
@@ -42,7 +41,7 @@ class WizardScreenViewModel(
     init {
         loadData()
         setIndexChangeAction {
-            if(!isFinalStep.value) {
+            if (!isFinalStep.value) {
                 updateStep()
             } else {
                 onSaveComplexDataAction()
@@ -122,38 +121,24 @@ class WizardScreenViewModel(
 
     private fun onSaveComplexDataAction() {
         viewModelScope.launch {
-            runCatching {
-                loadComplexUnitDataUseCase.saveComplexData(
-                    fileDataList = _fileData.value,
-                    complexData = ComplexData(
-                        complexUnit = _wizardModel.value.quantityUnit.toInt(),
-                        complexName = _wizardModel.value.complexName,
-                        complexAddress = _wizardModel.value.complexAddress,
-                        parkingQuantity = _wizardModel.value.parkingQuantity.toInt(),
-                        adminEmail = _wizardModel.value.adminEmail,
-                        adminPassword = _wizardModel.value.adminPassword,
-                        adminName = _wizardModel.value.adminName
-                    )
+            loadComplexUnitDataUseCase.execute(
+                ComplexData(
+                    complexUnit = _wizardModel.value.quantityUnit.toInt(),
+                    complexName = _wizardModel.value.complexName,
+                    complexAddress = _wizardModel.value.complexAddress,
+                    parkingQuantity = _wizardModel.value.parkingQuantity.toInt(),
+                    adminEmail = _wizardModel.value.adminEmail,
+                    adminPassword = _wizardModel.value.adminPassword,
+                    adminName = _wizardModel.value.adminName,
+                    fileDataList = _fileData.value
                 )
-            }.onSuccess {
-                finishWizardFlow()
-                SnackBarController.sendEvent(
-                    SnackBarEvents(
-                        titleId = R.string.wizard_user_creation_snack_success_title,
-                        subTitleId = R.string.wizard_user_creation_snack_success_message,
-                        iconId = R.drawable.ic_circle_check,
-                        buttonIconId = R.drawable.ic_close
-                    )
-                )
-            }.onFailure {
-                SnackBarController.sendEvent(
-                    SnackBarEvents(
-                        titleId = R.string.wizard_user_creation_snack_success_title,
-                        subTitleId = R.string.wizard_user_creation_snack_success_message,
-                        iconId = R.drawable.ic_circle_check,
-                        buttonIconId = R.drawable.ic_close
-                    )
-                )
+            ).collect { resultUseCase ->
+                validateUseCaseResult(resultUseCase) { result ->
+                    if (result) {
+                        finishWizardFlow()
+                        /*Show snackbar*/
+                    }
+                }
             }
         }
     }
@@ -197,27 +182,30 @@ class WizardScreenViewModel(
 
     private fun finishWizardFlow() {
         viewModelScope.launch {
-            runCatching {
-                splashScreenUseCase.wizardComplete()
-            }.onSuccess {
-                _gotoLoginScreen.value = true
+            splashScreenSetWizardCompleteUseCase.execute().collect { resultUseCaseState ->
+                validateUseCaseResult(resultUseCaseState) { result ->
+                    _gotoLoginScreen.value = true
+                }
             }
         }
     }
 
 
     private fun validateUploadComplexData() {
-        setButtonEnabled(_fileData.value.isNotEmpty())
+        val isValid = _fileData.value.isNotEmpty()
+        setButtonEnabled(isValid)
         LinearProgressManager.hideLoader()
-        viewModelScope.launch {
-            SnackBarController.sendEvent(
-                SnackBarEvents(
-                    titleId = R.string.wizard_user_creation_snack_success_title,
-                    subTitleId = R.string.wizard_user_creation_snack_success_message,
-                    iconId = R.drawable.ic_circle_check,
-                    buttonIconId = R.drawable.ic_close
+        if(isValid) {
+            viewModelScope.launch {
+                SnackBarController.sendEvent(
+                    SnackBarEvents(
+                        titleId = R.string.wizard_user_creation_snack_success_title,
+                        messageId = R.string.wizard_user_creation_snack_success_message,
+                        iconId = R.drawable.ic_circle_check,
+                        buttonIconId = R.drawable.ic_close
+                    )
                 )
-            )
+            }
         }
     }
 

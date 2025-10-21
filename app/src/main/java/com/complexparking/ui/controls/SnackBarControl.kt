@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Snackbar
@@ -25,6 +26,7 @@ import com.complexparking.R
 import com.complexparking.ui.base.CustomTextMedium
 import com.complexparking.ui.base.Dimensions
 import com.complexparking.ui.base.Dimensions.size10dp
+import com.complexparking.ui.base.Dimensions.size20dp
 import com.complexparking.ui.base.Dimensions.size60dp
 import kotlinx.coroutines.launch
 
@@ -38,8 +40,16 @@ fun SnackBarControl(
         SnackbarHost(hostState = snackBarHostState) { snackbarData ->
             CustomSnackBar(
                 drawableId = SnackBarController.snackData.value.iconId,
-                title = stringResource(SnackBarController.snackData.value.titleId),
-                message = stringResource(SnackBarController.snackData.value.subTitleId),
+                title = if (SnackBarController.snackData.value.titleId != 0) {
+                    stringResource(SnackBarController.snackData.value.titleId)
+                } else {
+                    stringResource(R.string.app_error_generic_title_use_case)
+                },
+                message = if(SnackBarController.snackData.value.messageId != 0) {
+                    stringResource(SnackBarController.snackData.value.messageId)
+                } else SnackBarController.snackData.value.textMessage.ifEmpty {
+                    stringResource(R.string.app_error_generic_message_use_case)
+                },
                 containerColor = Color.Blue,
                 buttonIconId = SnackBarController.snackData.value.buttonIconId,
                 action = {
@@ -122,7 +132,8 @@ private fun CustomSnackBar(
                     }
             ) {
                 Icon(
-                    painterResource(buttonIconId),
+                    modifier = Modifier.size(size20dp),
+                    painter = painterResource(buttonIconId),
                     contentDescription = null
                 )
             }

@@ -2,7 +2,7 @@ package com.complexparking.entities
 
 import com.complexparking.data.repository.local.dto.CarGuestDto
 
-fun Visitor.visitorToDto(): CarGuestDto {
+fun CarGuest.guestToDto(): CarGuestDto {
     return CarGuestDto(
         date = this.date,
         hourStart = this.hourStart,

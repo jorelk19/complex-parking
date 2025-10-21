@@ -1,12 +1,12 @@
 package com.complexparking.ui.wizard
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import com.complexparking.R
+import com.complexparking.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-open class BaseWizardViewModel : ViewModel() {
+open class BaseWizardViewModel : BaseViewModel() {
     private val _isButtonEnabled = MutableStateFlow(false)
     val isButtonEnabled get() = _isButtonEnabled.asStateFlow()
 

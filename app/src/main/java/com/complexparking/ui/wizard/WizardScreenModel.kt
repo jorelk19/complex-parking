@@ -2,7 +2,6 @@ package com.complexparking.ui.wizard
 
 import android.net.Uri
 import com.complexparking.ui.utilities.ErrorType
-import com.complexparking.utils.tools.FileData
 
 data class WizardScreenModel(
     val complexName: String = "",
