@@ -30,6 +30,10 @@ open class BaseViewModel: ViewModel() {
                     )
                 )
             }
+
+            ResultUseCaseState.Initial -> {
+                LoadingManager.hideLoader()
+            }
         }
     }
 }

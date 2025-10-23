@@ -2,10 +2,10 @@ package com.complexparking.base
 
 import android.content.Context
 import com.complexparking.base.connectivity.BaseConnectivityProvider
-import com.complexparking.di.KoinManager
 import com.complexparking.data.repository.local.ParkingDatabase
+import com.complexparking.di.KoinManager
 
-open class ComplexParkingApplication: BaseApplication() {
+open class ComplexParkingApplication : BaseApplication() {
     private val providerBase: BaseConnectivityProvider by lazy {
         BaseConnectivityProvider.createProvider(
             this@ComplexParkingApplication
@@ -40,11 +40,15 @@ open class ComplexParkingApplication: BaseApplication() {
      * */
     override fun onAppStart() {
         appContext = this
-        val db by lazy { ParkingDatabase.buildDatabase(appContext) }
+        val db by lazy { ParkingDatabase.getInstance(appContext) }
+        /*val db = ParkingDatabase.getInstance(appContext)*/
         KoinManager.initKoin(appContext, db)
         providerBase.addListener(connectivityStateListener)
     }
 
     override fun onAppDestroy() {
+    }
+
+    override fun onAppTerminate() {
     }
 }

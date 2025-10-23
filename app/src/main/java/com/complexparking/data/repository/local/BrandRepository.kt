@@ -8,4 +8,8 @@ class BrandRepository(
     override suspend fun getBrandList(): List<BrandDto> {
         return db.brandDao.getBrandList()
     }
+
+    override suspend fun insertBrandList(brandList: List<BrandDto>) {
+        db.brandDao.insertBrandList(brandList)
+    }
 }

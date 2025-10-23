@@ -4,6 +4,7 @@ import com.complexparking.domain.useCase.CreateGuestUseCase
 import com.complexparking.domain.useCase.GetCarByPlateUseCase
 import com.complexparking.domain.useCase.GetSessionUseCase
 import com.complexparking.domain.useCase.LoadComplexUnitDataUseCase
+import com.complexparking.domain.useCase.LoadSeedDataUseCase
 import com.complexparking.domain.useCase.LoginUseCase
 import com.complexparking.domain.useCase.SetWizardUseCase
 import com.complexparking.domain.useCase.SplashScreenGetWizardCompleteUseCase
@@ -20,12 +21,12 @@ val useCaseModule = module {
     single { ValidateUnitUseCase(get()) }
     single { SplashScreenSetWizardCompleteUseCase(get()) }
     single { SplashScreenGetWizardCompleteUseCase(get()) }
-    single { LoadComplexUnitDataUseCase(get(), get(), get()) }
+    single { LoadComplexUnitDataUseCase(get(), get(), get(), get()) }
     single { GetCarByPlateUseCase(get()) }
     single { UpdateGuestCarUseCase(get()) }
     single { GetSessionUseCase(get()) }
-    single { LoadComplexUnitDataUseCase(get(), get(), get()) }
     single { SetWizardUseCase(get()) }
     single { ValidateSessionUseCase(get()) }
     single { ValidateWizardUseCase(get()) }
+    single { LoadSeedDataUseCase(get(), get(), get()) }
 }

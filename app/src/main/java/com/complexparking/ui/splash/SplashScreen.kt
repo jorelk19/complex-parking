@@ -17,6 +17,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,12 +41,13 @@ import com.complexparking.ui.utilities.LoadingManager
 import com.complexparking.ui.utilities.PulseLoader
 import com.complexparking.ui.widgets.PermissionView
 import com.complexparking.ui.wizard.WizardActivity
-import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent.inject
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SplashScreen(navController: NavController) {
-    val splashViewModel: SplashScreenViewModel by inject(SplashScreenViewModel::class.java)
+    val splashViewModel: SplashScreenViewModel = koinViewModel()
+    val splashModel by splashViewModel.splashScreenState.collectAsState()
+
     FlatContainer {
         SplashBody(navController, splashViewModel)
     }
@@ -119,7 +122,7 @@ private fun SplashBody(navController: NavController, splashViewModel: SplashScre
                 activity?.finish()
                 //}
             }
-        }, 2500)
+        }, 2000)
     }
 }
 

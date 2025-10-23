@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.complexparking.ui.edit.EditScreen
 import com.complexparking.ui.home.HomeScreen
 import com.complexparking.ui.search.SearchScreen
+import com.complexparking.ui.settings.SettingsScreen
 
 @Composable
 fun AppNavigation(modifier: Modifier = Modifier, navController: NavHostController) {
@@ -24,6 +25,9 @@ fun AppNavigation(modifier: Modifier = Modifier, navController: NavHostControlle
         }
         composable(route = AppScreens.EDITSCREEN.route) {
             EditScreen(navController = navController)
+        }
+        composable(route = AppScreens.SETTINGSCREEN.route) {
+            SettingsScreen(navController = navController)
         }
     }
 }

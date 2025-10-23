@@ -14,12 +14,19 @@ abstract class BaseApplication : Application(), LifecycleObserver {
 
     abstract fun onAppDestroy()
 
+    abstract fun onAppTerminate()
+
     /**
      * Method that allow capture when the application start
      * */
     override fun onCreate() {
         super.onCreate()
         onAppStart()
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        onAppTerminate()
     }
 
     companion object {

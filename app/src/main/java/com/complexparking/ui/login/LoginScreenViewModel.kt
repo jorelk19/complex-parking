@@ -2,12 +2,17 @@ package com.complexparking.ui.login
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
+import com.complexparking.domain.base.ResultUseCaseState
 import com.complexparking.domain.useCase.LoginUseCase
 import com.complexparking.entities.LoginDataAccess
 import com.complexparking.ui.base.BaseViewModel
 import com.complexparking.ui.utilities.ErrorType
 import com.complexparking.ui.utilities.isValidEmail
 import com.complexparking.ui.utilities.isValidPassword
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class LoginScreenViewModel(
@@ -18,9 +23,15 @@ class LoginScreenViewModel(
     val password = mutableStateOf("")
     val goToHome = mutableStateOf(false)
 
-    init {
-        loadLoginModel()
-    }
+    private val _loginScreenState = MutableStateFlow(ResultUseCaseState.Initial)
+    val loginScreenState = _loginScreenState
+        .onStart {
+            loadLoginModel()
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+            initialValue = _loginScreenState
+        )
 
     private fun loadLoginModel() {
         loginScreenModel.value = LoginScreenModel(

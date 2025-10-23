@@ -5,8 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.sqlite.db.SupportSQLiteDatabase
-import com.complexparking.BuildConfig
 import com.complexparking.data.repository.local.converters.Converters
 import com.complexparking.data.repository.local.dao.BrandDao
 import com.complexparking.data.repository.local.dao.CarDao
@@ -24,9 +22,8 @@ import com.complexparking.data.repository.local.dto.DocumentTypeDto
 import com.complexparking.data.repository.local.dto.PersonDto
 import com.complexparking.data.repository.local.dto.ResidentDto
 import com.complexparking.data.repository.local.dto.UserDto
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
-import net.sqlcipher.database.SQLiteDatabase
-import net.sqlcipher.database.SupportFactory
 
 @Database(
     entities = [
@@ -55,39 +52,41 @@ abstract class ParkingDatabase : RoomDatabase() {
 
     companion object {
 
-        private val phrase = SQLiteDatabase.getBytes(BuildConfig.DB_CONFIG.toCharArray())
-        private val factory = SupportFactory(phrase)
+        private const val DATABASE_NAME = "parking_database"
+
+        /*private val phrase = SQLiteDatabase.getBytes(BuildConfig.DB_CONFIG.toCharArray())
+        private val factory = SupportFactory(phrase)*/
         @Volatile
         private var INSTANCE: ParkingDatabase? = null
 
-        fun getInstance(context: Context): ParkingDatabase =
-            INSTANCE ?: synchronized(this) {
-                INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
+        /* fun getInstance(context: Context, scope: CoroutineScope): ParkingDatabase {
+             val tempInstance = INSTANCE
+             if (tempInstance != null) {
+                 return tempInstance
+             }
+
+             synchronized(this) {
+                 val newInstance = buildDatabase(context, scope)
+                 return newInstance
+             }
+         }*/
+
+        fun getInstance(context: Context): ParkingDatabase {
+            val tempInstance = INSTANCE
+            if (tempInstance != null) {
+                return tempInstance
             }
-
-        fun buildDatabase(context: Context) =
-            Room.databaseBuilder(
-                context.applicationContext,
-                ParkingDatabase::class.java,
-                "parking_database"
-            )
-                .addCallback(seedDatabaseCallback(context))
-                .openHelperFactory(factory)
-                .build()
-
-        private fun seedDatabaseCallback(context: Context): RoomDatabase.Callback {
-            return object : Callback() {
-                override fun onCreate(db: SupportSQLiteDatabase) {
-                    super.onCreate(db)
-                    ioThread {
-                        val documentTypeDao = getInstance(context).documentTypeDao
-                        val brandDao = getInstance(context).brandDao
-                        runBlocking {
-                            documentTypeDao.insertDocumentTypeList(documentList = getDocumentList())
-                            brandDao.insertBrandList(getBrandList())
-                        }
-                    }
-                }
+            synchronized(this) {
+                val newDb = Room.databaseBuilder(
+                    context.applicationContext,
+                    ParkingDatabase::class.java,
+                    DATABASE_NAME
+                )
+                    /*.openHelperFactory(factory)*/
+                    //.addCallback(CallbackDataBase(context))
+                    .build()
+                INSTANCE = newDb
+                return newDb
             }
         }
     }

@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.jetbrainsKotlinSerialization)
-    alias(libs.plugins.kapt)
+    /*alias(libs.plugins.kapt)*/
     alias(libs.plugins.ksp)
 }
 
@@ -105,9 +105,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     //Room
+    ksp(libs.androidx.room.compiler)
     annotationProcessor(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
-    implementation(libs.database.cipher)
-    implementation(libs.androidx.sqlite)
-    kapt(libs.androidx.room.compiler)
+    /*implementation(libs.database.cipher)
+    implementation(libs.androidx.sqlite)*/
+
 }

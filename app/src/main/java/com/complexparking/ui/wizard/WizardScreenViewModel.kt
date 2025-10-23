@@ -135,7 +135,8 @@ class WizardScreenViewModel(
             ).collect { resultUseCase ->
                 validateUseCaseResult(resultUseCase) { result ->
                     if (result) {
-                        finishWizardFlow()
+                        //finishWizardFlow()
+                        _gotoLoginScreen.value = result
                         /*Show snackbar*/
                     }
                 }

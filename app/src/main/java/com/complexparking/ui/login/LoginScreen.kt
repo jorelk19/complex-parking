@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -20,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.complexparking.R
 import com.complexparking.ui.base.CustomButton
@@ -39,6 +41,7 @@ fun LoginScreen(
     navController: NavController,
 ) {
     val loginScreenViewModel: LoginScreenViewModel = koinViewModel()
+    val loginScreenState by loginScreenViewModel.loginScreenState.collectAsStateWithLifecycle()
     val model = loginScreenViewModel.loginScreenModel.value
     if (loginScreenViewModel.goToHome.value) {
         loginScreenViewModel.goToHome.value = false
