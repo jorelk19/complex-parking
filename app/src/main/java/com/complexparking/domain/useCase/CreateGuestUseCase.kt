@@ -6,27 +6,33 @@ import com.complexparking.domain.base.BaseUseCase
 import com.complexparking.domain.base.ResultUseCaseState
 import com.complexparking.entities.CarGuest
 import com.complexparking.entities.guestToDto
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 
 class CreateGuestUseCase(
     private val carGuestRepository: ICarGuestRepository,
-    private val carRepository: ICarRepository
+    private val carRepository: ICarRepository,
 ) : BaseUseCase<CarGuest, Boolean> {
     override suspend fun execute(params: CarGuest?): Flow<ResultUseCaseState<Boolean>> = flow {
         emit(ResultUseCaseState.Loading)
         try {
-            params?.let {
-                val carData = carRepository.getCarByPlate(params.plate)
-                if (carData != null) {
-                    carGuestRepository.createGuest(params.guestToDto())
-                    emit(ResultUseCaseState.Success(true))
-                } else {
-                    emit(ResultUseCaseState.Success(false))
+            var result = ResultUseCaseState.Success(false)
+            withContext(Dispatchers.IO) {
+                params?.let {
+                    val carData = carRepository.getCarByPlate(params.plate)
+                    if (carData != null) {
+                        carGuestRepository.createGuest(params.guestToDto())
+                        result = ResultUseCaseState.Success(true)
+                    } else {
+                        result = ResultUseCaseState.Success(false)
+                    }
+                } ?: run {
+                    result = ResultUseCaseState.Success(false)
                 }
-            } ?: run {
-                emit(ResultUseCaseState.Success(false))
             }
+            emit(result)
         } catch (exception: Exception) {
             emit(ResultUseCaseState.Error(exception))
         }

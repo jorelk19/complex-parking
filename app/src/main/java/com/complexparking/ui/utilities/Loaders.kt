@@ -1,5 +1,7 @@
 package com.complexparking.ui.utilities
 
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
@@ -20,15 +22,14 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.complexparking.ui.base.CustomTextMedium
+import com.complexparking.ui.base.Dimensions.size40dp
 import com.complexparking.ui.base.Dimensions.size5dp
-import com.complexparking.ui.base.Dimensions.size60dp
 import com.complexparking.ui.theme.ColorBlue6
 import com.complexparking.ui.theme.LocalCustomColors
 
@@ -40,7 +41,9 @@ object LoadingManager {
     }
 
     fun hideLoader() {
-        isLoading.value = false
+        Handler(Looper.getMainLooper()).postDelayed({
+            isLoading.value = false
+        }, 2000)
     }
 
     fun loaderState(): MutableState<Boolean> {
@@ -50,42 +53,55 @@ object LoadingManager {
 
 @Composable
 fun PulseLoader(
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val isLoading by LoadingManager.loaderState()
 
     if (isLoading) {
-        val colors = LocalCustomColors.current
-        val infiniteTransition = rememberInfiniteTransition(label = "Pulse loader")
-        val progress by infiniteTransition.animateFloat(
-            initialValue = 0f,
-            targetValue = 1f,
-            animationSpec = infiniteRepeatable(
-                animation = tween(durationMillis = 2000)
+        Dialog(
+            onDismissRequest = {},
+            properties = DialogProperties(
+                usePlatformDefaultWidth = false,
+                decorFitsSystemWindows = false
             ),
-            label = "progress animation"
-        )
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = colors.colorPrimaryBg)
-                .alpha(65f),
-            contentAlignment = Alignment.Center
         ) {
-            Box(
-                modifier = Modifier
-                    .size(size60dp)
-                    .graphicsLayer {
-                        scaleX = progress
-                        scaleY = progress
-                        alpha = 1f - progress
-                    }
-                    .border(
-                        width = size5dp,
-                        color = ColorBlue6,
-                        shape = CircleShape
-                    )
+            val colors = LocalCustomColors.current
+            val infiniteTransition = rememberInfiniteTransition(label = "Pulse loader")
+            val progress by infiniteTransition.animateFloat(
+                initialValue = 0f,
+                targetValue = 1f,
+                animationSpec = infiniteRepeatable(
+                    animation = tween(durationMillis = 2000)
+                ),
+                label = "progress animation"
             )
+            ConstraintLayout(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = colors.colorPrimaryBg)
+            ) {
+                val container = createRef()
+                Box(
+                    modifier = Modifier
+                        .size(size40dp)
+                        .graphicsLayer {
+                            scaleX = progress
+                            scaleY = progress
+                            alpha = 1f - progress
+                        }
+                        .border(
+                            width = size5dp,
+                            color = ColorBlue6,
+                            shape = CircleShape
+                        )
+                        .constrainAs(container) {
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                        }
+                )
+            }
         }
     }
 }

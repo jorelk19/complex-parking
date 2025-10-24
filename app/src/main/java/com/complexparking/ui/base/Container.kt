@@ -23,6 +23,7 @@ import com.complexparking.ui.controls.SnackBarControl
 import com.complexparking.ui.navigation.bottomNavigationBar.BottomBarControl
 import com.complexparking.ui.theme.ComplexParkingTheme
 import com.complexparking.ui.theme.LocalCustomColors
+import com.complexparking.ui.utilities.PulseLoader
 
 @Composable
 fun MainContainer(
@@ -132,6 +133,7 @@ fun FlatContainer(
             .fillMaxSize()
             .background(color = bodyColor)
     ) {
+        PulseLoader()
         content()
     }
 }
@@ -158,6 +160,7 @@ fun SimpleContainer(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
+        PulseLoader()
         Column(
             modifier = Modifier.height(50.dp)
         ) {
@@ -211,6 +214,7 @@ fun BaseContainer(
             },
             content = {
                 Column(modifier = Modifier.padding(it)) {
+                    PulseLoader()
                     content()
                 }
             },

@@ -1,14 +1,34 @@
 package com.complexparking.ui.base
 
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.complexparking.R
 import com.complexparking.domain.base.ResultUseCaseState
 import com.complexparking.ui.controls.SnackBarController
 import com.complexparking.ui.controls.SnackBarEvents
 import com.complexparking.ui.controls.SnackType
 import com.complexparking.ui.utilities.LoadingManager
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 
-open class BaseViewModel: ViewModel() {
+abstract class BaseViewModel: ViewModel() {
+
+    abstract fun onStartScreen()
+    private val _isCompletedLoadingData = MutableStateFlow(false)
+    val isCompletedLoadingData = _isCompletedLoadingData
+        .onStart {
+            onStartScreen()
+            _isCompletedLoadingData.value = true
+            LoadingManager.hideLoader()
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+            initialValue = false
+        )
     suspend fun <T> validateUseCaseResult(useCaseResult: ResultUseCaseState<T>, resultAction: suspend (T) -> Unit) {
         when(useCaseResult) {
             is ResultUseCaseState.Loading -> {
@@ -29,10 +49,6 @@ open class BaseViewModel: ViewModel() {
                         iconId = R.drawable.ic_error
                     )
                 )
-            }
-
-            ResultUseCaseState.Initial -> {
-                LoadingManager.hideLoader()
             }
         }
     }

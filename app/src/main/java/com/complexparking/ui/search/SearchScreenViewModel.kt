@@ -17,10 +17,6 @@ class SearchScreenViewModel(
     private val _searchScreenModel = mutableStateOf(SearchScreenModel())
     val searchScreenModel get() = _searchScreenModel
 
-    init {
-        initView()
-    }
-
     private fun initView() {
         _searchScreenModel.value = SearchScreenModel()
     }
@@ -51,5 +47,9 @@ class SearchScreenViewModel(
                 }
             }
         }
+    }
+
+    override fun onStartScreen() {
+        initView()
     }
 }

@@ -6,7 +6,8 @@ import com.complexparking.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-open class BaseWizardViewModel : BaseViewModel() {
+abstract class BaseWizardViewModel : BaseViewModel() {
+    abstract fun onStartWizard()
     private val _isButtonEnabled = MutableStateFlow(false)
     val isButtonEnabled get() = _isButtonEnabled.asStateFlow()
 
@@ -16,7 +17,7 @@ open class BaseWizardViewModel : BaseViewModel() {
     private val _isFinalStep = mutableStateOf(false)
     val isFinalStep get() = _isFinalStep
 
-    private val _buttonText = mutableStateOf(0)
+    private val _buttonText = mutableStateOf(R.string.wizard_complex_configuration_next_button)
     val buttonText get() = _buttonText
 
     private val _isButtonPreviousVisible = mutableStateOf(false)
@@ -26,10 +27,6 @@ open class BaseWizardViewModel : BaseViewModel() {
 
     fun setIndexChangeAction(action: () -> Unit) {
         _onIndexChangeAction = action
-    }
-
-    init {
-        _buttonText.value = R.string.wizard_complex_configuration_next_button
     }
 
     fun setButtonEnabled(enabled: Boolean) {
@@ -65,5 +62,10 @@ open class BaseWizardViewModel : BaseViewModel() {
         }
         _onIndexChangeAction.invoke()
         return _currentIndex.value
+    }
+
+    override fun onStartScreen() {
+        _buttonText.value = R.string.wizard_complex_configuration_next_button
+        onStartWizard()
     }
 }

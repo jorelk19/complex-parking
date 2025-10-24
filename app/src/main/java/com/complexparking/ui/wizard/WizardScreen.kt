@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.complexparking.R
 import com.complexparking.ui.base.CustomButton
@@ -40,6 +41,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun WizardScreen(navController: NavController) {
     val viewModel: WizardScreenViewModel = koinViewModel()
+    val isCompletedData by viewModel.isCompletedLoadingData.collectAsStateWithLifecycle()
     val index = viewModel.currentIndex.value
     val buttonEnabled by viewModel.isButtonEnabled.collectAsState()
     val colors = LocalCustomColors.current

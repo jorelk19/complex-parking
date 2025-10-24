@@ -108,6 +108,9 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     annotationProcessor(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
+
+    //SplashScreen
+    implementation(libs.androidx.splashscreen)
     /*implementation(libs.database.cipher)
     implementation(libs.androidx.sqlite)*/
 

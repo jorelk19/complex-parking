@@ -2,8 +2,6 @@ package com.complexparking.ui.splash
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Handler
-import android.os.Looper
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,9 +15,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,6 +25,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.complexparking.R
@@ -37,8 +34,6 @@ import com.complexparking.ui.base.Dimensions.size180dp
 import com.complexparking.ui.base.FlatContainer
 import com.complexparking.ui.main.MainActivity
 import com.complexparking.ui.navigation.AppScreens
-import com.complexparking.ui.utilities.LoadingManager
-import com.complexparking.ui.utilities.PulseLoader
 import com.complexparking.ui.widgets.PermissionView
 import com.complexparking.ui.wizard.WizardActivity
 import org.koin.androidx.compose.koinViewModel
@@ -46,10 +41,17 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun SplashScreen(navController: NavController) {
     val splashViewModel: SplashScreenViewModel = koinViewModel()
-    val splashModel by splashViewModel.splashScreenState.collectAsState()
-
+    val isSplashCompleted by splashViewModel.isCompletedLoadingData.collectAsStateWithLifecycle()
+    val goToHome by splashViewModel.goToHome
+    val isWizardCompleted by splashViewModel.isWizardCompleted
+    ScreenObserver(splashViewModel)
     FlatContainer {
-        SplashBody(navController, splashViewModel)
+        SplashBody(
+            navController,
+            goToHome,
+            isWizardCompleted,
+            isSplashCompleted
+        )
     }
 }
 
@@ -68,8 +70,12 @@ private fun SplashFooter() {
 }
 
 @Composable
-private fun SplashBody(navController: NavController, splashViewModel: SplashScreenViewModel) {
-    ScreenObserver(splashViewModel)
+private fun SplashBody(
+    navController: NavController,
+    goToHome: Boolean,
+    isWizardCompleted: Boolean,
+    isSplashCompleted: Boolean,
+) {
     PermissionView()
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -99,15 +105,12 @@ private fun SplashBody(navController: NavController, splashViewModel: SplashScre
                 )
             }
         }
-        PulseLoader()
-        val coroutineScope = rememberCoroutineScope()
         val context = LocalContext.current
         val activity = context as? Activity
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            LoadingManager.hideLoader()
-            if (splashViewModel.isWizardCompleted.value) {
-                if (splashViewModel.goToHome.value) {
+        if(isSplashCompleted) {
+            if (isWizardCompleted) {
+                if (goToHome) {
                     val activity = context as? Activity
                     val intent = Intent(context, MainActivity::class.java)
                     context.startActivity(intent)
@@ -118,11 +121,9 @@ private fun SplashBody(navController: NavController, splashViewModel: SplashScre
             } else {
                 val intent = Intent(context, WizardActivity::class.java)
                 context.startActivity(intent)
-                //coroutineScope.launch {
                 activity?.finish()
-                //}
             }
-        }, 2000)
+        }
     }
 }
 

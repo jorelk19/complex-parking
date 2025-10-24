@@ -23,16 +23,6 @@ class LoginScreenViewModel(
     val password = mutableStateOf("")
     val goToHome = mutableStateOf(false)
 
-    private val _loginScreenState = MutableStateFlow(ResultUseCaseState.Initial)
-    val loginScreenState = _loginScreenState
-        .onStart {
-            loadLoginModel()
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Lazily,
-            initialValue = _loginScreenState
-        )
-
     private fun loadLoginModel() {
         loginScreenModel.value = LoginScreenModel(
             onClickAccess = { onClickAccess() },
@@ -48,7 +38,11 @@ class LoginScreenViewModel(
                 LoginDataAccess(user = email.value, password = password.value)
             ).collect { resultUseCase ->
                 validateUseCaseResult(resultUseCase) { result ->
-                    goToHome.value = result
+                    if (result) {
+                        goToHome.value = true
+                    } else {
+                        /*Show error*/
+                    }
                 }
             }
         }
@@ -113,5 +107,9 @@ class LoginScreenViewModel(
         loginScreenModel.value = loginScreenModel.value.copy(
             isButtonAccessEnabled = enabled && email.value.isNotEmpty() && password.value.isNotEmpty()
         )
+    }
+
+    override fun onStartScreen() {
+        loadLoginModel()
     }
 }

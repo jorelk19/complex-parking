@@ -26,9 +26,9 @@ class HomeScreenViewModel(
     private val _printFile = mutableStateOf(false)
     val printFile get() = _printFile
 
-    init {
-        loadHomeModel()
-    }
+ /*   init {
+
+    }*/
 
     private fun loadHomeModel() {
         val currentDate = Date()
@@ -55,7 +55,10 @@ class HomeScreenViewModel(
         if (plate.value.isEmpty() || unitToVisit.value.isEmpty()) {
             return
         }
+        validateUnit(unitToVisit.value)
+    }
 
+    private fun registerCarGuest() {
         val carGuest = CarGuest(
             plate = plate.value,
             hourStart = Calendar.getInstance().timeInMillis,
@@ -97,7 +100,8 @@ class HomeScreenViewModel(
 
     private fun onUnitToVisitChange(unit: String) {
         if (unit.isNotEmpty()) {
-            validateUnit(unit)
+            unitToVisit.value = unit
+            /*validateUnit(unit)*/
         } else {
             homeScreenModel.value = homeScreenModel.value.copy(
                 unitErrorType = ErrorType.EMPTY_UNIT,
@@ -110,25 +114,23 @@ class HomeScreenViewModel(
     private fun validateUnit(unit: String) {
         viewModelScope.launch {
             validateUnitUseCase.execute(unit.toInt()).collect { useCaseResult ->
-                validateUseCaseResult(
-                    useCaseResult = useCaseResult,
-                    resultAction = { result ->
-                        if (result) {
-                            unitToVisit.value = unit
-                            homeScreenModel.value = homeScreenModel.value.copy(
-                                unitErrorType = ErrorType.NONE,
-                                unitError = false,
-                                unit = unit
-                            )
-                        } else {
-                            homeScreenModel.value = homeScreenModel.value.copy(
-                                unitErrorType = ErrorType.INVALID_UNIT,
-                                unitError = true
-                            )
-                        }
-                        validateButton()
+                validateUseCaseResult(useCaseResult) { result ->
+                    if (result) {
+                        /*unitToVisit.value = unit*/
+                        registerCarGuest()
+                       /* homeScreenModel.value = homeScreenModel.value.copy(
+                            unitErrorType = ErrorType.NONE,
+                            unitError = false,
+                            unit = unit
+                        )*/
+                    } else {
+                        homeScreenModel.value = homeScreenModel.value.copy(
+                            unitErrorType = ErrorType.INVALID_UNIT,
+                            unitError = true
+                        )
                     }
-                )
+                    validateButton()
+                }
             }
         }
     }
@@ -163,7 +165,7 @@ class HomeScreenViewModel(
     }
 
     private fun validateButton() {
-        val enabled = if (homeScreenModel.value.unitError || homeScreenModel.value.plateError) {
+        val enabled = if (homeScreenModel.value.plateError) {
             false
         } else {
             true
@@ -171,5 +173,9 @@ class HomeScreenViewModel(
         homeScreenModel.value = homeScreenModel.value.copy(
             isButtonRegisterEnabled = enabled
         )
+    }
+
+    override fun onStartScreen() {
+        loadHomeModel()
     }
 }

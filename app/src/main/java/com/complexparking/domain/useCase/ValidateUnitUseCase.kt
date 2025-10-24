@@ -17,9 +17,9 @@ class ValidateUnitUseCase(
             params?.let {
                 val currentUnits = withContext(Dispatchers.IO) { complexRepository.getComplexUnitQuantity() }
                 val result = params in 1..currentUnits
-                ResultUseCaseState.Success(result)
+                emit(ResultUseCaseState.Success(result))
             } ?: run {
-                ResultUseCaseState.Success(false)
+                emit(ResultUseCaseState.Success(false))
             }
         }catch (ex: Exception){
             emit(ResultUseCaseState.Error(ex))

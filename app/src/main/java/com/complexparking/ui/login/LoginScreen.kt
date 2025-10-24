@@ -41,7 +41,7 @@ fun LoginScreen(
     navController: NavController,
 ) {
     val loginScreenViewModel: LoginScreenViewModel = koinViewModel()
-    val loginScreenState by loginScreenViewModel.loginScreenState.collectAsStateWithLifecycle()
+    val isCompletedLoading by loginScreenViewModel.isCompletedLoadingData.collectAsStateWithLifecycle()
     val model = loginScreenViewModel.loginScreenModel.value
     if (loginScreenViewModel.goToHome.value) {
         loginScreenViewModel.goToHome.value = false

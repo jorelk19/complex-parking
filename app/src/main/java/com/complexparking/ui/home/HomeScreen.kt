@@ -25,6 +25,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.complexparking.R
@@ -47,18 +48,18 @@ import com.complexparking.utils.pdfTools.generatePDF
 import java.io.File
 import java.util.Date
 import org.koin.androidx.compose.koinViewModel
-import org.koin.java.KoinJavaComponent.inject
 
 @Composable
 fun HomeScreen(
     navController: NavController,
 ) {
     val homeScreenViewModel: HomeScreenViewModel = koinViewModel()
+    val isCompletedLoadData by homeScreenViewModel.isCompletedLoadingData.collectAsStateWithLifecycle()
     val homeModel by homeScreenViewModel.homeScreenModel
     val colors = LocalCustomColors.current
     val context = LocalContext.current
 
-    if(homeScreenViewModel.printFile.value) {
+    if (homeScreenViewModel.printFile.value) {
         generatePDF(context, GetDirectory())
     }
 

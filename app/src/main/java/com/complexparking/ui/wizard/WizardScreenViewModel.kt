@@ -23,22 +23,15 @@ class WizardScreenViewModel(
     private val loadComplexUnitDataUseCase: LoadComplexUnitDataUseCase,
 ) : BaseWizardViewModel() {
     private val _gotoConfigComplex = mutableStateOf(false)
-    val gotoConfigComplex get() = _gotoConfigComplex
     private val _gotoUploadUnitsData = mutableStateOf(false)
-    val gotoUploadUnitsData get() = _gotoUploadUnitsData
     private val _gotoLoginScreen = mutableStateOf(false)
     val gotoLoginScreen get() = _gotoLoginScreen
-
     private val _currentStep = mutableStateOf(EnumWizardStep.STEP1)
-    val currentStep get() = _currentStep
-
     private val _fileData = mutableStateOf(ArrayList<FileData>())
-    val fileData get() = _fileData
-
     private val _wizardModel = MutableStateFlow(WizardScreenModel())
     val wizardModel get() = _wizardModel.asStateFlow()
 
-    init {
+    override fun onStartWizard() {
         loadData()
         setIndexChangeAction {
             if (!isFinalStep.value) {
@@ -48,7 +41,6 @@ class WizardScreenViewModel(
             }
         }
     }
-
     private fun loadData() {
         _wizardModel.value = WizardScreenModel()
     }

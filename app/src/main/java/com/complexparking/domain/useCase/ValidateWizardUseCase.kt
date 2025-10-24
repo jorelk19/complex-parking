@@ -16,24 +16,23 @@ class ValidateWizardUseCase(
         emit(ResultUseCaseState.Loading)
         try {
             val isCompleted = storePreferenceUtils.getBoolean(IS_WIZARD_COMPLETED, false)
-            var wizardState = WizardState(false, false)
-            if (isCompleted) {
+            val wizardState = if (isCompleted) {
                 val hasSession = storePreferenceUtils.getString(USER_DATA, "").toString().isNotEmpty()
                 if (hasSession) {
-                    wizardState = WizardState(
-                        showWizard = true,
-                        goToLogin = true
+                    WizardState(
+                        isWizardCompleted = true,
+                        userHasSession = true
                     )
                 } else {
-                    wizardState = WizardState(
-                        showWizard = true,
-                        goToLogin = false
+                    WizardState(
+                        isWizardCompleted = true,
+                        userHasSession = false
                     )
                 }
             } else {
-                wizardState = WizardState(
-                    showWizard = false,
-                    goToLogin = false
+                WizardState(
+                    isWizardCompleted = false,
+                    userHasSession = false
                 )
             }
             emit(ResultUseCaseState.Success(wizardState))
