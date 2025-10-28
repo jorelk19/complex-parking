@@ -23,10 +23,10 @@ class CreateGuestUseCase(
                 params?.let {
                     val carData = carRepository.getCarByPlate(params.plate)
                     if (carData != null) {
+                        result = ResultUseCaseState.Success(false)
+                    } else {
                         carGuestRepository.createGuest(params.guestToDto())
                         result = ResultUseCaseState.Success(true)
-                    } else {
-                        result = ResultUseCaseState.Success(false)
                     }
                 } ?: run {
                     result = ResultUseCaseState.Success(false)

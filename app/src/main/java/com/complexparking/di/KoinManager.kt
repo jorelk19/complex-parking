@@ -21,7 +21,8 @@ class KoinManager {
                 preferenceModule(context),
                 databaseModule(db),
                 useCaseModule,
-                viewModelModule
+                viewModelModule,
+                deviceModule(context)
             )
 
             startKoin {

@@ -2,10 +2,12 @@ package com.complexparking.di
 
 import com.complexparking.domain.useCase.CreateGuestUseCase
 import com.complexparking.domain.useCase.GetCarByPlateUseCase
+import com.complexparking.domain.useCase.GetPermissionsUseCase
 import com.complexparking.domain.useCase.GetSessionUseCase
 import com.complexparking.domain.useCase.LoadComplexUnitDataUseCase
 import com.complexparking.domain.useCase.LoadSeedDataUseCase
 import com.complexparking.domain.useCase.LoginUseCase
+import com.complexparking.domain.useCase.SetPermissionsUseCase
 import com.complexparking.domain.useCase.SetWizardUseCase
 import com.complexparking.domain.useCase.SplashScreenGetWizardCompleteUseCase
 import com.complexparking.domain.useCase.SplashScreenSetWizardCompleteUseCase
@@ -29,4 +31,6 @@ val useCaseModule = module {
     single { ValidateSessionUseCase(get()) }
     single { ValidateWizardUseCase(get()) }
     single { LoadSeedDataUseCase(get(), get(), get()) }
+    single { GetPermissionsUseCase(get()) }
+    single { SetPermissionsUseCase(get()) }
 }

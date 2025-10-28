@@ -30,7 +30,7 @@ import com.complexparking.ui.base.Dimensions.size100dp
 import com.complexparking.ui.base.Dimensions.size30dp
 import com.complexparking.ui.base.Dimensions.size50dp
 import com.complexparking.ui.base.EnumEditTextType
-import com.complexparking.ui.base.MainContainer
+import com.complexparking.ui.base.ContainerWithScroll
 import com.complexparking.ui.main.MainActivity
 import com.complexparking.ui.theme.LocalCustomColors
 import com.complexparking.ui.validateError
@@ -49,7 +49,7 @@ fun LoginScreen(
         val intent = Intent(context, MainActivity::class.java)
         context.startActivity(intent)
     }
-    MainContainer(
+    ContainerWithScroll(
         body = {
             LoginScreenBody(
                 model = model,

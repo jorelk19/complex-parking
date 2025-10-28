@@ -7,27 +7,27 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.complexparking.ui.edit.EditScreen
 import com.complexparking.ui.home.HomeScreen
+import com.complexparking.ui.printer.PrinterScreen
 import com.complexparking.ui.search.SearchScreen
-import com.complexparking.ui.settings.SettingsScreen
 
 @Composable
 fun AppNavigation(modifier: Modifier = Modifier, navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = AppScreens.HOMESCREEN.route,
-        modifier = modifier
+        startDestination = AppScreens.HOMESCREEN.route
     ) {
         composable(route = AppScreens.HOMESCREEN.route) {
-            HomeScreen(navController = navController)
+            HomeScreen(navController = navController, modifier)
         }
         composable(route = AppScreens.SEARCHSCREEN.route) {
-            SearchScreen(navController = navController)
+            SearchScreen(navController = navController, modifier)
         }
         composable(route = AppScreens.EDITSCREEN.route) {
-            EditScreen(navController = navController)
+            EditScreen(navController = navController, modifier)
         }
         composable(route = AppScreens.SETTINGSCREEN.route) {
-            SettingsScreen(navController = navController)
+            //SettingsScreen(navController =
+            PrinterScreen(modifier)
         }
     }
 }

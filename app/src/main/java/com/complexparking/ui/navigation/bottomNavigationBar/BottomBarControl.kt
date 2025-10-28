@@ -4,7 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Badge
@@ -24,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -38,6 +41,11 @@ import com.complexparking.ui.theme.LocalCustomColors
 
 @Composable
 fun BottomBarControl(navController: NavController) {
+    val navigationBarInsets = WindowInsets.navigationBars
+    val density = LocalDensity.current
+
+    // Calculate the height of the system navigation bar
+    val navBarHeight = with(density) { navigationBarInsets.getBottom(density).toDp() }
     val colors = LocalCustomColors.current
     val selectedColor = colors.colorPrimaryBgDefault
     val unselectedColor = colors.colorNeutralBgDefault
@@ -84,7 +92,7 @@ fun BottomBarControl(navController: NavController) {
     NavigationBar(
         modifier = Modifier
             .height(Dimensions.bottomNavigationBarHeight),
-        containerColor = colors.colorNeutralBg
+        containerColor = colors.colorPrimaryBg
     ) {
         tabBarItems.forEachIndexed { index, tabBarItem ->
             NavigationBarItem(
@@ -112,7 +120,10 @@ fun BottomBarControl(navController: NavController) {
                         color = if (selectedTabIndex == index) colors.colorPrimaryBgDefault else colors.colorPrimaryTextGray
                     )
                 },
-                modifier = Modifier.background(color = Color.Transparent).height(Dimensions.bottomNavigationBarItemHeight).padding(bottom = Dimensions.bottomNavigationBarBottom),
+                modifier = Modifier
+                    .background(color = Color.Transparent)
+                    .height(Dimensions.bottomNavigationBarItemHeight)
+                    .padding(bottom = Dimensions.bottomNavigationBarBottom),
                 colors = NavigationBarItemColors(
                     selectedIconColor = colorTransparent,
                     selectedIndicatorColor = colorTransparent,
@@ -136,7 +147,7 @@ private fun TabBarIconView(
     unselectedColor: Color,
     title: String,
     badgeAmount: Int? = null,
-    iconBackgroundColor: Color
+    iconBackgroundColor: Color,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -162,7 +173,10 @@ private fun TabBarIconView(
                     unselectedColor
                 },
                 contentDescription = title,
-                modifier = Modifier.background(color = iconBackgroundColor).width(Dimensions.bottomNavigationBarIconItemWidth).height(Dimensions.bottomNavigationBarIconItemHeight)
+                modifier = Modifier
+                    .background(color = iconBackgroundColor)
+                    .width(Dimensions.bottomNavigationBarIconItemWidth)
+                    .height(Dimensions.bottomNavigationBarIconItemHeight)
             )
         }
     }
@@ -191,5 +205,5 @@ private data class BottomBarItem(
     val unselectedColor: Color,
     val targetScreen: AppScreens,
     val selectedIndicatorMenuIcon: ImageVector,
-    val badgeAmount: Int? = null
+    val badgeAmount: Int? = null,
 )

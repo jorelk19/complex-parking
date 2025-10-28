@@ -6,14 +6,14 @@ import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.bluetooth.BluetoothSocket
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.graphics.Bitmap
+import java.io.ByteArrayOutputStream
+import java.io.IOException
+import java.io.OutputStream
+import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.IOException
-import java.io.OutputStream
-import java.util.*
 
 class PrinterUtil(private val context: Context) {
 
@@ -90,7 +90,7 @@ class PrinterUtil(private val context: Context) {
      * Sends data (as a string) to the connected printer.
      * This must be called after a successful connection.
      */
-    fun print(data: String, onResult: (Boolean, String) -> Unit) {
+    fun print(printerData: PrinterData, onResult: (Boolean, String) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             if (outputStream == null) {
                 onResult(false, "Printer is not connected.")
@@ -102,7 +102,41 @@ class PrinterUtil(private val context: Context) {
                 // Here we send the raw string bytes, but for formatted text,
                 // you would construct proper command sequences.
                 // Appending a newline is common to ensure the printer prints the line.
-                outputStream?.write((data + "\n").toByteArray())
+                val ESC_ALIGN_CENTER = byteArrayOf(0x1b, 0x61, 0x01) // Center alignment
+                val ESC_ALIGN_RIGHT = byteArrayOf(0x1b, 0x61, 0x02)  // Right alignment
+                val ESC_ALIGN_LEFT = byteArrayOf(0x1b, 0x61, 0x00)   // Left alignment (default)
+                val ESC_BOLD_ON = byteArrayOf(0x1b, 0x45, 0x01) // Turn bold on
+                val ESC_BOLD_OFF = byteArrayOf(0x1b, 0x45, 0x00) // Turn bold off
+                val ESC_UNDERLINE_ON = byteArrayOf(0x1b, 0x2d, 0x01) // Turn underline on
+                val ESC_UNDERLINE_OFF = byteArrayOf(0x1b, 0x2d, 0x00) // Turn underline off
+                val ESC_DOUBLE_HEIGHT_WIDTH_ON = byteArrayOf(0x1b, 0x21, 0x30) // Double height and width
+                val ESC_NORMAL_FONT = byteArrayOf(0x1b, 0x21, 0x00) // Normal font
+                val SELECT_BIT_IMAGE_MODE = byteArrayOf(0x1B, 0x2A, 33)
+                val LF = byteArrayOf(0x0A)
+
+                outputStream?.write(ESC_ALIGN_CENTER)
+                outputStream?.write("Parqueadero Conjunto \n ${printerData.complexName}\n".toByteArray())
+                outputStream?.write(ESC_ALIGN_CENTER)
+                outputStream?.write(ESC_BOLD_ON)
+                outputStream?.write(ESC_DOUBLE_HEIGHT_WIDTH_ON)
+                outputStream?.write(("Placa: ${printerData.plate }\n").toByteArray())
+                outputStream?.write(ESC_NORMAL_FONT)
+                outputStream?.write(LF)
+                printerData.qr?.let {
+                    outputStream?.write(SELECT_BIT_IMAGE_MODE)
+                    val qr = convertBitmapToPrinterBytes(
+                        bitmap = it
+                    )
+                    outputStream?.write(qr)
+                }
+                outputStream?.write(LF)
+                outputStream?.write(ESC_UNDERLINE_ON)
+                outputStream?.write("Hora de ingreso: ${printerData.date}".toByteArray())
+                outputStream?.write(ESC_UNDERLINE_OFF)
+                outputStream?.write(ESC_BOLD_OFF)
+
+                outputStream?.write(LF)
+                outputStream?.write(LF)
                 outputStream?.flush()
                 onResult(true, "Data sent to printer.")
             } catch (e: IOException) {
@@ -110,6 +144,14 @@ class PrinterUtil(private val context: Context) {
                 onResult(false, "Failed to send data: ${e.message}")
             }
         }
+    }
+
+    fun convertBitmapToPrinterBytes(bitmap: Bitmap): ByteArray {
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        val byteArray = stream.toByteArray()
+        bitmap.recycle()
+        return byteArray
     }
 
     /**

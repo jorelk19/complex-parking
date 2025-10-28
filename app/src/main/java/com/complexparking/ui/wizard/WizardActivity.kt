@@ -3,40 +3,26 @@ package com.complexparking.ui.wizard
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
+import androidx.activity.enableEdgeToEdge
+import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import com.complexparking.ui.base.BaseContainer
-import com.complexparking.ui.controls.SnackBarControl
+import com.complexparking.ui.base.ContainerWithoutScroll
 import com.complexparking.ui.theme.ComplexParkingTheme
 import com.complexparking.ui.utilities.LoadingManager
 
 class WizardActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        enableEdgeToEdge()
         setContent {
-            val navHostController = rememberNavController()
-            BaseContainer {
-                LoadingManager.showLoader()
-                WizardScreen(navHostController)
-            }
-           /* val snackbarHostState = remember { SnackbarHostState() }
             ComplexParkingTheme {
-                Scaffold(
-                    snackbarHost = {
-                        SnackBarControl(snackbarHostState)
-                    },
-                    content = {
-                        Column(modifier = Modifier.padding(it)) {
-
-                        }
-                    }
-                )
-            }*/
+                val navHostController = rememberNavController()
+                ContainerWithoutScroll {
+                    WizardScreen(navHostController)
+                }
+            }
         }
     }
 }

@@ -23,7 +23,7 @@ import com.complexparking.ui.base.Dimensions.size30dp
 import com.complexparking.ui.base.Dimensions.size40dp
 import com.complexparking.ui.base.Dimensions.size5dp
 import com.complexparking.ui.base.EnumEditTextType
-import com.complexparking.ui.base.MainContainer
+import com.complexparking.ui.base.ContainerWithScroll
 import com.complexparking.ui.validateError
 import org.koin.androidx.compose.koinViewModel
 
@@ -31,7 +31,7 @@ import org.koin.androidx.compose.koinViewModel
 fun WizardUserCreationScreen() {
     val wizardScreenViewModel: WizardScreenViewModel = koinViewModel()
     val model by wizardScreenViewModel.wizardModel.collectAsState()
-    MainContainer(
+    ContainerWithScroll(
         header = {
             CustomHeader(
                 headerTitle = stringResource(id = R.string.wizard_create_user_title),

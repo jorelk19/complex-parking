@@ -43,6 +43,7 @@ object Dimensions {
     val borderStrokeSmall = 1.dp
     val borderStrokeMedium = 1.5.dp
     val borderStrokeLarge = 2.dp
+    val borderRadius4XLarge = 56.dp
 
     // Bottom navigation bar
     val bottomNavigationBarHorizontalDividerThickness = 1.dp

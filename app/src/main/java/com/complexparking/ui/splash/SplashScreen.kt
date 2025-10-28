@@ -29,12 +29,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.complexparking.R
+import com.complexparking.ui.base.ContainerWithoutScroll
 import com.complexparking.ui.base.Dimensions.size100dp
 import com.complexparking.ui.base.Dimensions.size180dp
-import com.complexparking.ui.base.FlatContainer
 import com.complexparking.ui.main.MainActivity
 import com.complexparking.ui.navigation.AppScreens
-import com.complexparking.ui.widgets.PermissionView
 import com.complexparking.ui.wizard.WizardActivity
 import org.koin.androidx.compose.koinViewModel
 
@@ -45,7 +44,7 @@ fun SplashScreen(navController: NavController) {
     val goToHome by splashViewModel.goToHome
     val isWizardCompleted by splashViewModel.isWizardCompleted
     ScreenObserver(splashViewModel)
-    FlatContainer {
+    ContainerWithoutScroll {
         SplashBody(
             navController,
             goToHome,
@@ -76,7 +75,6 @@ private fun SplashBody(
     isWizardCompleted: Boolean,
     isSplashCompleted: Boolean,
 ) {
-    PermissionView()
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -108,7 +106,7 @@ private fun SplashBody(
         val context = LocalContext.current
         val activity = context as? Activity
 
-        if(isSplashCompleted) {
+        if (isSplashCompleted) {
             if (isWizardCompleted) {
                 if (goToHome) {
                     val activity = context as? Activity

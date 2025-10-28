@@ -7,13 +7,16 @@ val lightColors = CustomColorScheme(
     colorBgIcon = ColorGray4,
     colorBgButton = ColorBlue6,
     colorStroke = ColorOrange1,
+    colorNeutralBgWeak = ColorGray2,
     colorIcPrimary = ColorGray4,
     colorPrimaryBgDefault = ColorBlue4,
-    colorNeutralBgDefault = ColorGrey5,
+    colorNeutralBgDefault = ColorGray5,
     colorPrimaryTextDefault= ColorBlue6,
-    colorPrimaryTextGray= ColorGrey5,
-    colorNeutralBorder = ColorGrey3,
-    colorNeutralBg = ColorGrey7
+    colorPrimaryTextGray= ColorGray5,
+    colorNeutralBorder = ColorGray3,
+    colorNeutralBg = ColorGray7,
+    colorNeutralTextWeak = ColorGray5,
+    colorPrimaryTextButtonDefault = ColorGray2
 
 )
 
@@ -25,10 +28,13 @@ val darkColors = CustomColorScheme(
     colorBgButton = ColorBlue4,
     colorStroke = ColorOrange2,
     colorIcPrimary = ColorGray4,
-    colorPrimaryBgDefault = ColorBlue4,
-    colorNeutralBgDefault = ColorGrey5,
+    colorNeutralBgWeak = ColorGray8,
+    colorPrimaryBgDefault = ColorBlue6,
+    colorNeutralBgDefault = ColorGray5,
     colorPrimaryTextDefault = ColorBlue6,
-    colorPrimaryTextGray= ColorGrey5,
-    colorNeutralBorder = ColorGrey3,
-    colorNeutralBg = ColorGrey7
+    colorPrimaryTextGray= ColorGray5,
+    colorNeutralBorder = ColorGray3,
+    colorNeutralBg = ColorGray7,
+    colorNeutralTextWeak = ColorGray4,
+    colorPrimaryTextButtonDefault = ColorGray2
 )

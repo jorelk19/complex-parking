@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.complexparking.ui.login.LoginScreen
+import com.complexparking.ui.permissions.PermissionView
 import com.complexparking.ui.splash.SplashScreen
 import com.complexparking.ui.utilities.LoadingManager
 import com.complexparking.ui.wizard.WizardScreen
@@ -13,8 +14,14 @@ import com.complexparking.ui.wizard.WizardScreen
 fun AuthenticationNavigation(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = AppScreens.SPLASHSCREEN.route
+        startDestination = AppScreens.PERMISSIONSSCREEN.route
     ) {
+        composable(route = AppScreens.PERMISSIONSSCREEN.route) {
+            PermissionView(navController)
+        }
+        composable(route = AppScreens.SPLASHSCREEN.route) {
+            SplashScreen(navController)
+        }
         composable(route = AppScreens.SPLASHSCREEN.route) {
             SplashScreen(navController)
         }

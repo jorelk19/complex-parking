@@ -27,11 +27,10 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.complexparking.R
+import com.complexparking.ui.base.ContainerWithoutScroll
 import com.complexparking.ui.base.CustomButton
 import com.complexparking.ui.base.Dimensions.size150dp
 import com.complexparking.ui.base.Dimensions.spacingMedium
-import com.complexparking.ui.base.FlatContainer
-import com.complexparking.ui.base.SimpleContainer
 import com.complexparking.ui.splash.SplashActivity
 import com.complexparking.ui.theme.LocalCustomColors
 import com.complexparking.ui.utilities.ObservableScreen
@@ -52,16 +51,14 @@ fun WizardScreen(navController: NavController) {
         context.startActivity(intent)
         activity?.finish()
     }
-    FlatContainer {
-        WizardScreenBody(
-            buttonText = viewModel.buttonText.value,
-            isButtonPreviousVisible = viewModel.isButtonPreviousVisible.value,
-            currentIndex = index,
-            isButtonEnabled = buttonEnabled,
-            onClickNextStep = { viewModel.onNextIndex() },
-            onClickPreviousStep = { viewModel.onPreviousIndex() }
-        )
-    }
+    WizardScreenBody(
+        buttonText = viewModel.buttonText.value,
+        isButtonPreviousVisible = viewModel.isButtonPreviousVisible.value,
+        currentIndex = index,
+        isButtonEnabled = buttonEnabled,
+        onClickNextStep = { viewModel.onNextIndex() },
+        onClickPreviousStep = { viewModel.onPreviousIndex() }
+    )
 }
 
 @Composable
@@ -81,7 +78,7 @@ private fun WizardScreenBody(
         pageCount = { 3 }
     )
 
-    SimpleContainer(
+    ContainerWithoutScroll(
         body = {
             HorizontalPager(
                 state = pagerState,

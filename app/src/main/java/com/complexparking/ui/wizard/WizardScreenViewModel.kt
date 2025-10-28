@@ -4,11 +4,13 @@ import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.complexparking.R
+import com.complexparking.domain.useCase.GetPermissionsUseCase
 import com.complexparking.domain.useCase.LoadComplexUnitDataUseCase
 import com.complexparking.domain.useCase.SplashScreenSetWizardCompleteUseCase
 import com.complexparking.entities.ComplexData
 import com.complexparking.ui.controls.SnackBarController
 import com.complexparking.ui.controls.SnackBarEvents
+import com.complexparking.ui.permissions.Permissions
 import com.complexparking.ui.utilities.ErrorType
 import com.complexparking.ui.utilities.LinearProgressManager
 import com.complexparking.ui.utilities.isValidEmail
@@ -21,6 +23,7 @@ import kotlinx.coroutines.launch
 class WizardScreenViewModel(
     private val splashScreenSetWizardCompleteUseCase: SplashScreenSetWizardCompleteUseCase,
     private val loadComplexUnitDataUseCase: LoadComplexUnitDataUseCase,
+    private val getPermissionsUseCase: GetPermissionsUseCase,
 ) : BaseWizardViewModel() {
     private val _gotoConfigComplex = mutableStateOf(false)
     private val _gotoUploadUnitsData = mutableStateOf(false)
@@ -30,6 +33,8 @@ class WizardScreenViewModel(
     private val _fileData = mutableStateOf(ArrayList<FileData>())
     private val _wizardModel = MutableStateFlow(WizardScreenModel())
     val wizardModel get() = _wizardModel.asStateFlow()
+
+    private val _permissionsGranted = mutableStateOf(false)
 
     override fun onStartWizard() {
         loadData()
@@ -41,8 +46,18 @@ class WizardScreenViewModel(
             }
         }
     }
+
     private fun loadData() {
         _wizardModel.value = WizardScreenModel()
+        viewModelScope.launch {
+            getPermissionsUseCase.execute().collect { resultUseCaseState ->
+                validateUseCaseResult(resultUseCaseState) { result ->
+                    result?.let {
+                        _permissionsGranted.value = it
+                    }
+                }
+            }
+        }
     }
 
     fun onParkingChange(parkingQuantity: String) {
@@ -153,6 +168,9 @@ class WizardScreenViewModel(
             }
 
             1 -> {
+                _wizardModel.value = _wizardModel.value.copy(
+                    searchButtonEnabled = _permissionsGranted.value
+                )
                 setButtonEnabled(false)
                 validateUploadComplexData()
                 EnumWizardStep.STEP2
@@ -188,7 +206,7 @@ class WizardScreenViewModel(
         val isValid = _fileData.value.isNotEmpty()
         setButtonEnabled(isValid)
         LinearProgressManager.hideLoader()
-        if(isValid) {
+        if (isValid) {
             viewModelScope.launch {
                 SnackBarController.sendEvent(
                     SnackBarEvents(

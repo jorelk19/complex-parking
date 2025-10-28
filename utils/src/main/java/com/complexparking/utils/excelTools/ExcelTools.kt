@@ -48,9 +48,12 @@ object ExcelTools {
     }
 
     private fun mapData(line: String): FileData {
-        val fields = line.split(";")
+        var fields = line.split(";")
         if (fields.size != 10) {
-            throw Exception("Numero de columnas en el archivo son incorrectas")
+            fields = line.split(",")
+            if (fields.size != 10) {
+                throw Exception("Numero de columnas en el archivo son incorrectas")
+            }
         }
         return FileData(
             unit = fields[0].toInt(),

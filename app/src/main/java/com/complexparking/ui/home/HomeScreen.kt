@@ -29,8 +29,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.complexparking.R
+import com.complexparking.ui.base.ContainerWithoutScroll
 import com.complexparking.ui.base.CustomButton
-import com.complexparking.ui.base.CustomContainer
 import com.complexparking.ui.base.CustomEditText
 import com.complexparking.ui.base.CustomHeader
 import com.complexparking.ui.base.CustomText3XLage
@@ -52,6 +52,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(
     navController: NavController,
+    modifier: Modifier,
 ) {
     val homeScreenViewModel: HomeScreenViewModel = koinViewModel()
     val isCompletedLoadData by homeScreenViewModel.isCompletedLoadingData.collectAsStateWithLifecycle()
@@ -63,9 +64,7 @@ fun HomeScreen(
         generatePDF(context, GetDirectory())
     }
 
-    CustomContainer(
-        statusBarColor = colors.colorNeutralBg,
-
+    ContainerWithoutScroll(
         header = {
             CustomHeader(
                 headerTitle = stringResource(id = R.string.home_screen_header_title),
@@ -207,11 +206,12 @@ private fun GetDirectory(): File {
 @Composable
 fun PreviewHomeScreen() {
     HomeScreen(
-        navController = rememberNavController()
+        navController = rememberNavController(),
+        modifier = Modifier
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun PreviewBodyScreen() {
     val currentDate = Date()

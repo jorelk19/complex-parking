@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.complexparking.R
+import com.complexparking.ui.base.ContainerWithoutScroll
 import com.complexparking.ui.base.CustomButton
 import com.complexparking.ui.base.CustomHeader
 import com.complexparking.ui.base.CustomTextMedium
@@ -38,13 +39,11 @@ import com.complexparking.ui.base.Dimensions.size2dp
 import com.complexparking.ui.base.Dimensions.size30dp
 import com.complexparking.ui.base.Dimensions.size40dp
 import com.complexparking.ui.base.Dimensions.size5dp
-import com.complexparking.ui.base.SimpleContainer
 import com.complexparking.ui.controls.CustomImage
 import com.complexparking.ui.theme.LocalCustomColors
 import com.complexparking.ui.utilities.AnimateLinearProgressBarControl
 import com.complexparking.ui.utilities.LinearProgressManager
 import com.complexparking.ui.utilities.formatPlate
-import com.complexparking.ui.widgets.PermissionView
 import com.complexparking.utils.excelTools.ExcelTools
 import com.complexparking.utils.excelTools.FileData
 import org.koin.androidx.compose.koinViewModel
@@ -53,8 +52,7 @@ import org.koin.androidx.compose.koinViewModel
 fun UploadComplexDataScreen() {
     val wizardScreenViewModel: WizardScreenViewModel = koinViewModel()
     val model by wizardScreenViewModel.wizardModel.collectAsState()
-    PermissionView()
-    SimpleContainer(
+    ContainerWithoutScroll(
         header = {
             CustomHeader(
                 headerTitle = stringResource(id = R.string.wizard_upload_complex_data_title),
@@ -166,16 +164,19 @@ fun FilePickerButton(
             onClick = {
                 launcher.launch(arrayOf(fileType))
             },
-            modifier = Modifier.constrainAs(fileButton) {
-                start.linkTo(parent.start)
-                top.linkTo(parent.top)
-                bottom.linkTo(parent.bottom)
-                if(model.uploadButtonVisibility) {
-                    end.linkTo(loadButton.start)
-                } else {
-                    end.linkTo(parent.end)
+            modifier = Modifier
+                .constrainAs(fileButton) {
+                    start.linkTo(parent.start)
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                    if (model.uploadButtonVisibility) {
+                        end.linkTo(loadButton.start)
+                    } else {
+                        end.linkTo(parent.end)
+                    }
                 }
-            }.width(size100dp)
+                .width(size100dp),
+            isEnabled = model.searchButtonEnabled
         )
         if (model.uploadButtonVisibility) {
             CustomButton(
@@ -191,12 +192,14 @@ fun FilePickerButton(
                         }
                     }
                 },
-                modifier = Modifier.constrainAs(loadButton) {
-                    start.linkTo(fileButton.end)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                    end.linkTo(parent.end)
-                }.width(size100dp)
+                modifier = Modifier
+                    .constrainAs(loadButton) {
+                        start.linkTo(fileButton.end)
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                        end.linkTo(parent.end)
+                    }
+                    .width(size100dp)
             )
         }
     }
@@ -207,7 +210,7 @@ fun FilePickerButton(
 @Composable
 fun UploadComplexDataBodyPreview() {
     UploadComplexDataBody(
-        WizardScreenModel( uploadButtonVisibility = false),
+        WizardScreenModel(uploadButtonVisibility = false),
         {},
         {}
     )

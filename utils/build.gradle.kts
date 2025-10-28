@@ -88,6 +88,9 @@ dependencies {
     //datastore
     implementation(libs.androidx.datastore.preference)
 
+    //Zxing
+    implementation(libs.google.zxing)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

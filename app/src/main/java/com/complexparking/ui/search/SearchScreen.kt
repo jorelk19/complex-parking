@@ -8,24 +8,23 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.complexparking.R
-import com.complexparking.ui.base.CustomContainer
+import com.complexparking.ui.base.ContainerWithoutScroll
 import com.complexparking.ui.base.CustomHeader
-import com.complexparking.ui.home.HomeScreenViewModel
 import com.complexparking.ui.theme.LocalCustomColors
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SearchScreen(
     navController: NavController,
+    modifier: Modifier,
 ) {
     val searchScreenViewModel: SearchScreenViewModel = koinViewModel()
     val searchModel by searchScreenViewModel.searchScreenModel
     val colors = LocalCustomColors.current
     val context = LocalContext.current
 
-    CustomContainer(
-        statusBarColor = colors.colorNeutralBg,
-
+    ContainerWithoutScroll(
+        modifier = modifier,
         header = {
             CustomHeader(
                 headerTitle = stringResource(id = R.string.search_screen_guest_title),

@@ -17,6 +17,7 @@ data class WizardScreenModel(
     val adminEmail: String = "",
     val userEmail: String = "",
     val uploadButtonVisibility: Boolean = false,
+    val searchButtonEnabled: Boolean = false,
     val previousList: ArrayList<PreviousFileData> = arrayListOf(),
     val showPreviousList: Boolean = false,
     val errorAdminPassword: Boolean = false,
