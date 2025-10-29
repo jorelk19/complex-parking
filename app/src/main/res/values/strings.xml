@@ -67,12 +67,26 @@
 
     <!--Search Screen-->
     <string name="search_screen_guest_title" translatable="false">Registro salida vehicular</string>
+    <string name="search_screen_button_text" translatable="false">Buscar</string>
     <!---->
 
     <!--Error Message-->
     <string name="app_error_generic_title_use_case" translatable="false">Error</string>
     <string name="app_error_generic_message_use_case" translatable="false">Se presento un error en el proceso</string>
     <string name="app_error_process_use_case" translatable="false">Error en el proceso</string>
+
+    <!---->
+
+    <!--Settings Screen-->
+    <string name="settings_screen_title" translatable="false">Configuración</string>
+    <string name="settings_screen_menu_printer" translatable="false">Configurar impresora</string>
+    <string name="settings_screen_menu_parking_parameters" translatable="false">Parametrización parqueadero</string>
+    <string name="settings_screen_menu_parking_create_user" translatable="false">Crear usuario</string>
+    <string name="settings_screen_menu_parking_close_session" translatable="false">Cerrar sesión</string>
+    <!---->
+
+    <!--Parking settings Screen-->
+    <string name="parking_settings_screen_title" translatable="false">Parametrización parqueadero</string>
 
     <!---->
 </resources>

@@ -31,19 +31,7 @@ class SearchScreenViewModel(
         viewModelScope.launch {
             getCarByPlateUseCase.execute(_searchScreenModel.value.plateText).collect { resultUseCaseState ->
                 validateUseCaseResult(resultUseCaseState) { result ->
-                    result?.let {
-                        SnackBarController.sendEvent(
-                            event = SnackBarEvents(
-                                titleId = R.string.wizard_user_creation_user_repeat_password,
-                                messageId = R.string.wizard_user_creation_user_repeat_password,
-                                iconId = R.drawable.ic_close,
-                                buttonIconId = R.drawable.ic_close,
-                                snackType = SnackType.INFO
-                            )
-                        )
-                    } ?: run {
-                        /*Car doesn't exist message*/
-                    }
+
                 }
             }
         }

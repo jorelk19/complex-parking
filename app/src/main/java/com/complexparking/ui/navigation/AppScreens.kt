@@ -5,6 +5,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class AppScreens(val route: String) {
     @Serializable
+    data object NONE: AppScreens("NONE")
+    @Serializable
     data object PERMISSIONSSCREEN: AppScreens("PERMISSIONS_SCREEN")
     @Serializable
     data object SPLASHSCREEN: AppScreens("SPLASH_SCREEN")
@@ -20,4 +22,10 @@ sealed class AppScreens(val route: String) {
     data object SETTINGSCREEN: AppScreens("SETTINGS_SCREEN")
     @Serializable
     data object WIZARDSCREEN: AppScreens("WIZARD_SCREEN")
+    @Serializable
+    data object PARKINGSETTINGSSCREEN: AppScreens("PARKING_SETTINGS_SCREEN")
+    @Serializable
+    data object CREATEUSERSCREEN: AppScreens("CREATE_USER_SCREEN")
+    @Serializable
+    data object SELECTPRINTERSCREEN: AppScreens("SELECT_PRINTER_SCREEN")
 }

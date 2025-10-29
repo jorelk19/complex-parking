@@ -2,16 +2,12 @@ package com.complexparking.ui.splash
 
 import android.app.Activity
 import android.content.Intent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -19,9 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -30,10 +24,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.complexparking.R
 import com.complexparking.ui.base.ContainerWithoutScroll
-import com.complexparking.ui.base.Dimensions.size100dp
-import com.complexparking.ui.base.Dimensions.size180dp
+import com.complexparking.ui.base.Dimensions.size150dp
 import com.complexparking.ui.main.MainActivity
 import com.complexparking.ui.navigation.AppScreens
+import com.complexparking.ui.widgets.CustomCard
 import com.complexparking.ui.wizard.WizardActivity
 import org.koin.androidx.compose.koinViewModel
 
@@ -79,30 +73,10 @@ private fun SplashBody(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Card(
-            modifier = Modifier
-                .size(size180dp)
-                .fillMaxSize(),
-            shape = RoundedCornerShape(size100dp)
-        ) {
-            ConstraintLayout(
-                modifier = Modifier.wrapContentSize()
-            ) {
-                val image = createRef()
-                Image(
-                    painter = painterResource(id = R.drawable.parking_complex_logo),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(size180dp)
-                        .constrainAs(image) {
-                            top.linkTo(parent.top)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                            bottom.linkTo(parent.bottom)
-                        }
-                )
-            }
-        }
+        CustomCard(
+            cardModifier = Modifier.size(size150dp),
+            imageId = R.drawable.parking_complex_logo
+        )
         val context = LocalContext.current
         val activity = context as? Activity
 
@@ -145,5 +119,10 @@ fun ScreenObserver(splashViewModel: SplashScreenViewModel) {
 @Preview
 @Composable
 fun PreviewSplashScreen() {
-    SplashScreen(navController = rememberNavController())
+    SplashBody(
+        navController = rememberNavController(),
+        goToHome = false,
+        isWizardCompleted = false,
+        isSplashCompleted = false
+    )
 }

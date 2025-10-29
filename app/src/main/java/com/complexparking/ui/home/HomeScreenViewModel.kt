@@ -21,7 +21,6 @@ class HomeScreenViewModel(
     private val createGuestUnitUseCase: CreateGuestUseCase,
     private val printerViewModel: PrinterViewModel,
 ) : BaseViewModel() {
-    /* val printerViewModel: PrinterViewModel by inject(PrinterViewModel::class.java)*/
     private val _homeScreenModel = mutableStateOf(HomeScreenModel())
     val homeScreenModel get() = _homeScreenModel
 
@@ -150,7 +149,7 @@ class HomeScreenViewModel(
                 plateText = plateText,
                 isButtonRegisterEnabled = false
             )
-        } else {
+        } else if (plateText.length == 6) {
             homeScreenModel.value = homeScreenModel.value.copy(
                 plateErrorType = ErrorType.NONE,
                 plateError = false,

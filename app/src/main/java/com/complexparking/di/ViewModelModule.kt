@@ -5,6 +5,8 @@ import com.complexparking.ui.login.LoginScreenViewModel
 import com.complexparking.ui.permissions.PermissionsViewModel
 import com.complexparking.ui.printer.PrinterViewModel
 import com.complexparking.ui.search.SearchScreenViewModel
+import com.complexparking.ui.settings.SettingsScreenViewModel
+import com.complexparking.ui.settings.menuScreens.ParkingSettingsScreenViewModel
 import com.complexparking.ui.splash.SplashScreenViewModel
 import com.complexparking.ui.wizard.WizardScreenViewModel
 import org.koin.core.module.dsl.viewModel
@@ -18,4 +20,6 @@ val viewModelModule = module {
     viewModel { SplashScreenViewModel(get(), get()) }
     viewModel { SearchScreenViewModel(get()) }
     viewModel { PermissionsViewModel(get(), get()) }
+    viewModel { SettingsScreenViewModel(get()) }
+    viewModel { ParkingSettingsScreenViewModel() }
 }

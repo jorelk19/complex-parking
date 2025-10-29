@@ -9,6 +9,7 @@ import com.complexparking.ui.edit.EditScreen
 import com.complexparking.ui.home.HomeScreen
 import com.complexparking.ui.printer.PrinterScreen
 import com.complexparking.ui.search.SearchScreen
+import com.complexparking.ui.settings.SettingsScreen
 
 @Composable
 fun AppNavigation(modifier: Modifier = Modifier, navController: NavHostController) {
@@ -26,8 +27,10 @@ fun AppNavigation(modifier: Modifier = Modifier, navController: NavHostControlle
             EditScreen(navController = navController, modifier)
         }
         composable(route = AppScreens.SETTINGSCREEN.route) {
-            //SettingsScreen(navController =
-            PrinterScreen(modifier)
+            SettingsScreen(navController = navController)
+        }
+        composable(route = AppScreens.SELECTPRINTERSCREEN.route) {
+            PrinterScreen(navController = navController)
         }
     }
 }

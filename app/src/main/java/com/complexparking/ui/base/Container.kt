@@ -2,15 +2,12 @@ package com.complexparking.ui.base
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
@@ -25,6 +22,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.complexparking.ui.base.Dimensions.size50dp
 import com.complexparking.ui.controls.SnackBarControl
 import com.complexparking.ui.theme.LocalCustomColors
 import com.complexparking.ui.utilities.LoadingManager
@@ -43,7 +41,9 @@ fun ContainerWithScroll(
             .background(bodyColor)
     ) {
         Column(
-            modifier = Modifier.height(50.dp)
+            modifier = Modifier
+                .height(size50dp)
+                .fillMaxWidth()
         ) {
             header()
         }
@@ -57,8 +57,8 @@ fun ContainerWithScroll(
                         top.linkTo(parent.top)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
+                        bottom.linkTo(footerContainer.top)
                     }
-                    .fillMaxSize()
             ) {
                 Column {
                     body()

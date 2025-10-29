@@ -1,6 +1,7 @@
 package com.complexparking.ui.printer
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,8 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
@@ -29,12 +28,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavController
+import com.complexparking.ui.base.CustomButton
+import com.complexparking.ui.base.CustomTextLage
+import com.complexparking.ui.base.CustomTextMedium
+import com.complexparking.ui.base.CustomTextSmall
+import com.complexparking.ui.navigation.AppScreens
 import com.complexparking.utils.printerTools.PrinterData
 import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("MissingPermission")
 @Composable
-fun PrinterScreen(modifier: Modifier) {
+fun PrinterScreen(
+    navController: NavController
+) {
     val context = LocalContext.current
     val viewModel: PrinterViewModel = koinViewModel()
 
@@ -57,6 +64,9 @@ fun PrinterScreen(modifier: Modifier) {
     /*   LaunchedEffect(Unit) {
            permissionLauncher.launch(viewModel.requiredPermissions)
        }*/
+    BackHandler(enabled = true) {
+        navController.navigate(AppScreens.SETTINGSCREEN.route)
+    }
 
     Column(
         modifier = Modifier
@@ -65,10 +75,10 @@ fun PrinterScreen(modifier: Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Text("Bluetooth Printer Util", style = MaterialTheme.typography.headlineSmall)
+        CustomTextSmall("Bluetooth Printer Util")
 
         // Connection Status
-        Text(
+        CustomTextMedium(
             text = "Status: ${uiState.connectionStatus}",
             color = if (uiState.isConnected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
             fontWeight = FontWeight.Bold
@@ -80,18 +90,19 @@ fun PrinterScreen(modifier: Modifier) {
 
         // --- Buttons ---
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Button(onClick = {
-                if (!viewModel.isBluetoothEnabled()) {
-                    // Inform user to enable Bluetooth
-                    return@Button
-                }
-                viewModel.getPairedDevices() // Refresh list
-                showDeviceDialog = true
-            }) {
-                Text("Select Printer")
-            }
+            CustomButton(
+                onClick = {
+                    if (viewModel.isBluetoothEnabled()) {
+                        // Inform user to enable Bluetooth
+                        viewModel.getPairedDevices() // Refresh list
+                        showDeviceDialog = true
+                    }
+                },
+                buttonText = "Seleccionar impresora"
+            )
 
-            Button(
+            CustomButton(
+                buttonText = "Prueba impresión",
                 onClick = {
                     viewModel.printMessage(
                         printerData = PrinterData(
@@ -102,19 +113,15 @@ fun PrinterScreen(modifier: Modifier) {
                         )
                     )
                 },
-                enabled = uiState.isConnected // Only enable if connected
-            ) {
-                Text("Print Test")
-            }
+                isEnabled = uiState.isConnected // Only enable if connected
+            )
         }
 
-        Button(
+        CustomButton(
             onClick = { viewModel.disconnect() },
-            enabled = uiState.isConnected,
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
-        ) {
-            Text("Disconnect")
-        }
+            isEnabled = uiState.isConnected,
+            buttonText = "Desconectado"
+        )
     }
 
     // --- Device Selection Dialog ---
@@ -140,22 +147,21 @@ fun DeviceSelectionDialog(
     Dialog(onDismissRequest = onDismiss) {
         Card(modifier = Modifier.fillMaxWidth(0.9f)) {
             Column {
-                Text(
-                    "Select a Paired Printer",
-                    style = MaterialTheme.typography.titleLarge,
+                CustomTextLage(
+                    text = "Select a Paired Printer",
                     modifier = Modifier.padding(16.dp)
                 )
                 LazyColumn {
                     if (devices.isEmpty()) {
                         item {
-                            Text(
-                                "No paired devices found.",
+                            CustomTextMedium(
+                                text = "No paired devices found.",
                                 modifier = Modifier.padding(16.dp)
                             )
                         }
                     } else {
                         items(devices) { device ->
-                            Text(
+                            CustomTextMedium(
                                 text = "${device.name}\n${device.address}",
                                 modifier = Modifier
                                     .fillMaxWidth()

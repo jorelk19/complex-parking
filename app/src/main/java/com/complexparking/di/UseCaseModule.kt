@@ -1,5 +1,6 @@
 package com.complexparking.di
 
+import com.complexparking.domain.useCase.CloseSessionUseCase
 import com.complexparking.domain.useCase.CreateGuestUseCase
 import com.complexparking.domain.useCase.GetCarByPlateUseCase
 import com.complexparking.domain.useCase.GetPermissionsUseCase
@@ -33,4 +34,5 @@ val useCaseModule = module {
     single { LoadSeedDataUseCase(get(), get(), get()) }
     single { GetPermissionsUseCase(get()) }
     single { SetPermissionsUseCase(get()) }
+    single { CloseSessionUseCase(get()) }
 }

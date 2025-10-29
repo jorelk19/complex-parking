@@ -92,7 +92,7 @@ fun CustomEditText(
     var textState by remember {
         mutableStateOf("")
     }
-    textState = text
+    //textState = text
 
     var visualInformation = VisualTransformation.None
 
