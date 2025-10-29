@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -125,13 +126,19 @@ fun LoginScreenBody(
         Spacer(
             modifier = Modifier.height(size30dp)
         )
-        CustomButton(
-            onClick = {
-                onClickAccess()
-            },
-            buttonText = stringResource(id = R.string.login_screen_button_access),
-            isEnabled = model.isButtonAccessEnabled
-        )
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CustomButton(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    onClickAccess()
+                },
+                buttonText = stringResource(id = R.string.login_screen_button_access),
+                isEnabled = model.isButtonAccessEnabled
+            )
+        }
     }
 }
 

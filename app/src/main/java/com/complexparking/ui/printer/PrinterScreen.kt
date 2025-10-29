@@ -15,7 +15,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -24,12 +23,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
+import com.complexparking.R
+import com.complexparking.ui.base.ContainerWithoutScroll
 import com.complexparking.ui.base.CustomButton
+import com.complexparking.ui.base.CustomHeader
 import com.complexparking.ui.base.CustomTextLage
 import com.complexparking.ui.base.CustomTextMedium
 import com.complexparking.ui.base.CustomTextSmall
@@ -42,32 +47,45 @@ import org.koin.androidx.compose.koinViewModel
 fun PrinterScreen(
     navController: NavController
 ) {
-    val context = LocalContext.current
     val viewModel: PrinterViewModel = koinViewModel()
-
     val uiState by viewModel.uiState.collectAsState()
-    var showDeviceDialog by remember { mutableStateOf(false) }
 
-    // Permission launcher
-    /*    val permissionLauncher = rememberLauncherForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { permissions ->
-            if (permissions.values.all { it }) {
-                // All permissions granted, refresh devices
-                viewModel.getPairedDevices()
-            } else {
-                // Handle permission denial
-            }
-        }*/
-
-    // Effect to request permissions when the screen is first displayed
-    /*   LaunchedEffect(Unit) {
-           permissionLauncher.launch(viewModel.requiredPermissions)
-       }*/
     BackHandler(enabled = true) {
         navController.navigate(AppScreens.SETTINGSCREEN.route)
     }
 
+    ContainerWithoutScroll (
+        header = {
+            CustomHeader(
+                headerTitle = stringResource(R.string.printer_screen_title),
+                modifier = Modifier.fillMaxSize(),
+                imageStart = ImageVector.vectorResource(R.drawable.ic_arrow_back),
+                onClickStart = {  navController.navigate(AppScreens.SETTINGSCREEN.route) }
+            )
+        },
+        body = {
+            PrinterScreenBody(
+                uiState = uiState,
+                isBluetoothEnabled = viewModel.isBluetoothEnabled(),
+                getPairedDevices = { viewModel.getPairedDevices() },
+                printMessage = { viewModel.printMessage(it) },
+                disconnect = { viewModel.disconnect() },
+                connectToDevice = { viewModel.connectToDevice(it) }
+            )
+        }
+    )
+}
+
+@Composable
+private fun PrinterScreenBody(
+    uiState: PrinterUiState,
+    isBluetoothEnabled: Boolean,
+    getPairedDevices: () -> Unit,
+    printMessage: (PrinterData) -> Unit,
+    disconnect: () -> Unit,
+    connectToDevice: (String) -> Unit
+) {
+    var showDeviceDialog by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -92,9 +110,9 @@ fun PrinterScreen(
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             CustomButton(
                 onClick = {
-                    if (viewModel.isBluetoothEnabled()) {
+                    if (isBluetoothEnabled) {
                         // Inform user to enable Bluetooth
-                        viewModel.getPairedDevices() // Refresh list
+                        getPairedDevices() // Refresh list
                         showDeviceDialog = true
                     }
                 },
@@ -104,8 +122,8 @@ fun PrinterScreen(
             CustomButton(
                 buttonText = "Prueba impresión",
                 onClick = {
-                    viewModel.printMessage(
-                        printerData = PrinterData(
+                    printMessage(
+                        PrinterData(
                             plate = "WWW-123",
                             qr = null,
                             date = "01/01/2025",
@@ -118,7 +136,7 @@ fun PrinterScreen(
         }
 
         CustomButton(
-            onClick = { viewModel.disconnect() },
+            onClick = { disconnect() },
             isEnabled = uiState.isConnected,
             buttonText = "Desconectado"
         )
@@ -130,7 +148,7 @@ fun PrinterScreen(
             devices = uiState.pairedDevices,
             onDismiss = { showDeviceDialog = false },
             onDeviceSelected = { device ->
-                viewModel.connectToDevice(device.address)
+                connectToDevice(device.address)
                 showDeviceDialog = false
             }
         )

@@ -182,13 +182,19 @@ fun HomeBody(
         Spacer(
             modifier = Modifier.height(size30dp)
         )
-        CustomButton(
-            onClick = {
-                homeScreenModel.onRegisterButtonClick()
-            },
-            buttonText = stringResource(id = R.string.home_screen_button_register),
-            isEnabled = homeScreenModel.isButtonRegisterEnabled
-        )
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CustomButton(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    homeScreenModel.onRegisterButtonClick()
+                },
+                buttonText = stringResource(id = R.string.home_screen_button_register),
+                isEnabled = homeScreenModel.isButtonRegisterEnabled
+            )
+        }
     }
 }
 

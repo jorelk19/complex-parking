@@ -31,5 +31,5 @@ data class WizardScreenModel(
     val adminEmailError: Boolean = false,
     val userEmailError: Boolean = false,
     val adminEmailErrorType: ErrorType = ErrorType.NONE,
-    val userEmailErrorType: ErrorType = ErrorType.NONE,
+    val userEmailErrorType: ErrorType = ErrorType.NONE
 )

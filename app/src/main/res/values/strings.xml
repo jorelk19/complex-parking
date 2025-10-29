@@ -87,6 +87,20 @@
 
     <!--Parking settings Screen-->
     <string name="parking_settings_screen_title" translatable="false">Parametrización parqueadero</string>
+    <!---->
+
+    <!--Create user Screen-->
+    <string name="create_user_screen_title" translatable="false">Crear usuario</string>
+    <string name="create_user_screen_user_name" translatable="false">Nombre</string>
+    <string name="create_user_screen_user_last_name" translatable="false">Apellido</string>
+    <string name="create_user_screen_user_email" translatable="false">Correo</string>
+    <string name="create_user_screen_user_password" translatable="false">Contraseña</string>
+    <string name="create_user_screen_user_repeat_password" translatable="false">Repita la contraseña</string>
+    <string name="create_user_screen_user_button_title" translatable="false">Crear</string>
+    <!---->
+
+    <!--Printer Screen-->
+    <string name="printer_screen_title" translatable="false">Seleccionar impresora</string>
 
     <!---->
 </resources>

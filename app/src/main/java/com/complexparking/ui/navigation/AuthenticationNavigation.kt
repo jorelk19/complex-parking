@@ -33,14 +33,5 @@ fun AuthenticationNavigation(navController: NavHostController) {
         composable(route = AppScreens.WIZARDSCREEN.route) {
             WizardScreen(navController = navController)
         }
-        composable(route = AppScreens.PARKINGSETTINGSSCREEN.route) {
-            ParkingSettingsScreen()
-        }
-        composable(route = AppScreens.CREATEUSERSCREEN.route) {
-
-        }
-        composable(route = AppScreens.SELECTPRINTERSCREEN.route) {
-            PrinterScreen(navController = navController)
-        }
     }
 }

@@ -10,6 +10,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import com.complexparking.ui.theme.LocalCustomColors
 
 @Composable
@@ -102,15 +103,16 @@ fun CustomText2XLage(
     text: String,
     color: Color = LocalCustomColors.current.colorPrimaryText,
     textAlign: TextAlign = TextAlign.Start,
+    overflow: TextOverflow,
     modifier: Modifier = Modifier
 ) {
     Text(
         text = text,
         color = color,
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = modifier,
         fontSize = Dimensions.text20sp,
-        textAlign = textAlign
+        textAlign = textAlign,
+        overflow = overflow
     )
 }
 

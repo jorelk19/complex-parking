@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.HorizontalAlign
 import com.complexparking.R
 import com.complexparking.ui.base.Dimensions.size15dp
 import com.complexparking.ui.base.Dimensions.size24dp
@@ -117,10 +118,11 @@ fun CustomHeader(
                     end.linkTo(imageE.start)
                 }
             ) {
-                Text(
+                CustomText2XLage(
                     text = headerTitle,
                     color = colors.colorPrimaryText,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.align(Alignment.Center)
                 )
             }
             Box(
