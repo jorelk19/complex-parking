@@ -210,15 +210,6 @@ private fun GetDirectory(): File {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewHomeScreen() {
-    HomeScreen(
-        navController = rememberNavController(),
-        modifier = Modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
 fun PreviewBodyScreen() {
     val currentDate = Date()
     HomeBody(

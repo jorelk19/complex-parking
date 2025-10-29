@@ -83,6 +83,8 @@
     <string name="settings_screen_menu_parking_parameters" translatable="false">Parametrización parqueadero</string>
     <string name="settings_screen_menu_parking_create_user" translatable="false">Crear usuario</string>
     <string name="settings_screen_menu_parking_close_session" translatable="false">Cerrar sesión</string>
+    <string name="settings_screen_profile_banner" translatable="false">Bienvenido: %1$s</string>
+    <string name="settings_screen_profile_email" translatable="false">Tu correo: %1$s</string>
     <!---->
 
     <!--Parking settings Screen-->
@@ -97,6 +99,7 @@
     <string name="create_user_screen_user_password" translatable="false">Contraseña</string>
     <string name="create_user_screen_user_repeat_password" translatable="false">Repita la contraseña</string>
     <string name="create_user_screen_user_button_title" translatable="false">Crear</string>
+    <string name="create_user_screen_is_admin" translatable="false">¿Es usuario administrador?</string>
     <!---->
 
     <!--Printer Screen-->

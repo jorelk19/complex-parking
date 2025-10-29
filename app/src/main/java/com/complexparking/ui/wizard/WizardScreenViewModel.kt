@@ -142,7 +142,6 @@ class WizardScreenViewModel(
             ).collect { resultUseCase ->
                 validateUseCaseResult(resultUseCase) { result ->
                     if (result) {
-                        //finishWizardFlow()
                         _gotoLoginScreen.value = result
                         /*Show snackbar*/
                     }
@@ -189,18 +188,6 @@ class WizardScreenViewModel(
         }
         _currentStep.value = step
     }
-
-
-    private fun finishWizardFlow() {
-        viewModelScope.launch {
-            splashScreenSetWizardCompleteUseCase.execute().collect { resultUseCaseState ->
-                validateUseCaseResult(resultUseCaseState) { result ->
-                    _gotoLoginScreen.value = true
-                }
-            }
-        }
-    }
-
 
     private fun validateUploadComplexData() {
         val isValid = _fileData.value.isNotEmpty()

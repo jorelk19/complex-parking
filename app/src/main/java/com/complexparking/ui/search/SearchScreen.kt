@@ -1,14 +1,14 @@
 package com.complexparking.ui.search
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -56,7 +56,9 @@ fun SearchScreen(
 @Composable
 fun SearchBody(searchScreenModel: SearchScreenModel) {
     Column(
-        modifier = Modifier.fillMaxSize().padding(start = size50dp, end = size50dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = size50dp, end = size50dp)
     ) {
         CustomEditText(
             text = searchScreenModel.plateText,
@@ -76,10 +78,12 @@ fun SearchBody(searchScreenModel: SearchScreenModel) {
         Spacer(
             modifier = Modifier.height(size30dp)
         )
-        Row(
-            horizontalArrangement = Arrangement.Center
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CustomButton(
+                modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     searchScreenModel.onSearchButtonClick()
                 },

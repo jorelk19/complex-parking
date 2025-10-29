@@ -5,7 +5,7 @@ import com.complexparking.data.repository.local.ICarRepository
 import com.complexparking.domain.base.BaseUseCase
 import com.complexparking.domain.base.ResultUseCaseState
 import com.complexparking.entities.CarGuest
-import com.complexparking.entities.guestToDto
+import com.complexparking.entities.toGuestDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -25,7 +25,7 @@ class CreateGuestUseCase(
                     if (carData != null) {
                         result = ResultUseCaseState.Success(false)
                     } else {
-                        carGuestRepository.createGuest(params.guestToDto())
+                        carGuestRepository.createGuest(params.toGuestDto())
                         result = ResultUseCaseState.Success(true)
                     }
                 } ?: run {

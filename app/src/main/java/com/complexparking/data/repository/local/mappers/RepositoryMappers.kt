@@ -2,8 +2,10 @@ package com.complexparking.data.repository.local.mappers
 
 import com.complexparking.data.repository.local.dto.BrandDto
 import com.complexparking.data.repository.local.dto.CarDto
+import com.complexparking.data.repository.local.dto.UserDto
 import com.complexparking.entities.Brand
 import com.complexparking.entities.Car
+import com.complexparking.entities.UserData
 
 fun CarDto.toCar() = Car(
     id = this.id,
@@ -16,4 +18,12 @@ fun CarDto.toCar() = Car(
 fun BrandDto.toBrand() = Brand(
     id = this.id,
     name = this.name
+)
+
+fun UserDto.toUserData() = UserData(
+    email = this.userName,
+    name = this.name,
+    isAdmin = this.isAdmin,
+    password = this.password,
+    creationDate = this.date
 )

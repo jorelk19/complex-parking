@@ -1,8 +1,9 @@
 package com.complexparking.entities
 
 import com.complexparking.data.repository.local.dto.CarGuestDto
+import com.complexparking.data.repository.local.dto.UserDto
 
-fun CarGuest.guestToDto(): CarGuestDto {
+fun CarGuest.toGuestDto(): CarGuestDto {
     return CarGuestDto(
         date = this.date,
         hourStart = this.hourStart,
@@ -12,3 +13,11 @@ fun CarGuest.guestToDto(): CarGuestDto {
         plate = this.plate
     )
 }
+
+fun UserData.toUserDto() = UserDto(
+    name = this.name,
+    userName = this.email,
+    password = this.password,
+    date = this.creationDate,
+    isAdmin = this.isAdmin
+)

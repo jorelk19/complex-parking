@@ -21,7 +21,7 @@ val viewModelModule = module {
     viewModel { SplashScreenViewModel(get(), get()) }
     viewModel { SearchScreenViewModel(get()) }
     viewModel { PermissionsViewModel(get(), get()) }
-    viewModel { SettingsScreenViewModel(get()) }
+    viewModel { SettingsScreenViewModel(get(), get()) }
     viewModel { ParkingSettingsScreenViewModel() }
-    viewModel { CreateUserScreenViewModel() }
+    viewModel { CreateUserScreenViewModel(get()) }
 }

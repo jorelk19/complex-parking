@@ -1,9 +1,9 @@
 package com.complexparking.ui.settings
 
 import android.content.Intent
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,13 +25,13 @@ import androidx.navigation.NavController
 import com.complexparking.R
 import com.complexparking.ui.base.ContainerWithScroll
 import com.complexparking.ui.base.CustomHeader
+import com.complexparking.ui.base.CustomTextLage
 import com.complexparking.ui.base.CustomTextMedium
 import com.complexparking.ui.base.Dimensions.size10dp
 import com.complexparking.ui.base.Dimensions.size20dp
 import com.complexparking.ui.base.Dimensions.size50dp
 import com.complexparking.ui.base.Dimensions.size5dp
 import com.complexparking.ui.base.Dimensions.size80dp
-import com.complexparking.ui.main.MainActivity
 import com.complexparking.ui.navigation.AppScreens
 import com.complexparking.ui.splash.SplashActivity
 import com.complexparking.ui.widgets.CustomCard
@@ -39,12 +39,13 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SettingsScreen(
-    navController: NavController
+    navController: NavController,
 ) {
     val viewModel: SettingsScreenViewModel = koinViewModel()
+    viewModel.isCompletedLoadingData.collectAsState()
     val uiState by viewModel.settingScreenState.collectAsState()
 
-    if(uiState.screenTarget != AppScreens.NONE) {
+    if (uiState.screenTarget != AppScreens.NONE) {
         if (uiState.screenTarget == AppScreens.LOGINSCREEN) {
             val context = LocalContext.current
             val intent = Intent(context, SplashActivity::class.java)
@@ -63,6 +64,7 @@ fun SettingsScreen(
         },
         body = {
             SettingsBody(
+                uiState = uiState,
                 onItemSelectionAction = { viewModel.onItemSelected(it) }
             )
         }
@@ -70,7 +72,10 @@ fun SettingsScreen(
 }
 
 @Composable
-fun SettingsBody(onItemSelectionAction: (SettingsMenuItem) -> Unit = {}) {
+fun SettingsBody(
+    uiState: SettingScreenState,
+    onItemSelectionAction: (SettingsMenuItem) -> Unit = {},
+) {
     Column(
         modifier = Modifier.padding(start = size20dp, end = size20dp)
     ) {
@@ -86,16 +91,19 @@ fun SettingsBody(onItemSelectionAction: (SettingsMenuItem) -> Unit = {}) {
                 imagePadding = size5dp
             )
         }
-        CustomMenuItem(
-            text = stringResource(R.string.settings_screen_menu_parking_parameters),
-            onClickItem = { onItemSelectionAction(SettingsMenuItem.PARAMETERS_PARKING_ITEM) }
-        )
-        HorizontalDivider(Modifier.height(size5dp))
-        CustomMenuItem(
-            text = stringResource(R.string.settings_screen_menu_parking_create_user),
-            onClickItem = { onItemSelectionAction(SettingsMenuItem.CREATE_USER_ITEM) }
-        )
-        HorizontalDivider(Modifier.height(size5dp))
+        PromptUserInfo(uiState)
+        if (uiState.userData.isAdmin) {
+            CustomMenuItem(
+                text = stringResource(R.string.settings_screen_menu_parking_parameters),
+                onClickItem = { onItemSelectionAction(SettingsMenuItem.PARAMETERS_PARKING_ITEM) }
+            )
+            HorizontalDivider(Modifier.height(size5dp))
+            CustomMenuItem(
+                text = stringResource(R.string.settings_screen_menu_parking_create_user),
+                onClickItem = { onItemSelectionAction(SettingsMenuItem.CREATE_USER_ITEM) }
+            )
+            HorizontalDivider(Modifier.height(size5dp))
+        }
         CustomMenuItem(
             text = stringResource(R.string.settings_screen_menu_printer),
             onClickItem = { onItemSelectionAction(SettingsMenuItem.PRINTER_ITEM) }
@@ -106,6 +114,30 @@ fun SettingsBody(onItemSelectionAction: (SettingsMenuItem) -> Unit = {}) {
             onClickItem = { onItemSelectionAction(SettingsMenuItem.CLOSE_SESSION_ITEM) }
         )
         HorizontalDivider(Modifier.height(size5dp))
+    }
+}
+
+@Composable
+fun PromptUserInfo(uiState: SettingScreenState) {
+    ElevatedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(size10dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = size5dp
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(size10dp)
+        ) {
+            CustomTextLage(
+                text = stringResource(R.string.settings_screen_profile_banner, uiState.userData.name)
+            )
+            Spacer(modifier = Modifier.height(size10dp))
+            CustomTextLage(
+                text = stringResource(R.string.settings_screen_profile_email, uiState.userData.email)
+            )
+        }
     }
 }
 
@@ -152,5 +184,7 @@ fun CustomMenuItemPreview() {
 @Preview(showBackground = true)
 @Composable
 fun SettingsBodyPreview() {
-    SettingsBody()
+    SettingsBody(
+        SettingScreenState()
+    )
 }

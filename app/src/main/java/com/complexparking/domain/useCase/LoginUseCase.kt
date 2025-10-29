@@ -23,7 +23,7 @@ class LoginUseCase(
                 userData?.let {
                     if (loginDataAccess.password == it.password) {
                         storePreferencesUtils.putString(key = USER_DATA, value = userData.json())
-                        storePreferencesUtils.putBoolean(key = IS_ADMIN_USER, value = true)
+                        storePreferencesUtils.putBoolean(key = IS_ADMIN_USER, value = it.isAdmin)
                         emit(ResultUseCaseState.Success(true))
                     } else {
                         emit(ResultUseCaseState.Success(false))

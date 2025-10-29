@@ -1,12 +1,17 @@
 package com.complexparking.ui.user
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -16,12 +21,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.complexparking.R
 import com.complexparking.ui.base.ContainerWithScroll
 import com.complexparking.ui.base.CustomButton
 import com.complexparking.ui.base.CustomEditText
 import com.complexparking.ui.base.CustomHeader
+import com.complexparking.ui.base.CustomTextMedium
 import com.complexparking.ui.base.Dimensions.size50dp
 import com.complexparking.ui.base.Dimensions.size5dp
 import com.complexparking.ui.base.EnumEditTextType
@@ -48,13 +55,29 @@ fun CreateUserScreen(navController: NavController) {
             )
         },
         body = {
-            CreateUserBody(uiState)
+            CreateUserBody(
+                uiState = uiState,
+                onNameChange = { viewModel.onNameChange(it) },
+                onEmailChange = { viewModel.onEmailChange(it) },
+                onPasswordChange = { viewModel.onPasswordChange(it) },
+                onRepeatPasswordChange = { viewModel.onRepeatPasswordChange(it) },
+                onClickCreate = { viewModel.onCreateUserClick() },
+                onCheckedAdmin = { viewModel.onCheckedAdmin(it) }
+            )
         }
     )
 }
 
 @Composable
-private fun CreateUserBody(uiState: CreateUserState) {
+private fun CreateUserBody(
+    uiState: CreateUserState,
+    onNameChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onRepeatPasswordChange: (String) -> Unit,
+    onClickCreate: () -> Unit,
+    onCheckedAdmin: (Boolean) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -64,7 +87,7 @@ private fun CreateUserBody(uiState: CreateUserState) {
             text = uiState.name,
             titleText = stringResource(id = R.string.create_user_screen_user_name),
             onValueChange = { text ->
-                uiState.onNameChange(text)
+                onNameChange(text)
             },
             imageStart = ImageVector.vectorResource(R.drawable.ic_house),
             hasFocus = true,
@@ -78,7 +101,7 @@ private fun CreateUserBody(uiState: CreateUserState) {
             text = uiState.email,
             titleText = stringResource(id = R.string.wizard_user_creation_user),
             onValueChange = { text ->
-                uiState.onEmailChange(text)
+                onEmailChange(text)
             },
             imageStart = ImageVector.vectorResource(R.drawable.ic_email),
             hasFocus = false,
@@ -101,7 +124,7 @@ private fun CreateUserBody(uiState: CreateUserState) {
             ),
             onValueChange = { text ->
                 //userPassText.value = text
-                uiState.onPasswordChange(text)
+                onPasswordChange(text)
             },
             imageStart = ImageVector.vectorResource(R.drawable.ic_padlock),
             hasFocus = false,
@@ -120,7 +143,7 @@ private fun CreateUserBody(uiState: CreateUserState) {
             ),
             onValueChange = { text ->
                 //repeatUserPassText.value = text
-                uiState.onRepeatPasswordChange(text)
+                onRepeatPasswordChange(text)
             },
             imageStart = ImageVector.vectorResource(R.drawable.ic_padlock),
             hasFocus = false,
@@ -130,6 +153,23 @@ private fun CreateUserBody(uiState: CreateUserState) {
         Spacer(
             modifier = Modifier.height(size5dp)
         )
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Checkbox(
+                checked = uiState.isAdmin,
+                onCheckedChange = {
+                    onCheckedAdmin(it)
+                }
+            )
+            CustomTextMedium(
+                text = stringResource(R.string.create_user_screen_is_admin)
+            )
+        }
+        // --- End of new code ---
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -137,7 +177,7 @@ private fun CreateUserBody(uiState: CreateUserState) {
             CustomButton(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    uiState.onClickCreate()
+                    onClickCreate()
                 },
                 buttonText = stringResource(id = R.string.create_user_screen_user_button_title),
                 isEnabled = uiState.isButtonCreateEnabled
@@ -149,5 +189,13 @@ private fun CreateUserBody(uiState: CreateUserState) {
 @Preview(showBackground = true)
 @Composable
 fun CreateUsersScreenPreview() {
-    CreateUserBody(CreateUserState())
+    CreateUserBody(
+        uiState = CreateUserState(),
+        {},
+        {},
+        {},
+        {},
+        {},
+        {}
+    )
 }

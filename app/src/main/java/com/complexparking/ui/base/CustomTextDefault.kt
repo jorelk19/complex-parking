@@ -103,7 +103,7 @@ fun CustomText2XLage(
     text: String,
     color: Color = LocalCustomColors.current.colorPrimaryText,
     textAlign: TextAlign = TextAlign.Start,
-    overflow: TextOverflow,
+    overflow: TextOverflow = TextOverflow.Ellipsis,
     modifier: Modifier = Modifier
 ) {
     Text(
