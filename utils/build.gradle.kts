@@ -94,4 +94,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation("org.bouncycastle:bcprov-jdk18on:1.77") // Or the latest version
+    implementation("org.bouncycastle:bcpkix-jdk18on:1.77")
 }

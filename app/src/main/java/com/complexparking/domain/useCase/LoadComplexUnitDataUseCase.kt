@@ -12,6 +12,7 @@ import com.complexparking.domain.base.BaseUseCase
 import com.complexparking.domain.base.ResultUseCaseState
 import com.complexparking.entities.ComplexData
 import com.complexparking.entities.toComplexDto
+import com.complexparking.utils.encryptionTools.RSAEncryptionHelper
 import com.complexparking.utils.preferences.IS_WIZARD_COMPLETED
 import com.complexparking.utils.preferences.StorePreferenceUtils
 import java.util.Date
@@ -57,7 +58,7 @@ class LoadComplexUnitDataUseCase(
                         userName = params.adminEmail,
                         name = params.adminName,
                         date = Date(),
-                        password = params.adminPassword,
+                        password = RSAEncryptionHelper.encryptText(params.adminPassword) ?: params.adminPassword,
                         isAdmin = true
                     ),
                     complexDto = params.toComplexDto(),
