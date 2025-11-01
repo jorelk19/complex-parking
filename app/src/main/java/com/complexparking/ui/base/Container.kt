@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
@@ -22,6 +23,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.complexparking.ui.base.Dimensions.size10dp
 import com.complexparking.ui.base.Dimensions.size50dp
 import com.complexparking.ui.controls.SnackBarControl
 import com.complexparking.ui.theme.LocalCustomColors
@@ -35,45 +37,51 @@ fun ContainerWithScroll(
     body: @Composable () -> Unit = {},
     footer: @Composable () -> Unit = {},
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(bodyColor)
-    ) {
+    if (LoadingManager.loaderState().value) {
+        PulseLoader()
+    } else {
         Column(
             modifier = Modifier
-                .height(size50dp)
-                .fillMaxWidth()
+                .fillMaxSize()
+                .background(bodyColor)
         ) {
-            header()
-        }
-        ConstraintLayout(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            val (bodyContainer, footerContainer) = createRefs()
-            ScrollContainer(
-                modifier = Modifier
-                    .constrainAs(bodyContainer) {
-                        top.linkTo(parent.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(footerContainer.top)
-                    }
-            ) {
-                Column {
-                    body()
-                }
-            }
             Column(
                 modifier = Modifier
-                    .constrainAs(footerContainer) {
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(parent.bottom)
-                    }
-                    .background(LocalCustomColors.current.colorPrimaryBg)
+                    .height(size50dp)
+                    .fillMaxWidth()
             ) {
-                footer()
+                header()
+            }
+            ConstraintLayout(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                val (bodyContainer, footerContainer) = createRefs()
+                ScrollContainer(
+                    modifier = Modifier
+                        .constrainAs(bodyContainer) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(footerContainer.top)
+                        }
+                ) {
+                    Column {
+                        body()
+                    }
+                }
+                Column(
+                    modifier = Modifier
+                        .constrainAs(footerContainer) {
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(parent.bottom)
+                        }
+                        .background(LocalCustomColors.current.colorPrimaryBg)
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                ) {
+                    footer()
+                }
             }
         }
     }
@@ -145,42 +153,49 @@ fun ContainerWithoutScroll(
             }
         }
     )*/
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = bodyColor)
-            .windowInsetsPadding(WindowInsets.safeDrawing)
-    ) {
+    if (LoadingManager.loaderState().value) {
+        PulseLoader()
+    } else {
         Column(
-            modifier = Modifier.height(50.dp)
+            modifier = modifier
+                .fillMaxSize()
+                .background(color = bodyColor)
+                .windowInsetsPadding(WindowInsets.safeDrawing)
         ) {
-            header()
-        }
-        ConstraintLayout(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            val (bodyContainer, footerContainer) = createRefs()
             Column(
                 modifier = Modifier
-                    .constrainAs(bodyContainer) {
-                        top.linkTo(parent.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-                    .fillMaxSize()
-            ) {
-                body()
-            }
-            Column(
-                modifier = Modifier
-                    .constrainAs(footerContainer) {
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(parent.bottom)
-                    }
+                    .wrapContentHeight()
                     .fillMaxWidth()
             ) {
-                footer()
+                header()
+            }
+            ConstraintLayout(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                val (bodyContainer, footerContainer) = createRefs()
+                Column(
+                    modifier = Modifier
+                        .constrainAs(bodyContainer) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        }
+                        .fillMaxSize()
+                ) {
+                    body()
+                }
+                Column(
+                    modifier = Modifier
+                        .constrainAs(footerContainer) {
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(parent.bottom)
+                        }
+                        .fillMaxWidth()
+                        .padding(start = size10dp, end = size10dp)
+                ) {
+                    footer()
+                }
             }
         }
     }
@@ -220,4 +235,20 @@ fun BaseContainer(
             bottomBar()
         }
     )
+}
+
+@Preview
+@Composable
+fun FlatContainer(
+    modifier: Modifier = Modifier,
+    bodyColor: Color = LocalCustomColors.current.colorPrimaryBg,
+    content: @Composable () -> Unit = {}
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = bodyColor)
+    ) {
+        content()
+    }
 }

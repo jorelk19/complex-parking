@@ -29,6 +29,7 @@ import androidx.navigation.NavController
 import com.complexparking.R
 import com.complexparking.ui.base.ContainerWithoutScroll
 import com.complexparking.ui.base.CustomButton
+import com.complexparking.ui.base.Dimensions.size10dp
 import com.complexparking.ui.base.Dimensions.size150dp
 import com.complexparking.ui.base.Dimensions.spacingMedium
 import com.complexparking.ui.splash.SplashActivity
@@ -139,12 +140,12 @@ private fun WizardFooter(
     )
     Row(
         modifier = Modifier
-            .padding(start = spacingMedium, end = spacingMedium)
             .fillMaxWidth()
             .background(LocalCustomColors.current.colorPrimaryBg)
     ) {
         ConstraintLayout(
             modifier = Modifier.fillMaxWidth()
+                .padding(size10dp)
         ) {
             val (previousButton, nextButton) = createRefs()
             if (isButtonPreviousVisible) {

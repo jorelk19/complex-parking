@@ -26,8 +26,8 @@ class LoginUseCase(
                 params?.let { loginDataAccess ->
                     val userData = withContext(Dispatchers.IO) { userRepository.getUserByUserName(loginDataAccess.user.lowercase()) }
                     userData?.let {
-                        val pwdEncrypted = withContext(Dispatchers.IO) { RSAEncryptionHelper.decryptText(it.password) }
-                        if (pwdEncrypted == loginDataAccess.password) {
+                        val pwdDecrypted = withContext(Dispatchers.IO) { RSAEncryptionHelper.decryptText(it.password) }
+                        if (pwdDecrypted == loginDataAccess.password) {
                             storePreferencesUtils.putString(key = USER_DATA, value = it.json())
                             storePreferencesUtils.putBoolean(key = IS_ADMIN_USER, value = it.isAdmin)
                             emit(ResultUseCaseState.Success(true))

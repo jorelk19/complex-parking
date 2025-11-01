@@ -1,5 +1,6 @@
 package com.complexparking.ui.controls
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
@@ -18,11 +19,12 @@ import com.complexparking.ui.theme.LocalCustomColors
 fun CustomImage(
     modifier: Modifier = Modifier,
     imageResourceId: Int,
+
 ) {
     Card(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = size2dp),
-        colors = CardDefaults.cardColors(containerColor = LocalCustomColors.current.colorPrimaryBg)
+        colors = CardDefaults.cardColors(containerColor = LocalCustomColors.current.colorPrimaryBgCard)
     ) {
         ConstraintLayout {
             val image = createRef()

@@ -1,6 +1,7 @@
 package com.complexparking.ui.settings
 
 import android.content.Intent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
@@ -26,6 +28,7 @@ import com.complexparking.R
 import com.complexparking.ui.base.ContainerWithScroll
 import com.complexparking.ui.base.CustomHeader
 import com.complexparking.ui.base.CustomTextLage
+import com.complexparking.ui.base.CustomTextLageBold
 import com.complexparking.ui.base.CustomTextMedium
 import com.complexparking.ui.base.Dimensions.size10dp
 import com.complexparking.ui.base.Dimensions.size20dp
@@ -34,6 +37,7 @@ import com.complexparking.ui.base.Dimensions.size5dp
 import com.complexparking.ui.base.Dimensions.size80dp
 import com.complexparking.ui.navigation.AppScreens
 import com.complexparking.ui.splash.SplashActivity
+import com.complexparking.ui.theme.LocalCustomColors
 import com.complexparking.ui.widgets.CustomCard
 import org.koin.androidx.compose.koinViewModel
 
@@ -91,7 +95,33 @@ fun SettingsBody(
                 imagePadding = size5dp
             )
         }
+        Spacer(
+            modifier = Modifier
+                .height(size5dp)
+                .padding(top = size5dp)
+        )
+        CustomTextLageBold(
+            text = stringResource(R.string.settings_screen_profile_section_title)
+        )
+        Spacer(
+            modifier = Modifier
+                .height(size5dp)
+                .padding(top = size5dp)
+        )
         PromptUserInfo(uiState)
+        Spacer(
+            modifier = Modifier
+                .height(size5dp)
+                .padding(top = size5dp)
+        )
+        CustomTextLageBold(
+            text = stringResource(R.string.settings_screen_menu_section_title)
+        )
+        Spacer(
+            modifier = Modifier
+                .height(size5dp)
+                .padding(top = size5dp)
+        )
         if (uiState.userData.isAdmin) {
             CustomMenuItem(
                 text = stringResource(R.string.settings_screen_menu_parking_parameters),
@@ -119,13 +149,15 @@ fun SettingsBody(
 
 @Composable
 fun PromptUserInfo(uiState: SettingScreenState) {
+    val colors = LocalCustomColors.current
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(size10dp),
         elevation = CardDefaults.cardElevation(
             defaultElevation = size5dp
-        )
+        ),
+        colors = CardDefaults.cardColors(colors.colorPrimaryBgCard)
     ) {
         Column(
             modifier = Modifier.padding(size10dp)
@@ -143,6 +175,7 @@ fun PromptUserInfo(uiState: SettingScreenState) {
 
 @Composable
 fun CustomMenuItem(text: String, onClickItem: () -> Unit = {}) {
+    val colors = LocalCustomColors.current
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = size5dp
@@ -153,7 +186,9 @@ fun CustomMenuItem(text: String, onClickItem: () -> Unit = {}) {
             .padding(size10dp)
             .clickable {
                 onClickItem()
-            }
+            },
+        shape = RoundedCornerShape(size5dp),
+        colors = CardDefaults.cardColors(colors.colorPrimaryBgCard)
     ) {
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()

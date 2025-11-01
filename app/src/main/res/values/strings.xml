@@ -40,10 +40,12 @@
     <string name="wizard_complex_configuration_address" translatable="false">Dirección</string>
     <string name="wizard_complex_configuration_quantity_parking" translatable="false">Cantidad de parqueaderos</string>
     <string name="wizard_complex_configuration_admin_name" translatable="false">Nombre administrador</string>
-
     <string name="wizard_complex_configuration_previous_button" translatable="false">Atrás</string>
     <string name="wizard_complex_configuration_next_button" translatable="false">Siguiente</string>
     <string name="wizard_complex_configuration_finish_button" translatable="false">Finalizar</string>
+
+    <string name="wizard_complex_configuration_section_parking_data_title" translatable="false">Parametrización parqueadero</string>
+    <string name="wizard_complex_configuration_section_complex_data_title" translatable="false">Parametrización conjunto</string>
 
     <string name="wizard_upload_complex_file_title" translatable="false">Seleccione el archivo CSV a cargar</string>
     <string name="wizard_upload_complex_file_button" translatable="false">Examinar</string>
@@ -85,6 +87,9 @@
     <string name="settings_screen_menu_parking_close_session" translatable="false">Cerrar sesión</string>
     <string name="settings_screen_profile_banner" translatable="false">Bienvenido: %1$s</string>
     <string name="settings_screen_profile_email" translatable="false">Tu correo: %1$s</string>
+
+    <string name="settings_screen_menu_section_title" translatable="false">Menú de opciones</string>
+    <string name="settings_screen_profile_section_title" translatable="false">Información básica del perfíl</string>
     <!---->
 
     <!--Parking settings Screen-->
@@ -105,5 +110,12 @@
     <!--Printer Screen-->
     <string name="printer_screen_title" translatable="false">Seleccionar impresora</string>
 
+    <!---->
+
+    <!--Parking Settings Screen-->
+    <string name="parking_setting_screen_title" translatable="false">Configuración parqueadero</string>
+    <string name="parking_setting_screen_hour_price" translatable="false">Valor hora</string>
+    <string name="parking_setting_screen_mx_free_hour" translatable="false">Máximo de horas gratis</string>
+    <string name="parking_setting_screen_save_button" translatable="false">Guardar</string>
     <!---->
 </resources>

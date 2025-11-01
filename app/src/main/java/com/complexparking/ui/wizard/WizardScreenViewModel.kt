@@ -10,7 +10,6 @@ import com.complexparking.domain.useCase.SplashScreenSetWizardCompleteUseCase
 import com.complexparking.entities.ComplexData
 import com.complexparking.ui.controls.SnackBarController
 import com.complexparking.ui.controls.SnackBarEvents
-import com.complexparking.ui.permissions.Permissions
 import com.complexparking.ui.utilities.ErrorType
 import com.complexparking.ui.utilities.LinearProgressManager
 import com.complexparking.ui.utilities.isValidEmail
@@ -31,7 +30,7 @@ class WizardScreenViewModel(
     val gotoLoginScreen get() = _gotoLoginScreen
     private val _currentStep = mutableStateOf(EnumWizardStep.STEP1)
     private val _fileData = mutableStateOf(ArrayList<FileData>())
-    private val _wizardModel = MutableStateFlow(WizardScreenModel())
+    private val _wizardModel = MutableStateFlow(WizardScreenState())
     val wizardModel get() = _wizardModel.asStateFlow()
 
     private val _permissionsGranted = mutableStateOf(false)
@@ -48,7 +47,7 @@ class WizardScreenViewModel(
     }
 
     private fun loadData() {
-        _wizardModel.value = WizardScreenModel()
+        _wizardModel.value = WizardScreenState()
         viewModelScope.launch {
             getPermissionsUseCase.execute().collect { resultUseCaseState ->
                 validateUseCaseResult(resultUseCaseState) { result ->
@@ -134,6 +133,8 @@ class WizardScreenViewModel(
                     complexName = _wizardModel.value.complexName,
                     complexAddress = _wizardModel.value.complexAddress,
                     parkingQuantity = _wizardModel.value.parkingQuantity.toInt(),
+                    parkingPrice = _wizardModel.value.parkingHourPrice.toDouble(),
+                    parkingMaxFreeHour = _wizardModel.value.parkingMaxHourFree.toInt(),
                     adminEmail = _wizardModel.value.adminEmail,
                     adminPassword = _wizardModel.value.adminPassword,
                     adminName = _wizardModel.value.adminName,
@@ -370,5 +371,19 @@ class WizardScreenViewModel(
             )
         }
         validateUserCreation()
+    }
+
+    fun onParkingHourPriceChange(parkingPrice: String) {
+        _wizardModel.value = _wizardModel.value.copy(
+            parkingHourPrice = parkingPrice
+        )
+        validateComplexConfiguration()
+    }
+
+    fun onParkingMaxFreeHourChange(maxHour: String) {
+        _wizardModel.value = _wizardModel.value.copy(
+            parkingMaxHourFree = maxHour
+        )
+        validateComplexConfiguration()
     }
 }

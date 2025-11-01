@@ -19,7 +19,6 @@ class LoadSeedDataUseCase(
     private val storePreferenceUtils: StorePreferenceUtils,
 ) : BaseUseCase<Any, Nothing> {
     override suspend fun execute(params: Any?): Flow<ResultUseCaseState<Nothing?>> = flow {
-        emit(ResultUseCaseState.Loading)
         try {
             val hasSeedData = storePreferenceUtils.getBoolean(SEED_DATA_LOADED, false)
             if (!hasSeedData) {

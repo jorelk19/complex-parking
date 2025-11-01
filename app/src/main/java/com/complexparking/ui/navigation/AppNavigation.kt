@@ -35,7 +35,7 @@ fun AppNavigation(modifier: Modifier = Modifier, navController: NavHostControlle
             PrinterScreen(navController = navController)
         }
         composable(route = AppScreens.PARKINGSETTINGSSCREEN.route) {
-            ParkingSettingsScreen()
+            ParkingSettingsScreen(navController = navController)
         }
         composable(route = AppScreens.CREATEUSERSCREEN.route) {
             CreateUserScreen(navController = navController)

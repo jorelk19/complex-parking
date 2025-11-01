@@ -4,6 +4,7 @@ import com.complexparking.domain.useCase.CloseSessionUseCase
 import com.complexparking.domain.useCase.CreateGuestUseCase
 import com.complexparking.domain.useCase.CreateUserUseCase
 import com.complexparking.domain.useCase.GetCarByPlateUseCase
+import com.complexparking.domain.useCase.GetParkingConfigurationUseCase
 import com.complexparking.domain.useCase.GetPermissionsUseCase
 import com.complexparking.domain.useCase.GetSessionUseCase
 import com.complexparking.domain.useCase.LoadComplexUnitDataUseCase
@@ -15,6 +16,7 @@ import com.complexparking.domain.useCase.SplashScreenGetWizardCompleteUseCase
 import com.complexparking.domain.useCase.SplashScreenSetWizardCompleteUseCase
 import com.complexparking.domain.useCase.UpdateGuestCarUseCase
 import com.complexparking.domain.useCase.GetUserDataUseCase
+import com.complexparking.domain.useCase.UpdateParkingConfigurationUseCase
 import com.complexparking.domain.useCase.ValidateUnitUseCase
 import com.complexparking.domain.useCase.ValidateWizardUseCase
 import org.koin.dsl.module
@@ -37,4 +39,6 @@ val useCaseModule = module {
     single { SetPermissionsUseCase(get()) }
     single { CloseSessionUseCase(get()) }
     single { CreateUserUseCase(get()) }
+    single { GetParkingConfigurationUseCase(get()) }
+    single { UpdateParkingConfigurationUseCase(get()) }
 }

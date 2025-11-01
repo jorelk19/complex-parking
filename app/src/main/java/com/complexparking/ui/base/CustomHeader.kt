@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -102,10 +103,11 @@ fun CustomHeader(
                 contentAlignment = Alignment.Center
             ) {
                 imageStart?.let {
-                    Image(
+                    Icon(
                         imageVector = it,
                         contentDescription = null,
-                        modifier = Modifier.clickable { onClickStart() }
+                        modifier = Modifier.clickable { onClickStart() },
+                        tint = colors.colorIcPrimary
                     )
                 }
             }
@@ -118,7 +120,7 @@ fun CustomHeader(
                     end.linkTo(imageE.start)
                 }
             ) {
-                CustomText2XLage(
+                CustomText2XLageBold(
                     text = headerTitle,
                     color = colors.colorPrimaryText,
                     overflow = TextOverflow.Ellipsis,

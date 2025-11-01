@@ -2,6 +2,7 @@ package com.complexparking.ui.theme
 
 val lightColors = CustomColorScheme(
     colorPrimaryBg = ColorGray1,
+    colorPrimaryBgCard = ColorGray3,
     colorPrimaryText = ColorGray8,
     colorPrimary = ColorBlue7,
     colorBgIcon = ColorGray4,
@@ -13,7 +14,7 @@ val lightColors = CustomColorScheme(
     colorNeutralBgDefault = ColorGray5,
     colorPrimaryTextDefault= ColorBlue6,
     colorPrimaryTextGray= ColorGray5,
-    colorNeutralBorder = ColorGray3,
+    colorNeutralBorder = ColorGray4,
     colorNeutralBg = ColorGray7,
     colorNeutralTextWeak = ColorGray5,
     colorPrimaryTextButtonDefault = ColorGray2
@@ -22,6 +23,7 @@ val lightColors = CustomColorScheme(
 
 val darkColors = CustomColorScheme(
     colorPrimaryBg = ColorGray7,
+    colorPrimaryBgCard = ColorGray9,
     colorPrimaryText = ColorGray1,
     colorPrimary = ColorBlue4,
     colorBgIcon = ColorGray1,

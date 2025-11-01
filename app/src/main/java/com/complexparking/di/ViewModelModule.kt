@@ -22,6 +22,6 @@ val viewModelModule = module {
     viewModel { SearchScreenViewModel(get()) }
     viewModel { PermissionsViewModel(get(), get()) }
     viewModel { SettingsScreenViewModel(get(), get()) }
-    viewModel { ParkingSettingsScreenViewModel() }
+    viewModel { ParkingSettingsScreenViewModel(get(), get()) }
     viewModel { CreateUserScreenViewModel(get()) }
 }

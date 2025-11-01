@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 
 data class CustomColorScheme(
     val colorPrimaryBg: Color,
+    val colorPrimaryBgCard: Color,
     val colorPrimaryText: Color,
     val colorPrimary: Color,
     val colorBgIcon: Color,

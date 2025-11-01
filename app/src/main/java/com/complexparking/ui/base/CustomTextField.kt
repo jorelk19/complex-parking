@@ -92,7 +92,8 @@ fun CustomEditText(
     var textState by remember {
         mutableStateOf("")
     }
-    //textState = text
+
+    textState = text
 
     var visualInformation = VisualTransformation.None
 
@@ -134,7 +135,7 @@ fun CustomEditText(
                     color = if (hasError) {
                         Color.Red
                     } else {
-                        colors.colorPrimary
+                        colors.colorNeutralBorder
                     },
                     shape = RoundedCornerShape(cornerRadius)
                 )

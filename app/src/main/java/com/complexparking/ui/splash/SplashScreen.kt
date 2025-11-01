@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import com.complexparking.R
 import com.complexparking.ui.base.ContainerWithoutScroll
 import com.complexparking.ui.base.Dimensions.size150dp
+import com.complexparking.ui.base.FlatContainer
 import com.complexparking.ui.main.MainActivity
 import com.complexparking.ui.navigation.AppScreens
 import com.complexparking.ui.widgets.CustomCard
@@ -38,7 +39,7 @@ fun SplashScreen(navController: NavController) {
     val goToHome by splashViewModel.goToHome
     val isWizardCompleted by splashViewModel.isWizardCompleted
     ScreenObserver(splashViewModel)
-    ContainerWithoutScroll {
+    FlatContainer {
         SplashBody(
             navController,
             goToHome,
@@ -77,10 +78,10 @@ private fun SplashBody(
             cardModifier = Modifier.size(size150dp),
             imageId = R.drawable.parking_complex_logo
         )
-        val context = LocalContext.current
-        val activity = context as? Activity
 
         if (isSplashCompleted) {
+            val context = LocalContext.current
+            val activity = context as? Activity
             if (isWizardCompleted) {
                 if (goToHome) {
                     val activity = context as? Activity

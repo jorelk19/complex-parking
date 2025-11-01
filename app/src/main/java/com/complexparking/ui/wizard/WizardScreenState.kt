@@ -3,7 +3,7 @@ package com.complexparking.ui.wizard
 import android.net.Uri
 import com.complexparking.ui.utilities.ErrorType
 
-data class WizardScreenModel(
+data class WizardScreenState(
     val complexName: String = "",
     val quantityUnit: String = "",
     val complexAddress: String = "",
@@ -16,6 +16,8 @@ data class WizardScreenModel(
     val repeatAdminPassword: String = "",
     val adminEmail: String = "",
     val userEmail: String = "",
+    val parkingHourPrice: String = "",
+    val parkingMaxHourFree: String = "",
     val uploadButtonVisibility: Boolean = false,
     val searchButtonEnabled: Boolean = false,
     val previousList: ArrayList<PreviousFileData> = arrayListOf(),

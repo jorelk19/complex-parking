@@ -11,6 +11,7 @@ import com.complexparking.data.repository.local.dao.CarDao
 import com.complexparking.data.repository.local.dao.CarGuestDao
 import com.complexparking.data.repository.local.dao.ComplexDao
 import com.complexparking.data.repository.local.dao.DocumentTypeDao
+import com.complexparking.data.repository.local.dao.ParkingConfigurationDao
 import com.complexparking.data.repository.local.dao.PersonDao
 import com.complexparking.data.repository.local.dao.ResidentDao
 import com.complexparking.data.repository.local.dao.UserDao
@@ -19,6 +20,7 @@ import com.complexparking.data.repository.local.dto.CarDto
 import com.complexparking.data.repository.local.dto.CarGuestDto
 import com.complexparking.data.repository.local.dto.ComplexDto
 import com.complexparking.data.repository.local.dto.DocumentTypeDto
+import com.complexparking.data.repository.local.dto.ParkingConfigurationDto
 import com.complexparking.data.repository.local.dto.PersonDto
 import com.complexparking.data.repository.local.dto.ResidentDto
 import com.complexparking.data.repository.local.dto.UserDto
@@ -34,7 +36,8 @@ import kotlinx.coroutines.runBlocking
         ResidentDto::class,
         CarGuestDto::class,
         ComplexDto::class,
-        UserDto::class
+        UserDto::class,
+        ParkingConfigurationDto::class
     ],
     version = 1,
     exportSchema = false
@@ -49,6 +52,7 @@ abstract class ParkingDatabase : RoomDatabase() {
     abstract val personDao: PersonDao
     abstract val carDao: CarDao
     abstract val userDao: UserDao
+    abstract val parkingConfigurationDao: ParkingConfigurationDao
 
     companion object {
 

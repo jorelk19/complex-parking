@@ -6,6 +6,7 @@ import com.complexparking.data.repository.local.IDocumentTypeRepository
 import com.complexparking.data.repository.local.dto.BrandDto
 import com.complexparking.data.repository.local.dto.CarDto
 import com.complexparking.data.repository.local.dto.DocumentTypeDto
+import com.complexparking.data.repository.local.dto.ParkingConfigurationDto
 import com.complexparking.data.repository.local.dto.PersonDto
 import com.complexparking.data.repository.local.dto.UserDto
 import com.complexparking.domain.base.BaseUseCase
@@ -18,7 +19,6 @@ import com.complexparking.utils.preferences.StorePreferenceUtils
 import java.util.Date
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import org.w3c.dom.DocumentType
 
 class LoadComplexUnitDataUseCase(
     private val complexRepository: IComplexRepository,
@@ -53,6 +53,11 @@ class LoadComplexUnitDataUseCase(
                         unit = it.unit
                     )
                 }
+
+                val parkingData = ParkingConfigurationDto(
+                    parkingPrice = it.parkingPrice,
+                    maxFreeHour = it.parkingMaxFreeHour
+                )
                 complexRepository.saveComplexInformation(
                     userDto = UserDto(
                         userName = params.adminEmail,
@@ -61,6 +66,7 @@ class LoadComplexUnitDataUseCase(
                         password = RSAEncryptionHelper.encryptText(params.adminPassword) ?: params.adminPassword,
                         isAdmin = true
                     ),
+                    parkingData = parkingData,
                     complexDto = params.toComplexDto(),
                     personList = personList,
                     carList = carList

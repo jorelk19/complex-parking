@@ -3,7 +3,6 @@ package com.complexparking.ui.home
 import com.complexparking.ui.utilities.ErrorType
 
 data class HomeScreenModel(
-    val onClickHeaderBack: () -> Unit = {},
     val onTextPlateChange: (String) -> Unit = {},
     val onTextUnitChange: (String) -> Unit = {},
     val onRegisterButtonClick: () -> Unit = {},

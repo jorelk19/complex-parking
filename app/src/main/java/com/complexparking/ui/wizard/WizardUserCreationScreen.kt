@@ -54,7 +54,7 @@ fun WizardUserCreationScreen() {
 
 @Composable
 private fun WizardCreateUserBody(
-    model: WizardScreenModel,
+    model: WizardScreenState,
     onAdminEmailChange: (String) -> Unit = {},
     onAdminPasswordChange: (String) -> Unit = {},
     onRepeatAdminPasswordChange: (String) -> Unit = {},
@@ -178,6 +178,6 @@ private fun WizardCreateUserBody(
 @Preview(showBackground = true)
 fun WizardCreateUserBodyPreview() {
     WizardCreateUserBody(
-        WizardScreenModel()
+        WizardScreenState()
     )
 }

@@ -154,9 +154,13 @@ class CreateUserScreenViewModel(
 
     private fun validateUserData() {
         val isValid = if (
-            _createUserState.value.name.isEmpty() &&
-            _createUserState.value.email.isEmpty() &&
-            _createUserState.value.password.isEmpty()
+            _createUserState.value.name.isEmpty() ||
+            _createUserState.value.email.isEmpty() ||
+            _createUserState.value.password.isEmpty() ||
+            _createUserState.value.repeatPassword.isEmpty() ||
+            _createUserState.value.userEmailError ||
+            _createUserState.value.errorPassword ||
+            _createUserState.value.errorRepeatPassword
         ) {
             false
         } else {

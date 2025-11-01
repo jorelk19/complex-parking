@@ -5,6 +5,7 @@ import com.complexparking.domain.base.BaseUseCase
 import com.complexparking.domain.base.ResultUseCaseState
 import com.complexparking.entities.UserData
 import com.complexparking.entities.toUserDto
+import com.complexparking.utils.encryptionTools.RSAEncryptionHelper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -17,8 +18,10 @@ class CreateUserUseCase(
             params?.let {
                 val existingUser = userRepository.getUserByUserName(params.email)
                 if (existingUser == null) {
-                    val userDto = params.toUserDto()
-                    userRepository.insertUser(userDto)
+                    val newUser = params.copy(
+                        password = RSAEncryptionHelper.encryptText(it.password) ?: ""
+                    )
+                    userRepository.insertUser(newUser.toUserDto())
                     emit(ResultUseCaseState.Success(true))
                 } else {
                     emit(ResultUseCaseState.Success(false))

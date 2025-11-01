@@ -71,7 +71,7 @@ fun UploadComplexDataScreen() {
 
 @Composable
 private fun UploadComplexDataBody(
-    model: WizardScreenModel,
+    model: WizardScreenState,
     onSearchFileButton: (Uri) -> Unit,
     onUploadFileClick: (ArrayList<FileData>) -> Unit,
 ) {
@@ -142,7 +142,7 @@ fun UserItemRow(data: PreviousFileData) {
 
 @Composable
 fun FilePickerButton(
-    model: WizardScreenModel,
+    model: WizardScreenState,
     onSearchFileButton: (Uri) -> Unit,
     onUploadFileClick: (ArrayList<FileData>) -> Unit,
 ) {
@@ -210,7 +210,7 @@ fun FilePickerButton(
 @Composable
 fun UploadComplexDataBodyPreview() {
     UploadComplexDataBody(
-        WizardScreenModel(uploadButtonVisibility = false),
+        WizardScreenState(uploadButtonVisibility = false),
         {},
         {}
     )

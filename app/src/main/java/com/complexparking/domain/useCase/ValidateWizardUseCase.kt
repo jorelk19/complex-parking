@@ -13,7 +13,6 @@ class ValidateWizardUseCase(
     private val storePreferenceUtils: StorePreferenceUtils,
 ) : BaseUseCase<Any, WizardState> {
     override suspend fun execute(params: Any?): Flow<ResultUseCaseState<WizardState>> = flow {
-        emit(ResultUseCaseState.Loading)
         try {
             val isCompleted = storePreferenceUtils.getBoolean(IS_WIZARD_COMPLETED, false)
             val wizardState = if (isCompleted) {

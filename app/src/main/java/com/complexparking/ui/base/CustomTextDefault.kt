@@ -82,6 +82,24 @@ fun CustomTextLage(
 }
 
 @Composable
+fun CustomTextLageBold(
+    text: String,
+    color: Color = LocalCustomColors.current.colorPrimaryText,
+    textAlign: TextAlign = TextAlign.Start,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = text,
+        color = color,
+        modifier = modifier
+            .fillMaxWidth(),
+        fontSize = Dimensions.text16sp,
+        textAlign = textAlign,
+        fontWeight = FontWeight.Bold
+    )
+}
+
+@Composable
 fun CustomTextXLage(
     text: String,
     color: Color = LocalCustomColors.current.colorPrimaryText,
@@ -113,6 +131,25 @@ fun CustomText2XLage(
         fontSize = Dimensions.text20sp,
         textAlign = textAlign,
         overflow = overflow
+    )
+}
+
+@Composable
+fun CustomText2XLageBold(
+    text: String,
+    color: Color = LocalCustomColors.current.colorPrimaryText,
+    textAlign: TextAlign = TextAlign.Start,
+    overflow: TextOverflow = TextOverflow.Ellipsis,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = text,
+        color = color,
+        modifier = modifier,
+        fontSize = Dimensions.text20sp,
+        textAlign = textAlign,
+        overflow = overflow,
+        fontWeight = FontWeight.Bold
     )
 }
 

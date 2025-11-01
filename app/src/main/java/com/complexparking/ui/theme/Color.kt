@@ -3,6 +3,7 @@ package com.complexparking.ui.theme
 import androidx.compose.ui.graphics.Color
 
 
+val ColorGray9 = Color(0xFF295C90)
 val ColorGray7 = Color(0xFF193754)
 val ColorGray1 = Color(0xFFFFFFFF)
 val ColorGray2 = Color(0xFFF0F4F8)

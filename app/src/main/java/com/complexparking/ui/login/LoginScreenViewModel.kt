@@ -49,7 +49,6 @@ class LoginScreenViewModel(
     }
 
     fun onEmailChange(text: String) {
-        email.value = text
         text.isValidEmail(
             onFalse = {
                 loginScreenModel.value = loginScreenModel.value.copy(
@@ -59,7 +58,7 @@ class LoginScreenViewModel(
             },
             onEmptyString = {
                 loginScreenModel.value = loginScreenModel.value.copy(
-                    emailErrorType = ErrorType.NONE,
+                    emailErrorType = ErrorType.INVALID_EMAIL,
                     emailError = true
                 )
             },
@@ -68,6 +67,7 @@ class LoginScreenViewModel(
                     emailErrorType = ErrorType.NONE,
                     emailError = false
                 )
+                email.value = text
             }
         )
         validateButton()

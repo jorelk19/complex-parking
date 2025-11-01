@@ -42,11 +42,13 @@ import com.complexparking.ui.base.Dimensions.size30dp
 import com.complexparking.ui.base.Dimensions.size50dp
 import com.complexparking.ui.base.EnumEditTextType
 import com.complexparking.ui.theme.LocalCustomColors
+import com.complexparking.ui.utilities.ObservableScreen
 import com.complexparking.ui.utilities.formatPlate
 import com.complexparking.ui.validateError
 import com.complexparking.utils.pdfTools.generatePDF
 import java.io.File
 import java.util.Date
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -63,6 +65,11 @@ fun HomeScreen(
     if (homeScreenViewModel.printFile.value) {
         generatePDF(context, GetDirectory())
     }
+    ObservableScreen(
+        onResume = {
+            homeScreenViewModel.observePrintState()
+        }
+    )
 
     ContainerWithoutScroll(
         header = {

@@ -39,7 +39,6 @@ class HomeScreenViewModel(
         unitToVisit.value = ""
         carGuest.value = CarGuest()
         homeScreenModel.value = HomeScreenModel(
-            onClickHeaderBack = { onClickBack() },
             onTextPlateChange = { onPlateChange(it) },
             onTextUnitChange = { onUnitToVisitChange(it) },
             onRegisterButtonClick = { onRegisterClick() },
@@ -76,8 +75,8 @@ class HomeScreenViewModel(
                 validateUseCaseResult(useCaseResult) { result ->
                     if (result) {
                         printProcess()
+                        clearForm()
                         //_printFile.value = true
-
                     } else {
                         /*Show error*/
                         false
@@ -88,9 +87,9 @@ class HomeScreenViewModel(
     }
 
     private fun clearForm() {
-        homeScreenModel.value = homeScreenModel.value.copy(
+        /*homeScreenModel.value = homeScreenModel.value.copy(
             plateFocus = true
-        )
+        )*/
         loadHomeModel()
     }
 
@@ -129,9 +128,6 @@ class HomeScreenViewModel(
                 }
             }
         }
-    }
-
-    private fun onClickBack() {
     }
 
     private fun onPlateChange(plateText: String) {
@@ -173,6 +169,13 @@ class HomeScreenViewModel(
 
     override fun onStartScreen() {
         loadHomeModel()
+    }
+
+    private fun printProcess() {
+        printerViewModel.existingConnection()
+    }
+
+    fun observePrintState() {
         viewModelScope.launch {
             printerViewModel.uiState.collect { result ->
                 if (result.isConnected) {
@@ -187,9 +190,5 @@ class HomeScreenViewModel(
                 }
             }
         }
-    }
-
-    private fun printProcess() {
-        printerViewModel.existingConnection()
     }
 }

@@ -9,6 +9,8 @@ data class ComplexData(
     val complexName: String,
     val complexAddress: String,
     val parkingQuantity: Int,
+    val parkingPrice: Double,
+    val parkingMaxFreeHour: Int,
     val adminName: String,
     val adminEmail: String,
     val adminPassword: String,
