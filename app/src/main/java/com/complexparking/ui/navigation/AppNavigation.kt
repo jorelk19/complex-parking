@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.complexparking.ui.user.CreateUserScreen
-import com.complexparking.ui.edit.EditScreen
+import com.complexparking.ui.cashClosing.CashClosingScreen
 import com.complexparking.ui.home.HomeScreen
 import com.complexparking.ui.printer.PrinterScreen
 import com.complexparking.ui.search.SearchScreen
@@ -25,8 +25,8 @@ fun AppNavigation(modifier: Modifier = Modifier, navController: NavHostControlle
         composable(route = AppScreens.SEARCHSCREEN.route) {
             SearchScreen(navController = navController, modifier)
         }
-        composable(route = AppScreens.EDITSCREEN.route) {
-            EditScreen(navController = navController)
+        composable(route = AppScreens.CASHCLOSINGSCREEN.route) {
+            CashClosingScreen(navController = navController)
         }
         composable(route = AppScreens.SETTINGSCREEN.route) {
             SettingsScreen(navController = navController)

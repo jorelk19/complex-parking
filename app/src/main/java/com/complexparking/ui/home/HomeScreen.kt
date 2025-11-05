@@ -97,7 +97,7 @@ fun HomeBody(
     val colors = LocalCustomColors.current
     Column(
         modifier = modifier
-            .padding(start = size50dp, end = size50dp)
+            .padding(start = size20dp, end = size20dp)
             .fillMaxSize()
     ) {
         Spacer(

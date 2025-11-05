@@ -1,7 +1,6 @@
-package com.complexparking.ui.edit
+package com.complexparking.ui.cashClosing
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.complexparking.R
@@ -9,14 +8,14 @@ import com.complexparking.ui.base.ContainerWithScroll
 import com.complexparking.ui.base.CustomHeader
 
 @Composable
-fun EditScreen(
+fun CashClosingScreen(
     navController: NavController
 ) {
-    EditScreenContainer()
+    CashClosingScreenContainer()
 }
 
 @Composable
-private fun EditScreenContainer(
+private fun CashClosingScreenContainer(
 
 ){
     ContainerWithScroll(

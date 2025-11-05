@@ -20,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -73,7 +72,7 @@ fun BottomBarControl(navController: NavController) {
         menuIcon = ImageVector.vectorResource(R.drawable.ic_edit),
         selectedColor = selectedColor,
         unselectedColor = unselectedColor,
-        targetScreen = AppScreens.EDITSCREEN,
+        targetScreen = AppScreens.CASHCLOSINGSCREEN,
         selectedIndicatorMenuIcon = ImageVector.vectorResource(R.drawable.selected_menu_rectangle)
     )
     val settingsTab = BottomBarItem(
@@ -98,7 +97,7 @@ fun BottomBarControl(navController: NavController) {
             if(navController.currentDestination?.route == AppScreens.NONE.route) {
                 mutableIntStateOf(0)
             } else {
-                mutableIntStateOf(3)
+                mutableIntStateOf(tabBarItems.size -1)
             }
         }
     }

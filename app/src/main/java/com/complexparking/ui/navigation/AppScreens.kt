@@ -17,7 +17,7 @@ sealed class AppScreens(val route: String) {
     @Serializable
     data object SEARCHSCREEN: AppScreens("SEARCH_SCREEN")
     @Serializable
-    data object EDITSCREEN: AppScreens("EDIT_SCREEN")
+    data object CASHCLOSINGSCREEN: AppScreens("CASH_CLOSING_SCREEN")
     @Serializable
     data object SETTINGSCREEN: AppScreens("SETTINGS_SCREEN")
     @Serializable

@@ -9,7 +9,8 @@ import com.complexparking.ui.base.BaseViewModel
 import com.complexparking.ui.printer.PrinterViewModel
 import com.complexparking.ui.utilities.ErrorType
 import com.complexparking.ui.utilities.formatPlate
-import com.complexparking.utils.extensions.stringToFormat
+import com.complexparking.utils.extensions.getCurrentDate
+import com.complexparking.utils.extensions.getCurrentTime
 import com.complexparking.utils.printerTools.PrinterData
 import com.complexparking.utils.qrTools.QrUtils
 import java.util.Calendar
@@ -42,8 +43,8 @@ class HomeScreenViewModel(
             onTextPlateChange = { onPlateChange(it) },
             onTextUnitChange = { onUnitToVisitChange(it) },
             onRegisterButtonClick = { onRegisterClick() },
-            hourArrive = Calendar.getInstance().time.toString(),
-            date = currentDate.stringToFormat(),
+            hourArrive = getCurrentTime(),
+            date = getCurrentDate(),
             plateText = "",
             unit = "",
             unitError = false,

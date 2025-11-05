@@ -34,11 +34,11 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CustomGeneralHeader(
 ) {
-    /*val viewModel: HeaderViewModel = koinViewModel()
+    val viewModel: HeaderViewModel = koinViewModel()
     viewModel.isCompletedLoadingData.collectAsStateWithLifecycle()
-    val uiState by viewModel.headerState.collectAsStateWithLifecycle()*/
+    val uiState by viewModel.headerState.collectAsStateWithLifecycle()
     CustomGeneralHeaderContainer(
-        uiState = HeaderState()//uiState
+        uiState = uiState
     )
 }
 

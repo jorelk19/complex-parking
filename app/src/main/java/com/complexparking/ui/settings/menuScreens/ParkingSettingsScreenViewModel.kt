@@ -69,16 +69,6 @@ class ParkingSettingsScreenViewModel(
         }
     }
 
-    fun clearForm() {
-        _parkingSettingsState.update {
-            it.copy(
-                parkingHourPrice = "",
-                parkingMaxHourFree = "",
-                isButtonEnabled = false
-            )
-        }
-    }
-
     fun onParkingHourPriceChange(parkingHourPrice: String) {
         _parkingSettingsState.update { it.copy(parkingHourPrice = parkingHourPrice) }
         validateParkingData()
@@ -90,37 +80,47 @@ class ParkingSettingsScreenViewModel(
     }
 
     fun onParkingChange(parkingQuantity: String) {
-        _parkingSettingsState.value = _parkingSettingsState.value.copy(
-            parkingQuantity = parkingQuantity
-        )
+        _parkingSettingsState.update {
+            it.copy(
+                parkingQuantity = parkingQuantity
+            )
+        }
         validateParkingData()
     }
 
     fun onAddressChange(address: String) {
-        _parkingSettingsState.value = _parkingSettingsState.value.copy(
-            complexAddress = address
-        )
+        _parkingSettingsState.update {
+            it.copy(
+                complexAddress = address
+            )
+        }
         validateParkingData()
     }
 
     fun onAdminChange(adminName: String) {
-        _parkingSettingsState.value = _parkingSettingsState.value.copy(
-            adminName = adminName
-        )
+        _parkingSettingsState.update {
+            it.copy(
+                adminName = adminName
+            )
+        }
         validateParkingData()
     }
 
     fun onUnitChange(unit: String) {
-        _parkingSettingsState.value = _parkingSettingsState.value.copy(
-            quantityUnit = unit
-        )
+        _parkingSettingsState.update {
+            it.copy(
+                quantityUnit = unit
+            )
+        }
         validateParkingData()
     }
 
     fun onComplexNameChange(name: String) {
-        _parkingSettingsState.value = _parkingSettingsState.value.copy(
-            complexName = name
-        )
+        _parkingSettingsState.update {
+            it.copy(
+                complexName = name
+            )
+        }
         validateParkingData()
     }
 
