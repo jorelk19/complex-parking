@@ -20,16 +20,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComplexParkingTheme {
                 val navHostController = rememberNavController()
-                /*Scaffold(
-                    bottomBar = {
-                        BottomBarControl(navHostController)
-                    }
-                ) {
-                    AppNavigation(navController = navHostController, modifier = Modifier.padding(it))
-                }*/
                 ContainerWithoutScroll(
                     header = {
-                        CustomGeneralHeader("¡Hola! Edson Nieto")
+                        CustomGeneralHeader()
                     },
                     footer = {
                         BottomBarControl(navHostController)

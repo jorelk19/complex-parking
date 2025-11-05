@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -24,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.complexparking.ui.base.Dimensions.size10dp
+import com.complexparking.ui.base.Dimensions.size30dp
 import com.complexparking.ui.base.Dimensions.size50dp
 import com.complexparking.ui.controls.SnackBarControl
 import com.complexparking.ui.theme.LocalCustomColors
@@ -108,51 +110,6 @@ fun ContainerWithoutScroll(
     body: @Composable () -> Unit = {},
     footer: @Composable () -> Unit = {},
 ) {
-    /*Scaffold(
-        topBar = header,
-        content = {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = bodyColor)
-                    .padding(it)
-            ) {
-                Column(
-                    modifier = Modifier.height(50.dp)
-                ) {
-                    header()
-                }
-                ConstraintLayout(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    val (bodyContainer, footerContainer) = createRefs()
-                    Column(
-                        modifier = Modifier
-                            .constrainAs(bodyContainer) {
-                                top.linkTo(parent.top)
-                                start.linkTo(parent.start)
-                                end.linkTo(parent.end)
-                            }
-                            .fillMaxSize()
-                    ) {
-                        body()
-                    }
-                    Column(
-                        modifier = Modifier
-                            .constrainAs(footerContainer) {
-                                start.linkTo(parent.start)
-                                end.linkTo(parent.end)
-                                bottom.linkTo(parent.bottom)
-                            }
-                            .fillMaxWidth()
-                    ) {
-                        footer()
-                    }
-                }
-            }
-        }
-    )*/
     if (LoadingManager.loaderState().value) {
         PulseLoader()
     } else {
@@ -166,6 +123,7 @@ fun ContainerWithoutScroll(
                 modifier = Modifier
                     .wrapContentHeight()
                     .fillMaxWidth()
+                    .heightIn(min = size30dp)
             ) {
                 header()
             }
@@ -192,7 +150,6 @@ fun ContainerWithoutScroll(
                             bottom.linkTo(parent.bottom)
                         }
                         .fillMaxWidth()
-                        .padding(start = size10dp, end = size10dp)
                 ) {
                     footer()
                 }

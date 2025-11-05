@@ -24,9 +24,6 @@ fun AuthenticationNavigation(navController: NavHostController) {
         composable(route = AppScreens.SPLASHSCREEN.route) {
             SplashScreen(navController)
         }
-        composable(route = AppScreens.SPLASHSCREEN.route) {
-            SplashScreen(navController)
-        }
         composable(route = AppScreens.LOGINSCREEN.route) {
             LoginScreen(navController = navController)
         }

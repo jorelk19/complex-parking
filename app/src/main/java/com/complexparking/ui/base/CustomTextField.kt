@@ -90,10 +90,18 @@ fun CustomEditText(
     }
 
     var textState by remember {
-        mutableStateOf("")
+        mutableStateOf(
+            TextFieldValue(
+                text = ""
+            )
+        )
     }
 
-    textState = text
+    textState = TextFieldValue(
+            text = text,
+            selection = TextRange(text.length)
+        )
+
 
     var visualInformation = VisualTransformation.None
 
@@ -181,13 +189,13 @@ fun CustomEditText(
                 value = textState,
                 onValueChange = { newText ->
                     maxLength?.let {
-                        if (newText.length <= it) {
+                        if (newText.text.length <= it) {
                             textState = newText
                         }
                     } ?: run {
                         textState = newText
                     }
-                    onValueChange(newText)
+                    onValueChange(newText.text)
                 },
                 modifier = if (hasFocus) {
                     modifierText

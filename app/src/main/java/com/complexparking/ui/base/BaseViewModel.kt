@@ -1,24 +1,27 @@
 package com.complexparking.ui.base
 
-import android.os.Handler
-import android.os.Looper
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.complexparking.R
 import com.complexparking.domain.base.ResultUseCaseState
+import com.complexparking.entities.UserData
 import com.complexparking.ui.controls.SnackBarController
 import com.complexparking.ui.controls.SnackBarEvents
 import com.complexparking.ui.controls.SnackType
 import com.complexparking.ui.utilities.LoadingManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 
-abstract class BaseViewModel: ViewModel() {
+abstract class BaseViewModel : ViewModel() {
 
     abstract fun onStartScreen()
     private val _isCompletedLoadingData = MutableStateFlow(false)
+    private val _currentUserData = MutableStateFlow(UserData())
+
     val isCompletedLoadingData = _isCompletedLoadingData
         .onStart {
             onStartScreen()
@@ -29,15 +32,18 @@ abstract class BaseViewModel: ViewModel() {
             started = SharingStarted.Lazily,
             initialValue = false
         )
+
     suspend fun <T> validateUseCaseResult(useCaseResult: ResultUseCaseState<T>, resultAction: suspend (T) -> Unit) {
-        when(useCaseResult) {
+        when (useCaseResult) {
             is ResultUseCaseState.Loading -> {
                 LoadingManager.showLoader()
             }
+
             is ResultUseCaseState.Success<T> -> {
                 LoadingManager.hideLoader()
                 resultAction(useCaseResult.data)
             }
+
             is ResultUseCaseState.Error -> {
                 LoadingManager.hideLoader()
                 SnackBarController.sendEvent(

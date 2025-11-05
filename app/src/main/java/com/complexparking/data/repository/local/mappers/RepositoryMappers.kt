@@ -2,11 +2,11 @@ package com.complexparking.data.repository.local.mappers
 
 import com.complexparking.data.repository.local.dto.BrandDto
 import com.complexparking.data.repository.local.dto.CarDto
-import com.complexparking.data.repository.local.dto.ParkingConfigurationDto
+import com.complexparking.data.repository.local.dto.ComplexDto
 import com.complexparking.data.repository.local.dto.UserDto
 import com.complexparking.entities.Brand
 import com.complexparking.entities.Car
-import com.complexparking.entities.ParkingConfiguration
+import com.complexparking.entities.ComplexConfiguration
 import com.complexparking.entities.UserData
 
 fun CarDto.toCar() = Car(
@@ -30,8 +30,13 @@ fun UserDto.toUserData() = UserData(
     creationDate = this.date
 )
 
-fun ParkingConfigurationDto.toParkingConfiguration() = ParkingConfiguration(
+fun ComplexDto.toComplexConfiguration() = ComplexConfiguration(
     id = this.id,
     parkingPrice = this.parkingPrice,
-    maxFreeHour = this.maxFreeHour
+    maxFreeHour = this.maxFreeHour,
+    complexName = this.complexName,
+    complexAddress = this.complexAddress,
+    complexUnits = this.complexUnits,
+    complexQuantityParking = this.quantityParking,
+    adminName = this.adminName
 )

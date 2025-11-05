@@ -13,14 +13,14 @@ import kotlinx.coroutines.launch
 
 class SettingsScreenViewModel(
     private val closeSessionUseCase: CloseSessionUseCase,
-    private val getUserDataUseCase: GetUserDataUseCase,
+    private val getUserDataUseCase: GetUserDataUseCase
 ) : BaseViewModel() {
 
     private val _settingScreenState = MutableStateFlow(SettingScreenState())
     val settingScreenState get() = _settingScreenState.asStateFlow()
+
     private val _menuItemSelected = mutableStateOf(SettingsMenuItem.NONE)
     override fun onStartScreen() {
-        _settingScreenState.value = SettingScreenState()
         getProfileUser()
     }
 
@@ -48,15 +48,15 @@ class SettingsScreenViewModel(
     private fun validateTargetScreen(settingsMenuItem: SettingsMenuItem) {
         when (settingsMenuItem) {
             SettingsMenuItem.PRINTER_ITEM -> {
-                _settingScreenState.update { it.copy(screenTarget = AppScreens.SELECTPRINTERSCREEN) }
+                _settingScreenState.update { it.copy(screen = AppScreens.SELECTPRINTERSCREEN) }
             }
 
             SettingsMenuItem.PARAMETERS_PARKING_ITEM -> {
-                _settingScreenState.update { it.copy(screenTarget = AppScreens.PARKINGSETTINGSSCREEN) }
+                _settingScreenState.update { it.copy(screen = AppScreens.PARKINGSETTINGSSCREEN) }
             }
 
             SettingsMenuItem.CREATE_USER_ITEM -> {
-                _settingScreenState.update { it.copy(screenTarget = AppScreens.CREATEUSERSCREEN) }
+                _settingScreenState.update { it.copy(screen = AppScreens.CREATEUSERSCREEN) }
             }
 
             SettingsMenuItem.CLOSE_SESSION_ITEM -> {
@@ -73,11 +73,15 @@ class SettingsScreenViewModel(
                 validateUseCaseResult(resultUseCaseState) { result ->
                     result?.let {
                         if (result) {
-                            _settingScreenState.update { it.copy(screenTarget = AppScreens.LOGINSCREEN) }
+                            _settingScreenState.update { it.copy(screen = AppScreens.LOGINSCREEN) }
                         }
                     }
                 }
             }
         }
+    }
+
+    fun resetTargetView() {
+        _settingScreenState.update { it.copy(screen = AppScreens.SETTINGSCREEN) }
     }
 }

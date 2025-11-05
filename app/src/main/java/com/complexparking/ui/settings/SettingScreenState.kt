@@ -4,6 +4,6 @@ import com.complexparking.entities.UserData
 import com.complexparking.ui.navigation.AppScreens
 
 data class SettingScreenState(
-    val screenTarget: AppScreens = AppScreens.NONE,
+    val screen: AppScreens = AppScreens.SETTINGSCREEN,
     val userData: UserData = UserData()
 )

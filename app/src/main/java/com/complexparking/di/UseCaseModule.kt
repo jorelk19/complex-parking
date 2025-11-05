@@ -4,7 +4,7 @@ import com.complexparking.domain.useCase.CloseSessionUseCase
 import com.complexparking.domain.useCase.CreateGuestUseCase
 import com.complexparking.domain.useCase.CreateUserUseCase
 import com.complexparking.domain.useCase.GetCarByPlateUseCase
-import com.complexparking.domain.useCase.GetParkingConfigurationUseCase
+import com.complexparking.domain.useCase.GetComplexConfigurationUseCase
 import com.complexparking.domain.useCase.GetPermissionsUseCase
 import com.complexparking.domain.useCase.GetSessionUseCase
 import com.complexparking.domain.useCase.LoadComplexUnitDataUseCase
@@ -39,6 +39,6 @@ val useCaseModule = module {
     single { SetPermissionsUseCase(get()) }
     single { CloseSessionUseCase(get()) }
     single { CreateUserUseCase(get()) }
-    single { GetParkingConfigurationUseCase(get()) }
+    single { GetComplexConfigurationUseCase(get()) }
     single { UpdateParkingConfigurationUseCase(get()) }
 }

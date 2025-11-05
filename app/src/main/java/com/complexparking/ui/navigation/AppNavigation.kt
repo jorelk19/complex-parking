@@ -26,7 +26,7 @@ fun AppNavigation(modifier: Modifier = Modifier, navController: NavHostControlle
             SearchScreen(navController = navController, modifier)
         }
         composable(route = AppScreens.EDITSCREEN.route) {
-            EditScreen(navController = navController, modifier)
+            EditScreen(navController = navController)
         }
         composable(route = AppScreens.SETTINGSCREEN.route) {
             SettingsScreen(navController = navController)
@@ -39,9 +39,6 @@ fun AppNavigation(modifier: Modifier = Modifier, navController: NavHostControlle
         }
         composable(route = AppScreens.CREATEUSERSCREEN.route) {
             CreateUserScreen(navController = navController)
-        }
-        composable(route = AppScreens.SELECTPRINTERSCREEN.route) {
-            PrinterScreen(navController = navController)
         }
     }
 }

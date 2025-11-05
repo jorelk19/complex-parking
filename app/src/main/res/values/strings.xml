@@ -14,6 +14,10 @@
     <!--endregion-->
     <!--Home Screen-->
     <string name="home_screen_header_title" translatable="false">Ingreso vehicular</string>
+    <string name="home_screen_header_profile_greetings" translatable="false">¡Hola! %1$s</string>
+    <string name="home_screen_header_profile_admin" translatable="false">Administrador</string>
+    <string name="home_screen_header_profile_security_guard" translatable="false">Guarda de seguridad</string>
+
     <string name="home_screen_plate_title" translatable="false">Ingrese la placa</string>
     <string name="home_screen_complex_unit_to_visit" translatable="false">Unidad a visitar</string>
     <string name="home_screen_plate_access_hour" translatable="false">Hora de ingreso</string>
@@ -82,7 +86,7 @@
     <!--Settings Screen-->
     <string name="settings_screen_title" translatable="false">Configuración</string>
     <string name="settings_screen_menu_printer" translatable="false">Configurar impresora</string>
-    <string name="settings_screen_menu_parking_parameters" translatable="false">Parametrización parqueadero</string>
+    <string name="settings_screen_menu_parking_parameters" translatable="false">Parametrización conjunto</string>
     <string name="settings_screen_menu_parking_create_user" translatable="false">Crear usuario</string>
     <string name="settings_screen_menu_parking_close_session" translatable="false">Cerrar sesión</string>
     <string name="settings_screen_profile_banner" translatable="false">Bienvenido: %1$s</string>
@@ -117,5 +121,9 @@
     <string name="parking_setting_screen_hour_price" translatable="false">Valor hora</string>
     <string name="parking_setting_screen_mx_free_hour" translatable="false">Máximo de horas gratis</string>
     <string name="parking_setting_screen_save_button" translatable="false">Guardar</string>
+    <!---->
+
+    <!--Edit Screen-->
+    <string name="edit_screen_title" translatable="false">Ingresar nuevo residente</string>
     <!---->
 </resources>

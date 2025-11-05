@@ -10,5 +10,8 @@ data class ComplexDto (
     val complexName: String,
     val complexUnits: Int,
     val complexAddress: String,
-    val quantityParking: Int
+    val quantityParking: Int,
+    val parkingPrice: Double,
+    val maxFreeHour: Int,
+    val adminName: String
 )

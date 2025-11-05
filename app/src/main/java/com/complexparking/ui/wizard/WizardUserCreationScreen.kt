@@ -30,7 +30,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun WizardUserCreationScreen() {
     val wizardScreenViewModel: WizardScreenViewModel = koinViewModel()
-    val model by wizardScreenViewModel.wizardModel.collectAsState()
+    val model by wizardScreenViewModel.wizardState.collectAsState()
     ContainerWithScroll(
         header = {
             CustomHeader(

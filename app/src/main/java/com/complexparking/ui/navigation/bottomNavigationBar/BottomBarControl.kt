@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -86,12 +87,24 @@ fun BottomBarControl(navController: NavController) {
 
     val tabBarItems = listOf(homeTab, searchTab, editTab, settingsTab)
     var selectedTabIndex by rememberSaveable {
-        mutableIntStateOf(0)
+        val filter = tabBarItems.filter { bottomBarItem ->
+            bottomBarItem.targetScreen.route == navController.currentDestination?.route
+        }
+        if (filter.isNotEmpty()) {
+            val item = filter.first()
+            val currentIndex = tabBarItems.indexOf(item)
+            mutableIntStateOf(currentIndex)
+        } else {
+            if(navController.currentDestination?.route == AppScreens.NONE.route) {
+                mutableIntStateOf(0)
+            } else {
+                mutableIntStateOf(3)
+            }
+        }
     }
     HorizontalDivider(thickness = Dimensions.bottomNavigationBarHorizontalDividerThickness, color = colors.colorNeutralBorder)
     NavigationBar(
-        modifier = Modifier
-            .height(Dimensions.bottomNavigationBarHeight),
+        modifier = Modifier.height(Dimensions.bottomNavigationBarHeight),
         containerColor = colors.colorPrimaryBg
     ) {
         tabBarItems.forEachIndexed { index, tabBarItem ->

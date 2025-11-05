@@ -1,7 +1,6 @@
 package com.complexparking.ui.settings
 
 import android.content.Intent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -46,16 +45,17 @@ fun SettingsScreen(
     navController: NavController,
 ) {
     val viewModel: SettingsScreenViewModel = koinViewModel()
-    viewModel.isCompletedLoadingData.collectAsState()
+    val isLoadCompleted by viewModel.isCompletedLoadingData.collectAsState()
     val uiState by viewModel.settingScreenState.collectAsState()
 
-    if (uiState.screenTarget != AppScreens.NONE) {
-        if (uiState.screenTarget == AppScreens.LOGINSCREEN) {
-            val context = LocalContext.current
-            val intent = Intent(context, SplashActivity::class.java)
-            context.startActivity(intent)
-        } else {
-            navController.navigate(uiState.screenTarget.route)
+    if (uiState.screen == AppScreens.LOGINSCREEN) {
+        val context = LocalContext.current
+        val intent = Intent(context, SplashActivity::class.java)
+        viewModel.resetTargetView()
+        context.startActivity(intent)
+    } else {
+        if (uiState.screen != AppScreens.SETTINGSCREEN) {
+            navController.navigate(uiState.screen.route)
         }
     }
 

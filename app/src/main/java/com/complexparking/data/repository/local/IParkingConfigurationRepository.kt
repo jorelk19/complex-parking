@@ -1,8 +1,8 @@
 package com.complexparking.data.repository.local
 
-import com.complexparking.entities.ParkingConfiguration
+import com.complexparking.entities.ComplexConfiguration
 
 interface IParkingConfigurationRepository {
-    suspend fun getParkingConfiguration(): ParkingConfiguration
-    suspend fun updateParkingConfiguration(parkingConfiguration: ParkingConfiguration)
+    suspend fun getParkingConfiguration(): ComplexConfiguration
+    suspend fun updateParkingConfiguration(complexConfiguration: ComplexConfiguration)
 }

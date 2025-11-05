@@ -36,15 +36,14 @@ import org.koin.androidx.compose.koinViewModel
 fun SplashScreen(navController: NavController) {
     val splashViewModel: SplashScreenViewModel = koinViewModel()
     val isSplashCompleted by splashViewModel.isCompletedLoadingData.collectAsStateWithLifecycle()
-    val goToHome by splashViewModel.goToHome
-    val isWizardCompleted by splashViewModel.isWizardCompleted
-    ScreenObserver(splashViewModel)
+    val uiState by splashViewModel.splashScreenState.collectAsStateWithLifecycle()
+
+    //ScreenObserver(splashViewModel)
     FlatContainer {
         SplashBody(
-            navController,
-            goToHome,
-            isWizardCompleted,
-            isSplashCompleted
+            navController = navController,
+            uiState = uiState,
+            isSplashCompleted = isSplashCompleted
         )
     }
 }
@@ -66,8 +65,7 @@ private fun SplashFooter() {
 @Composable
 private fun SplashBody(
     navController: NavController,
-    goToHome: Boolean,
-    isWizardCompleted: Boolean,
+    uiState: SplashScreenState,
     isSplashCompleted: Boolean,
 ) {
     Box(
@@ -82,8 +80,8 @@ private fun SplashBody(
         if (isSplashCompleted) {
             val context = LocalContext.current
             val activity = context as? Activity
-            if (isWizardCompleted) {
-                if (goToHome) {
+            if (uiState.isWizardCompleted) {
+                if (uiState.goToHome) {
                     val activity = context as? Activity
                     val intent = Intent(context, MainActivity::class.java)
                     context.startActivity(intent)
@@ -106,7 +104,7 @@ fun ScreenObserver(splashViewModel: SplashScreenViewModel) {
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
-                splashViewModel.validateShowWizard()
+                //splashViewModel.validateShowWizard()
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -122,8 +120,7 @@ fun ScreenObserver(splashViewModel: SplashScreenViewModel) {
 fun PreviewSplashScreen() {
     SplashBody(
         navController = rememberNavController(),
-        goToHome = false,
-        isWizardCompleted = false,
+        uiState = SplashScreenState(),
         isSplashCompleted = false
     )
 }

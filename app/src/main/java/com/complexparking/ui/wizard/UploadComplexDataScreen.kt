@@ -51,7 +51,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun UploadComplexDataScreen() {
     val wizardScreenViewModel: WizardScreenViewModel = koinViewModel()
-    val model by wizardScreenViewModel.wizardModel.collectAsState()
+    val model by wizardScreenViewModel.wizardState.collectAsState()
     ContainerWithoutScroll(
         header = {
             CustomHeader(

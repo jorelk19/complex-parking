@@ -4,11 +4,11 @@ import android.net.Uri
 import com.complexparking.ui.utilities.ErrorType
 
 data class WizardScreenState(
-    val complexName: String = "",
+    /*val complexName: String = "",
     val quantityUnit: String = "",
     val complexAddress: String = "",
     val parkingQuantity: String = "",
-    val adminName: String = "",
+    val adminName: String = "",*/
     val pathFile: Uri? = null,
     val userPassword: String = "",
     val adminPassword: String = "",
@@ -16,8 +16,8 @@ data class WizardScreenState(
     val repeatAdminPassword: String = "",
     val adminEmail: String = "",
     val userEmail: String = "",
-    val parkingHourPrice: String = "",
-    val parkingMaxHourFree: String = "",
+   /* val parkingHourPrice: String = "",
+    val parkingMaxHourFree: String = "",*/
     val uploadButtonVisibility: Boolean = false,
     val searchButtonEnabled: Boolean = false,
     val previousList: ArrayList<PreviousFileData> = arrayListOf(),

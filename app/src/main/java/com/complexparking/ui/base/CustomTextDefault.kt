@@ -6,8 +6,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -18,7 +16,7 @@ fun CustomTextSmall(
     text: String,
     color: Color = LocalCustomColors.current.colorPrimaryText,
     textAlign: TextAlign = TextAlign.Start,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
@@ -36,7 +34,7 @@ fun CustomTextMedium(
     color: Color = LocalCustomColors.current.colorPrimaryText,
     textAlign: TextAlign = TextAlign.Start,
     fontWeight: FontWeight = FontWeight.Normal,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
@@ -53,7 +51,7 @@ fun CustomTextMediumBold(
     text: String,
     color: Color = LocalCustomColors.current.colorPrimaryText,
     textAlign: TextAlign = TextAlign.Start,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
@@ -64,12 +62,13 @@ fun CustomTextMediumBold(
         fontWeight = FontWeight.Bold
     )
 }
+
 @Composable
 fun CustomTextLage(
     text: String,
     color: Color = LocalCustomColors.current.colorPrimaryText,
     textAlign: TextAlign = TextAlign.Start,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
@@ -86,7 +85,7 @@ fun CustomTextLageBold(
     text: String,
     color: Color = LocalCustomColors.current.colorPrimaryText,
     textAlign: TextAlign = TextAlign.Start,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
@@ -104,7 +103,7 @@ fun CustomTextXLage(
     text: String,
     color: Color = LocalCustomColors.current.colorPrimaryText,
     textAlign: TextAlign = TextAlign.Start,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
@@ -122,7 +121,7 @@ fun CustomText2XLage(
     color: Color = LocalCustomColors.current.colorPrimaryText,
     textAlign: TextAlign = TextAlign.Start,
     overflow: TextOverflow = TextOverflow.Ellipsis,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
@@ -140,7 +139,7 @@ fun CustomText2XLageBold(
     color: Color = LocalCustomColors.current.colorPrimaryText,
     textAlign: TextAlign = TextAlign.Start,
     overflow: TextOverflow = TextOverflow.Ellipsis,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
@@ -158,7 +157,7 @@ fun CustomText3XLage(
     text: String,
     color: Color = LocalCustomColors.current.colorPrimaryText,
     textAlign: TextAlign = TextAlign.Start,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
@@ -175,7 +174,7 @@ fun CustomText4XLage(
     text: String,
     color: Color = LocalCustomColors.current.colorPrimaryText,
     textAlign: TextAlign = TextAlign.Start,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
@@ -192,7 +191,7 @@ fun CustomText5XLage(
     text: String,
     color: Color = LocalCustomColors.current.colorPrimaryText,
     textAlign: TextAlign = TextAlign.Start,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
@@ -209,7 +208,7 @@ fun CustomText6XLage(
     text: String,
     color: Color = LocalCustomColors.current.colorPrimaryText,
     textAlign: TextAlign = TextAlign.Start,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,

@@ -10,6 +10,7 @@ import com.complexparking.domain.useCase.SplashScreenSetWizardCompleteUseCase
 import com.complexparking.entities.ComplexData
 import com.complexparking.ui.controls.SnackBarController
 import com.complexparking.ui.controls.SnackBarEvents
+import com.complexparking.ui.settings.menuScreens.ParkingSettingsState
 import com.complexparking.ui.utilities.ErrorType
 import com.complexparking.ui.utilities.LinearProgressManager
 import com.complexparking.ui.utilities.isValidEmail
@@ -17,6 +18,7 @@ import com.complexparking.ui.utilities.isValidPassword
 import com.complexparking.utils.excelTools.FileData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class WizardScreenViewModel(
@@ -30,8 +32,12 @@ class WizardScreenViewModel(
     val gotoLoginScreen get() = _gotoLoginScreen
     private val _currentStep = mutableStateOf(EnumWizardStep.STEP1)
     private val _fileData = mutableStateOf(ArrayList<FileData>())
-    private val _wizardModel = MutableStateFlow(WizardScreenState())
-    val wizardModel get() = _wizardModel.asStateFlow()
+    private val _wizardState = MutableStateFlow(WizardScreenState())
+    val wizardState get() = _wizardState.asStateFlow()
+
+    private val _parkingSettingState = MutableStateFlow(ParkingSettingsState())
+    val parkingSettingState get() = _parkingSettingState.asStateFlow()
+
 
     private val _permissionsGranted = mutableStateOf(false)
 
@@ -47,7 +53,7 @@ class WizardScreenViewModel(
     }
 
     private fun loadData() {
-        _wizardModel.value = WizardScreenState()
+        _wizardState.value = WizardScreenState()
         viewModelScope.launch {
             getPermissionsUseCase.execute().collect { resultUseCaseState ->
                 validateUseCaseResult(resultUseCaseState) { result ->
@@ -60,46 +66,58 @@ class WizardScreenViewModel(
     }
 
     fun onParkingChange(parkingQuantity: String) {
-        _wizardModel.value = _wizardModel.value.copy(
-            parkingQuantity = parkingQuantity
-        )
+        _parkingSettingState.update {
+            it.copy(
+                parkingQuantity = parkingQuantity
+            )
+        }
         validateComplexConfiguration()
     }
 
     fun onAddressChange(address: String) {
-        _wizardModel.value = _wizardModel.value.copy(
-            complexAddress = address
-        )
+        _parkingSettingState.update {
+            it.copy(
+                complexAddress = address
+            )
+        }
         validateComplexConfiguration()
     }
 
     fun onAdminChange(adminName: String) {
-        _wizardModel.value = _wizardModel.value.copy(
-            adminName = adminName
-        )
+        _parkingSettingState.update {
+            it.copy(
+                adminName = adminName
+            )
+        }
         validateComplexConfiguration()
     }
 
     fun onUnitChange(unit: String) {
-        _wizardModel.value = _wizardModel.value.copy(
-            quantityUnit = unit
-        )
+        _parkingSettingState.update {
+            it.copy(
+                quantityUnit = unit
+            )
+        }
         validateComplexConfiguration()
     }
 
     fun onComplexNameChange(name: String) {
-        _wizardModel.value = _wizardModel.value.copy(
-            complexName = name
-        )
+        _parkingSettingState.update {
+            it.copy(
+                complexName = name
+            )
+        }
         validateComplexConfiguration()
     }
 
     private fun validateComplexConfiguration() {
-        val isButtonEnabled = if (_wizardModel.value.complexName.isEmpty() ||
-            _wizardModel.value.complexAddress.isEmpty() ||
-            _wizardModel.value.parkingQuantity.isEmpty() ||
-            _wizardModel.value.quantityUnit.isEmpty() ||
-            _wizardModel.value.adminName.isEmpty()
+        val isButtonEnabled = if (_parkingSettingState.value.complexName.isEmpty() ||
+            _parkingSettingState.value.complexAddress.isEmpty() ||
+            _parkingSettingState.value.parkingQuantity.isEmpty() ||
+            _parkingSettingState.value.quantityUnit.isEmpty() ||
+            _parkingSettingState.value.adminName.isEmpty() ||
+            _parkingSettingState.value.parkingHourPrice.isEmpty() ||
+            _parkingSettingState.value.parkingMaxHourFree.isEmpty()
         ) {
             false
         } else {
@@ -111,17 +129,19 @@ class WizardScreenViewModel(
     fun onUploadDataFile(fileData: ArrayList<FileData>) {
         _fileData.value = fileData
         val data = if (fileData.size > 5) fileData.subList(0, 5) else fileData
-        _wizardModel.value = _wizardModel.value.copy(
-            previousList = ArrayList(data.map {
-                PreviousFileData(
-                    complexUnit = it.unit,
-                    residentName = it.name,
-                    residentLastName = it.lastName,
-                    plate = it.plate
-                )
-            }),
-            showPreviousList = fileData.isNotEmpty()
-        )
+        _wizardState.update {
+            it.copy(
+                previousList = ArrayList(data.map {
+                    PreviousFileData(
+                        complexUnit = it.unit,
+                        residentName = it.name,
+                        residentLastName = it.lastName,
+                        plate = it.plate
+                    )
+                }),
+                showPreviousList = fileData.isNotEmpty()
+            )
+        }
         validateUploadComplexData()
     }
 
@@ -129,15 +149,15 @@ class WizardScreenViewModel(
         viewModelScope.launch {
             loadComplexUnitDataUseCase.execute(
                 ComplexData(
-                    complexUnit = _wizardModel.value.quantityUnit.toInt(),
-                    complexName = _wizardModel.value.complexName,
-                    complexAddress = _wizardModel.value.complexAddress,
-                    parkingQuantity = _wizardModel.value.parkingQuantity.toInt(),
-                    parkingPrice = _wizardModel.value.parkingHourPrice.toDouble(),
-                    parkingMaxFreeHour = _wizardModel.value.parkingMaxHourFree.toInt(),
-                    adminEmail = _wizardModel.value.adminEmail,
-                    adminPassword = _wizardModel.value.adminPassword,
-                    adminName = _wizardModel.value.adminName,
+                    complexUnit = _parkingSettingState.value.quantityUnit.toInt(),
+                    complexName = _parkingSettingState.value.complexName,
+                    complexAddress = _parkingSettingState.value.complexAddress,
+                    parkingQuantity = _parkingSettingState.value.parkingQuantity.toInt(),
+                    parkingPrice = _parkingSettingState.value.parkingHourPrice.toDouble(),
+                    parkingMaxFreeHour = _parkingSettingState.value.parkingMaxHourFree.toInt(),
+                    adminEmail = _wizardState.value.adminEmail,
+                    adminPassword = _wizardState.value.adminPassword,
+                    adminName = _parkingSettingState.value.adminName,
                     fileDataList = _fileData.value
                 )
             ).collect { resultUseCase ->
@@ -153,10 +173,12 @@ class WizardScreenViewModel(
 
     fun onFileChange(uri: Uri?) {
         val path = uri?.path ?: ""
-        _wizardModel.value = _wizardModel.value.copy(
-            pathFile = uri,
-            uploadButtonVisibility = path.isNotEmpty()
-        )
+        _wizardState.update {
+            it.copy(
+                pathFile = uri,
+                uploadButtonVisibility = path.isNotEmpty()
+            )
+        }
     }
 
     private fun updateStep() {
@@ -168,9 +190,11 @@ class WizardScreenViewModel(
             }
 
             1 -> {
-                _wizardModel.value = _wizardModel.value.copy(
-                    searchButtonEnabled = _permissionsGranted.value
-                )
+                _wizardState.update {
+                    it.copy(
+                        searchButtonEnabled = _permissionsGranted.value
+                    )
+                }
                 setButtonEnabled(false)
                 validateUploadComplexData()
                 EnumWizardStep.STEP2
@@ -210,12 +234,12 @@ class WizardScreenViewModel(
 
     private fun validateUserCreation() {
         if (
-            !_wizardModel.value.errorAdminPassword &&
-            _wizardModel.value.adminPassword.isNotEmpty() &&
-            !_wizardModel.value.adminEmailError &&
-            _wizardModel.value.adminEmail.isNotEmpty() &&
-            !_wizardModel.value.errorRepeatAdminPassword &&
-            _wizardModel.value.repeatAdminPassword.isNotEmpty()
+            !_wizardState.value.errorAdminPassword &&
+            _wizardState.value.adminPassword.isNotEmpty() &&
+            !_wizardState.value.adminEmailError &&
+            _wizardState.value.adminEmail.isNotEmpty() &&
+            !_wizardState.value.errorRepeatAdminPassword &&
+            _wizardState.value.repeatAdminPassword.isNotEmpty()
         ) {
             setButtonEnabled(true)
         } else {
@@ -226,24 +250,30 @@ class WizardScreenViewModel(
     fun onAdminEmailChange(email: String) {
         email.isValidEmail(
             onTrue = {
-                _wizardModel.value = _wizardModel.value.copy(
-                    adminEmailError = false,
-                    adminEmailErrorType = ErrorType.NONE,
-                    adminEmail = it
-                )
+                _wizardState.update {
+                    it.copy(
+                        adminEmailError = false,
+                        adminEmailErrorType = ErrorType.NONE,
+                        adminEmail = email
+                    )
+                }
             },
             onFalse = {
-                _wizardModel.value = _wizardModel.value.copy(
-                    adminEmailError = true,
-                    adminEmailErrorType = ErrorType.INVALID_EMAIL
-                )
+                _wizardState.update {
+                    it.copy(
+                        adminEmailError = true,
+                        adminEmailErrorType = ErrorType.INVALID_EMAIL
+                    )
+                }
             }
         )
-        if (_wizardModel.value.adminEmail == _wizardModel.value.userEmail && _wizardModel.value.userEmail.isNotEmpty()) {
-            _wizardModel.value = _wizardModel.value.copy(
-                adminEmailError = true,
-                adminEmailErrorType = ErrorType.USER_ADMIN_SAME_EMAIL
-            )
+        if (_wizardState.value.adminEmail == _wizardState.value.userEmail && _wizardState.value.userEmail.isNotEmpty()) {
+            _wizardState.update {
+                it.copy(
+                    adminEmailError = true,
+                    adminEmailErrorType = ErrorType.USER_ADMIN_SAME_EMAIL
+                )
+            }
         }
         validateUserCreation()
     }
@@ -251,24 +281,30 @@ class WizardScreenViewModel(
     fun onAdminPasswordChange(password: String) {
         password.isValidPassword(
             onTrue = {
-                _wizardModel.value = _wizardModel.value.copy(
-                    errorAdminPassword = false,
-                    adminPasswordErrorType = ErrorType.NONE,
-                    adminPassword = it
-                )
+                _wizardState.update {
+                    it.copy(
+                        errorAdminPassword = false,
+                        adminPasswordErrorType = ErrorType.NONE,
+                        adminPassword = password
+                    )
+                }
             },
             onFalse = {
-                _wizardModel.value = _wizardModel.value.copy(
-                    errorAdminPassword = true,
-                    adminPasswordErrorType = ErrorType.INVALID_PASSWORD
-                )
+                _wizardState.update {
+                    it.copy(
+                        errorAdminPassword = true,
+                        adminPasswordErrorType = ErrorType.INVALID_PASSWORD
+                    )
+                }
             }
         )
-        if (_wizardModel.value.adminPassword != _wizardModel.value.repeatAdminPassword && _wizardModel.value.repeatAdminPassword.isNotEmpty()) {
-            _wizardModel.value = _wizardModel.value.copy(
-                errorAdminPassword = true,
-                adminPasswordErrorType = ErrorType.REPEAT_PASSWORD_INVALID
-            )
+        if (_wizardState.value.adminPassword != _wizardState.value.repeatAdminPassword && _wizardState.value.repeatAdminPassword.isNotEmpty()) {
+            _wizardState.update {
+                it.copy(
+                    errorAdminPassword = true,
+                    adminPasswordErrorType = ErrorType.REPEAT_PASSWORD_INVALID
+                )
+            }
         }
         validateUserCreation()
     }
@@ -276,24 +312,30 @@ class WizardScreenViewModel(
     fun onRepeatAdminPasswordChange(password: String) {
         password.isValidPassword(
             onTrue = {
-                _wizardModel.value = _wizardModel.value.copy(
-                    errorRepeatAdminPassword = false,
-                    repeatAdminPasswordErrorType = ErrorType.NONE,
-                    repeatAdminPassword = it
-                )
+                _wizardState.update {
+                    it.copy(
+                        errorRepeatAdminPassword = false,
+                        repeatAdminPasswordErrorType = ErrorType.NONE,
+                        repeatAdminPassword = password
+                    )
+                }
             },
             onFalse = {
-                _wizardModel.value = _wizardModel.value.copy(
-                    errorRepeatAdminPassword = true,
-                    repeatAdminPasswordErrorType = ErrorType.INVALID_PASSWORD
-                )
+                _wizardState.update {
+                    it.copy(
+                        errorRepeatAdminPassword = true,
+                        repeatAdminPasswordErrorType = ErrorType.INVALID_PASSWORD
+                    )
+                }
             }
         )
-        if (_wizardModel.value.adminPassword != _wizardModel.value.repeatAdminPassword && _wizardModel.value.adminPassword.isNotEmpty()) {
-            _wizardModel.value = _wizardModel.value.copy(
-                errorRepeatAdminPassword = true,
-                repeatAdminPasswordErrorType = ErrorType.REPEAT_PASSWORD_INVALID
-            )
+        if (_wizardState.value.adminPassword != _wizardState.value.repeatAdminPassword && _wizardState.value.adminPassword.isNotEmpty()) {
+            _wizardState.update {
+                it.copy(
+                    errorRepeatAdminPassword = true,
+                    repeatAdminPasswordErrorType = ErrorType.REPEAT_PASSWORD_INVALID
+                )
+            }
         }
         validateUserCreation()
     }
@@ -301,24 +343,30 @@ class WizardScreenViewModel(
     fun onUserEmailChange(email: String) {
         email.isValidEmail(
             onTrue = {
-                _wizardModel.value = _wizardModel.value.copy(
-                    userEmailError = false,
-                    userEmailErrorType = ErrorType.NONE,
-                    userEmail = it
-                )
+                _wizardState.update {
+                    it.copy(
+                        userEmailError = false,
+                        userEmailErrorType = ErrorType.NONE,
+                        userEmail = email
+                    )
+                }
             },
             onFalse = {
-                _wizardModel.value = _wizardModel.value.copy(
-                    userEmailError = true,
-                    userEmailErrorType = ErrorType.INVALID_EMAIL
-                )
+                _wizardState.update {
+                    it.copy(
+                        userEmailError = true,
+                        userEmailErrorType = ErrorType.INVALID_EMAIL
+                    )
+                }
             }
         )
-        if (_wizardModel.value.adminEmail == _wizardModel.value.userEmail && _wizardModel.value.adminEmail.isNotEmpty()) {
-            _wizardModel.value = _wizardModel.value.copy(
-                userEmailError = true,
-                userEmailErrorType = ErrorType.USER_ADMIN_SAME_EMAIL
-            )
+        if (_wizardState.value.adminEmail == _wizardState.value.userEmail && _wizardState.value.adminEmail.isNotEmpty()) {
+            _wizardState.update {
+                it.copy(
+                    userEmailError = true,
+                    userEmailErrorType = ErrorType.USER_ADMIN_SAME_EMAIL
+                )
+            }
         }
         validateUserCreation()
     }
@@ -326,24 +374,30 @@ class WizardScreenViewModel(
     fun onUserPasswordChange(password: String) {
         password.isValidPassword(
             onTrue = {
-                _wizardModel.value = _wizardModel.value.copy(
-                    errorUserPassword = false,
-                    userPasswordErrorType = ErrorType.NONE,
-                    userPassword = it
-                )
+                _wizardState.update {
+                    it.copy(
+                        errorUserPassword = false,
+                        userPasswordErrorType = ErrorType.NONE,
+                        userPassword = password
+                    )
+                }
             },
             onFalse = {
-                _wizardModel.value = _wizardModel.value.copy(
-                    errorUserPassword = true,
-                    userPasswordErrorType = ErrorType.INVALID_PASSWORD
-                )
+                _wizardState.update {
+                    it.copy(
+                        errorUserPassword = true,
+                        userPasswordErrorType = ErrorType.INVALID_PASSWORD
+                    )
+                }
             }
         )
-        if (_wizardModel.value.userPassword != _wizardModel.value.repeatUserPassword && _wizardModel.value.repeatUserPassword.isNotEmpty()) {
-            _wizardModel.value = _wizardModel.value.copy(
-                errorUserPassword = true,
-                userPasswordErrorType = ErrorType.REPEAT_PASSWORD_INVALID
-            )
+        if (_wizardState.value.userPassword != _wizardState.value.repeatUserPassword && _wizardState.value.repeatUserPassword.isNotEmpty()) {
+            _wizardState.update {
+                it.copy(
+                    errorUserPassword = true,
+                    userPasswordErrorType = ErrorType.REPEAT_PASSWORD_INVALID
+                )
+            }
         }
         validateUserCreation()
     }
@@ -351,39 +405,49 @@ class WizardScreenViewModel(
     fun onRepeatUserPasswordChange(password: String) {
         password.isValidPassword(
             onTrue = {
-                _wizardModel.value = _wizardModel.value.copy(
-                    errorRepeatUserPassword = false,
-                    repeatUserPasswordErrorType = ErrorType.NONE,
-                    repeatUserPassword = it
-                )
+                _wizardState.update {
+                    it.copy(
+                        errorRepeatUserPassword = false,
+                        repeatUserPasswordErrorType = ErrorType.NONE,
+                        repeatUserPassword = password
+                    )
+                }
             },
             onFalse = {
-                _wizardModel.value = _wizardModel.value.copy(
-                    errorRepeatUserPassword = true,
-                    repeatUserPasswordErrorType = ErrorType.INVALID_PASSWORD
-                )
+                _wizardState.update {
+                    it.copy(
+                        errorRepeatUserPassword = true,
+                        repeatUserPasswordErrorType = ErrorType.INVALID_PASSWORD
+                    )
+                }
             }
         )
-        if (_wizardModel.value.userPassword != _wizardModel.value.repeatUserPassword && _wizardModel.value.userPassword.isNotEmpty()) {
-            _wizardModel.value = _wizardModel.value.copy(
-                errorRepeatUserPassword = true,
-                repeatUserPasswordErrorType = ErrorType.REPEAT_PASSWORD_INVALID
-            )
+        if (_wizardState.value.userPassword != _wizardState.value.repeatUserPassword && _wizardState.value.userPassword.isNotEmpty()) {
+            _wizardState.update {
+                it.copy(
+                    errorRepeatUserPassword = true,
+                    repeatUserPasswordErrorType = ErrorType.REPEAT_PASSWORD_INVALID
+                )
+            }
         }
         validateUserCreation()
     }
 
     fun onParkingHourPriceChange(parkingPrice: String) {
-        _wizardModel.value = _wizardModel.value.copy(
-            parkingHourPrice = parkingPrice
-        )
+        _parkingSettingState.update {
+            it.copy(
+                parkingHourPrice = parkingPrice
+            )
+        }
         validateComplexConfiguration()
     }
 
     fun onParkingMaxFreeHourChange(maxHour: String) {
-        _wizardModel.value = _wizardModel.value.copy(
-            parkingMaxHourFree = maxHour
-        )
+        _parkingSettingState.update {
+            it.copy(
+                parkingMaxHourFree = maxHour
+            )
+        }
         validateComplexConfiguration()
     }
 }

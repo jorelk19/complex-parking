@@ -21,10 +21,15 @@ import com.complexparking.R
 import com.complexparking.ui.base.ContainerWithScroll
 import com.complexparking.ui.base.CustomButton
 import com.complexparking.ui.base.CustomHeader
+import com.complexparking.ui.base.Dimensions.bottomNavigationBarHeight
+import com.complexparking.ui.base.Dimensions.size10dp
+import com.complexparking.ui.base.Dimensions.size20dp
 import com.complexparking.ui.base.Dimensions.size30dp
 import com.complexparking.ui.base.Dimensions.size50dp
 import com.complexparking.ui.navigation.AppScreens
+import com.complexparking.ui.widgets.ParkingComplexConfigurationView
 import com.complexparking.ui.widgets.ParkingParameterSection
+import com.complexparking.ui.wizard.WizardScreenState
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -37,8 +42,13 @@ fun ParkingSettingsScreen(navController: NavController) {
         uiState = uiState,
         onParkingHourPriceChange = { parkingSettingsScreenViewModel.onParkingHourPriceChange(it) },
         onParkingMaxFreeHourChange = { parkingSettingsScreenViewModel.onParkingMaxFreeHourChange(it) },
+        onComplexNameChange = { parkingSettingsScreenViewModel.onComplexNameChange(it) },
+        onUnitChange = { parkingSettingsScreenViewModel.onUnitChange(it) },
+        onParkingChange = { parkingSettingsScreenViewModel.onParkingChange(it) },
+        onAddressChange = { parkingSettingsScreenViewModel.onAddressChange(it) },
+        onAdminChange = { parkingSettingsScreenViewModel.onAdminChange(it) },
         onSaveParkingSettingsClick = { parkingSettingsScreenViewModel.onSaveSettings() },
-        onClickBack = { navController.navigate(AppScreens.SETTINGSCREEN.route)}
+        onClickBack = { navController.navigate(AppScreens.SETTINGSCREEN.route) }
     )
 }
 
@@ -47,8 +57,13 @@ fun ParkingSettingsBody(
     uiState: ParkingSettingsState,
     onParkingHourPriceChange: (String) -> Unit,
     onParkingMaxFreeHourChange: (String) -> Unit,
+    onUnitChange: (String) -> Unit,
+    onParkingChange: (String) -> Unit,
+    onAddressChange: (String) -> Unit,
+    onAdminChange: (String) -> Unit,
+    onClickBack: () -> Unit,
     onSaveParkingSettingsClick: () -> Unit,
-    onClickBack: () -> Unit
+    onComplexNameChange: (String) -> Unit
 ) {
     ContainerWithScroll(
         header = {
@@ -61,25 +76,23 @@ fun ParkingSettingsBody(
         },
         body = {
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(start = size50dp, end = size50dp)
+                modifier = Modifier.fillMaxSize().padding(bottom = bottomNavigationBarHeight)
             ) {
-                Spacer(
-                    modifier = Modifier.height(size30dp)
-                )
-                ParkingParameterSection(
-                    parkingHourPrice = uiState.parkingHourPrice,
-                    parkingMaxFreeHour = uiState.parkingMaxFreeHour,
-                    onParkingHourPriceChange = onParkingHourPriceChange,
+                ParkingComplexConfigurationView(
+                    parkingSettingsState = uiState,
+                    onComplexNameChange = onComplexNameChange,
+                    onUnitChange = onUnitChange,
+                    onParkingChange = onParkingChange,
+                    onAddressChange = onAddressChange,
+                    onAdminChange = onAdminChange,
                     onParkingMaxFreeHourChange = onParkingMaxFreeHourChange,
-                    parkingHourHasFocus = true
+                    onParkingHourPriceChange = onParkingHourPriceChange
                 )
                 Spacer(
                     modifier = Modifier.height(size30dp)
                 )
                 Column(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(start = size10dp, end = size10dp, bottom = size20dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     CustomButton(
@@ -101,6 +114,11 @@ fun ParkingSettingsBody(
 fun ParkingSettingsScreenPreview() {
     ParkingSettingsBody(
         ParkingSettingsState(),
+        {},
+        {},
+        {},
+        {},
+        {},
         {},
         {},
         {},

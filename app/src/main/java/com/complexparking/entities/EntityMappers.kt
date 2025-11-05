@@ -3,7 +3,7 @@ package com.complexparking.entities
 import com.complexparking.data.repository.local.dto.BrandDto
 import com.complexparking.data.repository.local.dto.CarDto
 import com.complexparking.data.repository.local.dto.CarGuestDto
-import com.complexparking.data.repository.local.dto.ParkingConfigurationDto
+import com.complexparking.data.repository.local.dto.ComplexDto
 import com.complexparking.data.repository.local.dto.UserDto
 
 fun CarGuest.toGuestDto(): CarGuestDto {
@@ -32,7 +32,29 @@ fun Car.toCarDto(brandDto: BrandDto) = CarDto(
     unit = this.unit
 )
 
-fun ParkingConfiguration.toParkingConfigurationDto() = ParkingConfigurationDto(
-    maxFreeHour = this.maxFreeHour,
-    parkingPrice = this.parkingPrice
-)
+fun ComplexData.toComplexDto(): ComplexDto {
+    return ComplexDto(
+        id = this.id,
+        complexName = this.complexName,
+        complexUnits = this.complexUnit,
+        complexAddress = this.complexAddress,
+        quantityParking = this.parkingQuantity,
+        adminName = this.adminName,
+        maxFreeHour = this.parkingMaxFreeHour,
+        parkingPrice = this.parkingPrice
+    )
+}
+
+fun ComplexConfiguration.toComplexDto(): ComplexDto {
+    return ComplexDto(
+        id = this.id,
+        complexName = this.complexName,
+        complexUnits = this.complexUnits,
+        complexAddress = this.complexAddress,
+        quantityParking = this.complexQuantityParking,
+        adminName = this.adminName,
+        maxFreeHour = this.maxFreeHour,
+        parkingPrice = this.parkingPrice
+    )
+}
+
