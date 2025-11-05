@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class ParkingSettingsScreenViewModel(
     private val getComplexConfigurationUseCase: GetComplexConfigurationUseCase,
-    private val updateParkingConfigurationUseCase: UpdateParkingConfigurationUseCase
+    private val updateParkingConfigurationUseCase: UpdateParkingConfigurationUseCase,
 ) : BaseViewModel() {
 
     private val _parkingSettingsState = MutableStateFlow(ParkingSettingsState())
@@ -61,7 +61,7 @@ class ParkingSettingsScreenViewModel(
 
             updateParkingConfigurationUseCase.execute(complexConfiguration).collect { resultUseCaseState ->
                 validateUseCaseResult(resultUseCaseState) { result ->
-                    if(result) {
+                    if (result) {
                         loadParkingData()
                     }
                 }
@@ -69,16 +69,18 @@ class ParkingSettingsScreenViewModel(
         }
     }
 
-    fun clearForm(){
-        _parkingSettingsState.update { it.copy(
-            parkingHourPrice = "",
-            parkingMaxHourFree = "",
-            isButtonEnabled = false
-        ) }
+    fun clearForm() {
+        _parkingSettingsState.update {
+            it.copy(
+                parkingHourPrice = "",
+                parkingMaxHourFree = "",
+                isButtonEnabled = false
+            )
+        }
     }
 
     fun onParkingHourPriceChange(parkingHourPrice: String) {
-        _parkingSettingsState.update { it.copy(parkingMaxHourFree = parkingHourPrice) }
+        _parkingSettingsState.update { it.copy(parkingHourPrice = parkingHourPrice) }
         validateParkingData()
     }
 

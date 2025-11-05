@@ -134,7 +134,7 @@ fun ParkingComplexConfigurationView(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun ParkingComplexConfigurationViewPreview() {
     ParkingComplexConfigurationView(

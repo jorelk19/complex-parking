@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
@@ -31,6 +33,7 @@ import com.complexparking.ui.base.ContainerWithoutScroll
 import com.complexparking.ui.base.CustomButton
 import com.complexparking.ui.base.Dimensions.size10dp
 import com.complexparking.ui.base.Dimensions.size150dp
+import com.complexparking.ui.base.Dimensions.size48dp
 import com.complexparking.ui.base.Dimensions.spacingMedium
 import com.complexparking.ui.splash.SplashActivity
 import com.complexparking.ui.theme.LocalCustomColors
@@ -102,6 +105,7 @@ private fun WizardScreenBody(
                     }
                 }
             }
+            Spacer(modifier = Modifier.height(size48dp))
         },
         footer = {
             WizardFooter(
