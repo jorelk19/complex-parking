@@ -38,6 +38,7 @@ import com.complexparking.ui.navigation.AppScreens
 import com.complexparking.ui.splash.SplashActivity
 import com.complexparking.ui.theme.LocalCustomColors
 import com.complexparking.ui.widgets.CustomCard
+import com.complexparking.ui.widgets.CustomGeneralHeader
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -58,18 +59,32 @@ fun SettingsScreen(
             navController.navigate(uiState.screen.route)
         }
     }
+    SettingsScreenContainer(
+        settingScreenState =  uiState,
+        onItemSelectionAction = { viewModel.onItemSelected(it) }
+    )
 
+}
+
+@Composable
+fun SettingsScreenContainer(
+    settingScreenState: SettingScreenState,
+    onItemSelectionAction: (SettingsMenuItem) -> Unit = {}
+) {
     ContainerWithScroll(
         header = {
-            CustomHeader(
+            CustomGeneralHeader(
+                headerTitle = stringResource(id = R.string.settings_screen_title)
+            )
+            /*CustomHeader(
                 headerTitle = stringResource(id = R.string.settings_screen_title),
                 modifier = Modifier.fillMaxSize()
-            )
+            )*/
         },
         body = {
             SettingsBody(
-                uiState = uiState,
-                onItemSelectionAction = { viewModel.onItemSelected(it) }
+                uiState = settingScreenState,
+                onItemSelectionAction = { onItemSelectionAction(it) }
             )
         }
     )
@@ -219,7 +234,8 @@ fun CustomMenuItemPreview() {
 @Preview(showBackground = true)
 @Composable
 fun SettingsBodyPreview() {
-    SettingsBody(
-        SettingScreenState()
+    SettingsScreenContainer(
+        SettingScreenState(),
+        onItemSelectionAction = {}
     )
 }

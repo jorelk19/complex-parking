@@ -20,7 +20,7 @@ fun AppNavigation(modifier: Modifier = Modifier, navController: NavHostControlle
         startDestination = AppScreens.HOMESCREEN.route
     ) {
         composable(route = AppScreens.HOMESCREEN.route) {
-            HomeScreen(navController = navController, modifier)
+            HomeScreen(navController = navController)
         }
         composable(route = AppScreens.SEARCHSCREEN.route) {
             SearchScreen(navController = navController, modifier)

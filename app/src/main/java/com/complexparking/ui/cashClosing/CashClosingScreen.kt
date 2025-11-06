@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import com.complexparking.R
 import com.complexparking.ui.base.ContainerWithScroll
 import com.complexparking.ui.base.CustomHeader
+import com.complexparking.ui.widgets.CustomGeneralHeader
 
 @Composable
 fun CashClosingScreen(
@@ -20,7 +21,10 @@ private fun CashClosingScreenContainer(
 ){
     ContainerWithScroll(
         header =  {
-            CustomHeader(headerTitle = stringResource(R.string.edit_screen_title))
+            CustomGeneralHeader(
+                headerTitle = stringResource(R.string.edit_screen_title)
+            )
+            /*CustomHeader(headerTitle = stringResource(R.string.edit_screen_title))*/
         },
         body = {
             EditScreenBody()

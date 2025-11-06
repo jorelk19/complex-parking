@@ -10,4 +10,8 @@ class UserRepository(private val db: ParkingDatabase): IUserRepository {
     override suspend fun getUserByUserName(email: String): UserDto? {
         return db.userDao.getUser(email)
     }
+
+    override suspend fun updateUserName(userDto: UserDto) {
+        db.userDao.updateUserName(userDto)
+    }
 }

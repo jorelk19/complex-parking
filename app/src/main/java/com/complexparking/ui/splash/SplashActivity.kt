@@ -18,9 +18,7 @@ class SplashActivity : ComponentActivity() {
         setContent {
             ComplexParkingTheme {
                 val navHostController = rememberNavController()
-                ContainerWithoutScroll {
-                    AuthenticationNavigation(navHostController)
-                }
+                AuthenticationNavigation(navHostController)
             }
         }
     }

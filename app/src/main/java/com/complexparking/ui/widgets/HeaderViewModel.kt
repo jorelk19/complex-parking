@@ -15,6 +15,10 @@ class HeaderViewModel(
     val headerState = _headerState.asStateFlow()
 
     override fun onStartScreen() {
+        loadProfileData()
+    }
+
+    fun loadProfileData() {
         viewModelScope.launch {
             getUserDataUseCase.execute().collect { resultUseCaseState ->
                 validateUseCaseResult(resultUseCaseState) { result ->

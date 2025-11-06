@@ -27,7 +27,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.complexparking.R
 import com.complexparking.ui.base.ContainerWithoutScroll
 import com.complexparking.ui.base.CustomButton
@@ -41,20 +40,19 @@ import com.complexparking.ui.base.Dimensions.size20dp
 import com.complexparking.ui.base.Dimensions.size30dp
 import com.complexparking.ui.base.Dimensions.size50dp
 import com.complexparking.ui.base.EnumEditTextType
+import com.complexparking.ui.base.TypeLifeCycle
 import com.complexparking.ui.theme.LocalCustomColors
-import com.complexparking.ui.utilities.ObservableScreen
 import com.complexparking.ui.utilities.formatPlate
 import com.complexparking.ui.validateError
+import com.complexparking.ui.widgets.CustomGeneralHeader
 import com.complexparking.utils.pdfTools.generatePDF
 import java.io.File
 import java.util.Date
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
     navController: NavController,
-    modifier: Modifier,
 ) {
     val homeScreenViewModel: HomeScreenViewModel = koinViewModel()
     val isCompletedLoadData by homeScreenViewModel.isCompletedLoadingData.collectAsStateWithLifecycle()
@@ -65,18 +63,18 @@ fun HomeScreen(
     if (homeScreenViewModel.printFile.value) {
         generatePDF(context, GetDirectory())
     }
-    ObservableScreen(
-        onResume = {
-            homeScreenViewModel.observePrintState()
-        }
-    )
 
     ContainerWithoutScroll(
+        observeLifeCycleAction = { homeScreenViewModel.observePrintState() },
+        typeLifeCycleList = arrayListOf(TypeLifeCycle.ON_RESUME),
         header = {
-            CustomHeader(
+            CustomGeneralHeader(
+                headerTitle = stringResource(id = R.string.home_screen_header_title)
+            )
+            /*CustomHeader(
                 headerTitle = stringResource(id = R.string.home_screen_header_title),
                 modifier = Modifier.fillMaxSize()
-            )
+            )*/
         },
         body = {
             HomeBody(

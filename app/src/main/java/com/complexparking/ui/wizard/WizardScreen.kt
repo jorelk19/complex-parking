@@ -191,30 +191,6 @@ private fun WizardFooter(
     }
 }
 
-fun getNextIndex(currentPage: Int): Int {
-    var index = currentPage
-    if (index >= 0 && index < 2) {
-        index = index + 1
-    }
-    return index
-}
-
-fun getPreviousIndex(currentPage: Int): Int {
-    var index = currentPage
-    if (index >= 0 && index < 2) {
-        index = index - 1
-    }
-    return index
-}
-
-fun navigateTo(currentStep: MutableState<EnumWizardStep>): Int {
-    return when (currentStep.value) {
-        EnumWizardStep.STEP1 -> 0
-        EnumWizardStep.STEP2 -> 1
-        EnumWizardStep.STEP3 -> 2
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewWizardScreen() {

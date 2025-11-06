@@ -40,5 +40,5 @@ val useCaseModule = module {
     single { CloseSessionUseCase(get()) }
     single { CreateUserUseCase(get()) }
     single { GetComplexConfigurationUseCase(get()) }
-    single { UpdateParkingConfigurationUseCase(get()) }
+    single { UpdateParkingConfigurationUseCase(get(), get(), get()) }
 }

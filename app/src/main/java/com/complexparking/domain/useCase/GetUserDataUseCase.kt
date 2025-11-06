@@ -15,7 +15,7 @@ class GetUserDataUseCase(
     private val storePreferenceUtils: StorePreferenceUtils,
 ) : BaseUseCase<Any, UserData?> {
     override suspend fun execute(params: Any?): Flow<ResultUseCaseState<UserData?>> = flow {
-        emit(ResultUseCaseState.Loading)
+        //emit(ResultUseCaseState.Loading)
         try {
             val user = storePreferenceUtils.getString(USER_DATA, "")
             user?.let {

@@ -10,7 +10,6 @@ import com.complexparking.ui.base.ContainerWithoutScroll
 import com.complexparking.ui.navigation.AppNavigation
 import com.complexparking.ui.navigation.bottomNavigationBar.BottomBarControl
 import com.complexparking.ui.theme.ComplexParkingTheme
-import com.complexparking.ui.widgets.CustomGeneralHeader
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,9 +20,6 @@ class MainActivity : ComponentActivity() {
             ComplexParkingTheme {
                 val navHostController = rememberNavController()
                 ContainerWithoutScroll(
-                    header = {
-                        CustomGeneralHeader()
-                    },
                     footer = {
                         BottomBarControl(navHostController)
                     },

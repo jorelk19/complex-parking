@@ -34,6 +34,7 @@ import com.complexparking.ui.base.Dimensions.size5dp
 import com.complexparking.ui.base.EnumEditTextType
 import com.complexparking.ui.navigation.AppScreens
 import com.complexparking.ui.validateError
+import com.complexparking.ui.widgets.CustomGeneralHeader
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -47,11 +48,16 @@ fun CreateUserScreen(navController: NavController) {
 
     ContainerWithScroll(
         header = {
-            CustomHeader(
+            /*CustomHeader(
                 headerTitle = stringResource(R.string.create_user_screen_title),
                 modifier = Modifier.fillMaxSize(),
                 imageStart = ImageVector.vectorResource(R.drawable.ic_arrow_back),
                 onClickStart = { navController.navigate(AppScreens.SETTINGSCREEN.route) }
+            )*/
+            CustomGeneralHeader(
+                headerTitle = stringResource(R.string.create_user_screen_title),
+                imageStart = ImageVector.vectorResource(R.drawable.ic_arrow_back),
+                onClickStart = {  navController.navigate(AppScreens.SETTINGSCREEN.route) }
             )
         },
         body = {

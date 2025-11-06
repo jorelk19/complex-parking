@@ -39,6 +39,7 @@ import com.complexparking.ui.base.CustomTextLage
 import com.complexparking.ui.base.CustomTextMedium
 import com.complexparking.ui.base.CustomTextSmall
 import com.complexparking.ui.navigation.AppScreens
+import com.complexparking.ui.widgets.CustomGeneralHeader
 import com.complexparking.utils.printerTools.PrinterData
 import org.koin.androidx.compose.koinViewModel
 
@@ -56,12 +57,17 @@ fun PrinterScreen(
 
     ContainerWithoutScroll (
         header = {
-            CustomHeader(
+            CustomGeneralHeader(
+                headerTitle = stringResource(R.string.printer_screen_title),
+                imageStart = ImageVector.vectorResource(R.drawable.ic_arrow_back),
+                onClickStart = {  navController.navigate(AppScreens.SETTINGSCREEN.route) }
+            )
+            /*CustomHeader(
                 headerTitle = stringResource(R.string.printer_screen_title),
                 modifier = Modifier.fillMaxSize(),
                 imageStart = ImageVector.vectorResource(R.drawable.ic_arrow_back),
                 onClickStart = {  navController.navigate(AppScreens.SETTINGSCREEN.route) }
-            )
+            )*/
         },
         body = {
             PrinterScreenBody(

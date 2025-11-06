@@ -18,6 +18,7 @@ fun CarGuest.toGuestDto(): CarGuestDto {
 }
 
 fun UserData.toUserDto() = UserDto(
+    id = this.id,
     name = this.name,
     userName = this.email,
     password = this.password,

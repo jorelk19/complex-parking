@@ -27,6 +27,7 @@ import com.complexparking.ui.base.Dimensions.size20dp
 import com.complexparking.ui.base.Dimensions.size30dp
 import com.complexparking.ui.base.Dimensions.size50dp
 import com.complexparking.ui.navigation.AppScreens
+import com.complexparking.ui.widgets.CustomGeneralHeader
 import com.complexparking.ui.widgets.ParkingComplexConfigurationView
 import com.complexparking.ui.widgets.ParkingParameterSection
 import com.complexparking.ui.wizard.WizardScreenState
@@ -67,12 +68,17 @@ fun ParkingSettingsBody(
 ) {
     ContainerWithScroll(
         header = {
-            CustomHeader(
+            CustomGeneralHeader(
+                headerTitle = stringResource(id = R.string.parking_setting_screen_title),
+                imageStart = ImageVector.vectorResource(R.drawable.ic_arrow_back),
+                onClickStart = {  onClickBack() }
+            )
+            /*CustomHeader(
                 headerTitle = stringResource(id = R.string.parking_setting_screen_title),
                 modifier = Modifier.fillMaxSize(),
                 imageStart = ImageVector.vectorResource(R.drawable.ic_arrow_back),
                 onClickStart = { onClickBack() }
-            )
+            )*/
         },
         body = {
             Column(

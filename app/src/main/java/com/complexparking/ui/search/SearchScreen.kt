@@ -25,6 +25,7 @@ import com.complexparking.ui.base.Dimensions.size30dp
 import com.complexparking.ui.base.Dimensions.size50dp
 import com.complexparking.ui.theme.LocalCustomColors
 import com.complexparking.ui.validateError
+import com.complexparking.ui.widgets.CustomGeneralHeader
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -40,10 +41,13 @@ fun SearchScreen(
     ContainerWithoutScroll(
         modifier = modifier,
         header = {
-            CustomHeader(
+            CustomGeneralHeader(
+                headerTitle = stringResource(id = R.string.search_screen_guest_title)
+            )
+            /*CustomHeader(
                 headerTitle = stringResource(id = R.string.search_screen_guest_title),
                 modifier = Modifier.fillMaxSize()
-            )
+            )*/
         },
         body = {
             SearchBody(

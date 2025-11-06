@@ -170,6 +170,24 @@ fun CustomText3XLage(
 }
 
 @Composable
+fun CustomText3XLageBold(
+    text: String,
+    color: Color = LocalCustomColors.current.colorPrimaryText,
+    textAlign: TextAlign = TextAlign.Start,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        text = text,
+        color = color,
+        modifier = modifier
+            .fillMaxWidth(),
+        fontSize = Dimensions.text24sp,
+        textAlign = textAlign,
+        fontWeight = FontWeight.Bold
+    )
+}
+
+@Composable
 fun CustomText4XLage(
     text: String,
     color: Color = LocalCustomColors.current.colorPrimaryText,
