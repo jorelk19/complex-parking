@@ -90,7 +90,7 @@ dependencies {
 
     //Zxing
     implementation(libs.google.zxing)
-
+    /*implementation(libs.journeyapps.zxing)*/
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

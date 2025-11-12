@@ -7,6 +7,11 @@ import android.bluetooth.BluetoothManager
 import android.bluetooth.BluetoothSocket
 import android.content.Context
 import android.graphics.Bitmap
+import android.util.Log
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.WriterException
+import com.google.zxing.common.BitMatrix
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.OutputStream
@@ -124,14 +129,17 @@ class PrinterUtil(private val context: Context) {
                 outputStream?.write(LF)
                 printerData.qr?.let {
                     outputStream?.write(SELECT_BIT_IMAGE_MODE)
-                    val qr = convertBitmapToPrinterBytes(
-                        bitmap = it
-                    )
-                    outputStream?.write(qr)
+                    val qr = BitmapHelper.decodeBitmap(it)
+                    qr?.let {
+                        outputStream?.write(qr)
+                    }
                 }
                 outputStream?.write(LF)
                 outputStream?.write(ESC_UNDERLINE_ON)
-                outputStream?.write("Hora de ingreso: ${printerData.date}".toByteArray())
+                outputStream?.write("Fecha de ingreso: ${printerData.date}".toByteArray())
+                outputStream?.write(LF)
+                outputStream?.write(LF)
+                outputStream?.write("Hora de ingreso: ${printerData.hour}".toByteArray())
                 outputStream?.write(ESC_UNDERLINE_OFF)
                 outputStream?.write(ESC_BOLD_OFF)
 
@@ -143,6 +151,35 @@ class PrinterUtil(private val context: Context) {
                 e.printStackTrace()
                 onResult(false, "Failed to send data: ${e.message}")
             }
+        }
+    }
+
+    fun getQrImage(text: String): Bitmap? {
+        try {
+            val bitMatrix: BitMatrix = MultiFormatWriter().encode(
+                text,
+                BarcodeFormat.QR_CODE,
+                300,
+                300
+            )
+
+            // Option 1: Convert BitMatrix to Bitmap manually
+            val bitmap = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888)
+            for (x in 0 until 300) {
+                for (y in 0 until 300) {
+                    bitmap.setPixel(x, y, if (bitMatrix.get(x, y)) android.graphics.Color.BLACK else android.graphics.Color.WHITE)
+                }
+            }
+            return bitmap
+
+            // Option 2: (Recommended for Android) Use BarcodeEncoder from zxing-android-embedded
+            // You would need to add 'implementation("com.journeyapps:zxing-android-embedded:4.3.0")'
+            // val barcodeEncoder = BarcodeEncoder()
+            // return barcodeEncoder.createBitmap(bitMatrix)
+
+        } catch (e: WriterException) {
+            e.printStackTrace()
+            return null
         }
     }
 

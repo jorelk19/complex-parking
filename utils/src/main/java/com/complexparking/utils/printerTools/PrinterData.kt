@@ -6,5 +6,6 @@ data class PrinterData(
     val plate: String,
     val complexName: String,
     val date: String,
+    val hour: String,
     val qr: Bitmap?
 )

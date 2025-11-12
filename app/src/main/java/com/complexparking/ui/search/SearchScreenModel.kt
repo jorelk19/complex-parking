@@ -7,10 +7,11 @@ data class SearchScreenModel(
     val plateError: Boolean = false,
     val plateFocus: Boolean = false,
     val plateErrorType: ErrorType = ErrorType.NONE,
-    val onTextPlateChange: (String) -> Unit = {},
     val hourArrival: String = "",
     val hourDeparture: String = "",
     val date: String = "",
-    val isButtonSearchEnabled: Boolean = false,
-    val onSearchButtonClick: () -> Unit = {}
+    val totalToPay: Double = 0.0,
+    val unitVisited: Int = 0,
+    val billedTime: Long = 0L,
+    val isButtonSearchEnabled: Boolean = false
 )

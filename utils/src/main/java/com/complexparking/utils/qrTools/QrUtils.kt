@@ -20,7 +20,7 @@ object QrUtils {
      * @param height The desired height of the QR code image in pixels.
      * @return A [Bitmap] object representing the QR code, or null if generation fails.
      */
-    fun generateQRCode(text: String, width: Int = 512, height: Int = 512): Bitmap? {
+    fun generateQRCode(text: String, width: Int = 200, height: Int = 200): Bitmap? {
         // Return null if the text to encode is empty
         if (text.isBlank()) {
             return null
@@ -46,7 +46,7 @@ object QrUtils {
             )
 
             // Create a Bitmap from the BitMatrix
-            val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+            val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
             for (x in 0 until width) {
                 for (y in 0 until height) {
                     // Set pixel color based on the BitMatrix value

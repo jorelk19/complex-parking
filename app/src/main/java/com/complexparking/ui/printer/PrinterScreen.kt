@@ -16,7 +16,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,43 +23,44 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.complexparking.R
 import com.complexparking.ui.base.ContainerWithoutScroll
 import com.complexparking.ui.base.CustomButton
-import com.complexparking.ui.base.CustomHeader
 import com.complexparking.ui.base.CustomTextLage
 import com.complexparking.ui.base.CustomTextMedium
 import com.complexparking.ui.base.CustomTextSmall
 import com.complexparking.ui.navigation.AppScreens
 import com.complexparking.ui.widgets.CustomGeneralHeader
 import com.complexparking.utils.printerTools.PrinterData
+import com.complexparking.utils.qrTools.QrUtils
 import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("MissingPermission")
 @Composable
 fun PrinterScreen(
-    navController: NavController
+    navController: NavController,
 ) {
     val viewModel: PrinterViewModel = koinViewModel()
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    viewModel.isCompletedLoadingData.collectAsStateWithLifecycle()
 
     BackHandler(enabled = true) {
         navController.navigate(AppScreens.SETTINGSCREEN.route)
     }
 
-    ContainerWithoutScroll (
+    ContainerWithoutScroll(
         header = {
             CustomGeneralHeader(
                 headerTitle = stringResource(R.string.printer_screen_title),
                 imageStart = ImageVector.vectorResource(R.drawable.ic_arrow_back),
-                onClickStart = {  navController.navigate(AppScreens.SETTINGSCREEN.route) }
+                onClickStart = { navController.navigate(AppScreens.SETTINGSCREEN.route) }
             )
             /*CustomHeader(
                 headerTitle = stringResource(R.string.printer_screen_title),
@@ -89,7 +89,7 @@ private fun PrinterScreenBody(
     getPairedDevices: () -> Unit,
     printMessage: (PrinterData) -> Unit,
     disconnect: () -> Unit,
-    connectToDevice: (String) -> Unit
+    connectToDevice: (String) -> Unit,
 ) {
     var showDeviceDialog by remember { mutableStateOf(false) }
     Column(
@@ -131,9 +131,10 @@ private fun PrinterScreenBody(
                     printMessage(
                         PrinterData(
                             plate = "WWW-123",
-                            qr = null,
+                            qr = QrUtils.generateQRCode("WWW-123"),
                             date = "01/01/2025",
-                            complexName = "Conjunto prueba"
+                            complexName = "Conjunto prueba",
+                            hour = "12:00"
                         )
                     )
                 },

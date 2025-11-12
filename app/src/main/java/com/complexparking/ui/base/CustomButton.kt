@@ -32,7 +32,7 @@ fun CustomButton(
         modifier = modifier,
         enabled = isEnabled,
         shape = RoundedCornerShape(size8dp),
-        border = BorderStroke(size1dp, colors.colorNeutralBg),
+        border = BorderStroke(size1dp, colors.colorNeutralBgWeak),
         colors = ButtonDefaults.buttonColors(
             containerColor = colors.colorPrimaryBgDefault,
             contentColor = colors.colorNeutralBg,

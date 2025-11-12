@@ -25,6 +25,7 @@ gsonVersion = "2.13.2"
 sqlCipherVersion = "4.5.4"
 sqliteVersion= "2.6.1"
 zxingVersion = "3.5.3"
+journeyAppZxingVersion = "4.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -72,6 +73,8 @@ org-apache-poi = { group = "org.apache.poi", name = "poi", version.ref = "apache
 org-apache-poi-oxml = { group = "org.apache.poi", name = "poi-ooxml", version.ref = "apachePoiVersion" }
 
 google-permission = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref="androidPermissionVersion"  }
+
+journeyapps-zxing = { group = "'com.journeyapps", name = "zxing-android-embedded", version.ref="journeyAppZxingVersion"  }
 google-zxing = { group = "com.google.zxing", name = "core", version.ref="zxingVersion"  }
 
 androidx-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref="coreSplashVersion"  }

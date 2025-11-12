@@ -55,26 +55,22 @@ fun HomeScreen(
     navController: NavController,
 ) {
     val homeScreenViewModel: HomeScreenViewModel = koinViewModel()
-    val isCompletedLoadData by homeScreenViewModel.isCompletedLoadingData.collectAsStateWithLifecycle()
+    homeScreenViewModel.isCompletedLoadingData.collectAsStateWithLifecycle()
     val homeModel by homeScreenViewModel.homeScreenModel
     val colors = LocalCustomColors.current
     val context = LocalContext.current
 
     if (homeScreenViewModel.printFile.value) {
-        generatePDF(context, GetDirectory())
+        generatePDF(context, getDirectory())
     }
 
     ContainerWithoutScroll(
-        observeLifeCycleAction = { homeScreenViewModel.observePrintState() },
-        typeLifeCycleList = arrayListOf(TypeLifeCycle.ON_RESUME),
+        //observeLifeCycleAction = { homeScreenViewModel.observePrintState() },
+        typeLifeCycleList = arrayListOf(TypeLifeCycle.ON_CREATE),
         header = {
             CustomGeneralHeader(
                 headerTitle = stringResource(id = R.string.home_screen_header_title)
             )
-            /*CustomHeader(
-                headerTitle = stringResource(id = R.string.home_screen_header_title),
-                modifier = Modifier.fillMaxSize()
-            )*/
         },
         body = {
             HomeBody(
@@ -204,7 +200,7 @@ fun HomeBody(
 }
 
 @Composable
-private fun GetDirectory(): File {
+private fun getDirectory(): File {
     val mediaDir = LocalContext.current.externalMediaDirs.firstOrNull()?.let {
         File(it, stringResource(R.string.app_name)).apply {
             mkdirs()

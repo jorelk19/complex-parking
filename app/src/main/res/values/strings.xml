@@ -75,7 +75,10 @@
 
     <!--Search Screen-->
     <string name="search_screen_guest_title" translatable="false">Registro salida vehicular</string>
-    <string name="search_screen_button_text" translatable="false">Buscar</string>
+    <string name="search_screen_button_text" translatable="false">Validar salida</string>
+    <string name="search_screen_total_to_pay" translatable="false">Total a pagar:</string>
+    <string name="search_screen_unit_visited" translatable="false">Unidad visitada:</string>
+    <string name="search_screen_billed_time" translatable="false">Tiempo facturado:</string>
     <!---->
 
     <!--Error Message-->
@@ -125,7 +128,8 @@
     <string name="parking_setting_screen_save_button" translatable="false">Guardar</string>
     <!---->
 
-    <!--Edit Screen-->
-    <string name="edit_screen_title" translatable="false">Ingresar nuevo residente</string>
+    <!--Cash closing Screen-->
+    <string name="cash_closing_screen_title" translatable="false">Cierre de caja</string>
+    <string name="cash_closing_screen_cash_close_button" translatable="false">Cerrar caja</string>
     <!---->
 </resources>

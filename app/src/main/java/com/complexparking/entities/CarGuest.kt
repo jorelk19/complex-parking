@@ -4,9 +4,10 @@ import java.util.Date
 
 data class CarGuest(
     val plate: String = "",
-    val house: Int = 0,
+    val complexUnit: Int = 0,
     val date: Date = Date(),
-    val hourStart: Long = 0L,
+    val hourStart: Long = Date().time,
     val hourEnd: Long? = null,
     val isInComplex: Boolean = false,
+    val createdBy: String = ""
 )

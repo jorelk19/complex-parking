@@ -2,10 +2,12 @@ package com.complexparking.ui.printer
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
-import androidx.lifecycle.ViewModel
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
-import com.complexparking.utils.preferences.DEFAULT_PRINTER
-import com.complexparking.utils.preferences.StorePreferenceUtils
+import com.complexparking.domain.useCase.GetPrinterStatusUseCase
+import com.complexparking.domain.useCase.SetPrinterStatusUseCase
+import com.complexparking.entities.PrinterStatus
+import com.complexparking.ui.base.BaseViewModel
 import com.complexparking.utils.printerTools.PrinterData
 import com.complexparking.utils.printerTools.PrinterUtil
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,22 +26,16 @@ data class PrinterUiState(
 
 class PrinterViewModel(
     private val printerUtil: PrinterUtil,
-    private val storePreferenceUtils: StorePreferenceUtils,
-) : ViewModel() {
+    private val setPrinterStatusUseCase: SetPrinterStatusUseCase,
+    private val getPrinterStatusUseCase: GetPrinterStatusUseCase,
+) : BaseViewModel() {
 
     // UI state exposed to the Composable
     private val _uiState = MutableStateFlow(PrinterUiState())
     val uiState: StateFlow<PrinterUiState> = _uiState.asStateFlow()
 
+    private val printerStatus = mutableStateOf(PrinterStatus())
     fun isBluetoothEnabled(): Boolean = printerUtil.isBluetoothEnabled()
-
-    // Permissions needed for Bluetooth operations
-    /*    val requiredPermissions: Array<String>
-            get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                arrayOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT)
-            } else {
-                arrayOf(Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.ACCESS_FINE_LOCATION)
-            }*/
 
     @SuppressLint("MissingPermission")
     fun getPairedDevices() {
@@ -52,7 +48,7 @@ class PrinterViewModel(
         _uiState.update { it.copy(isConnecting = true, connectionStatus = "Connecting...") }
         printerUtil.connect(deviceAddress) { isSuccess, message ->
             if (isSuccess) {
-                storePreferenceUtils.putString(DEFAULT_PRINTER, deviceAddress)
+                savePrinterStatus(deviceAddress)
             }
             _uiState.update {
                 it.copy(
@@ -60,6 +56,23 @@ class PrinterViewModel(
                     connectionStatus = message,
                     isConnecting = false
                 )
+            }
+        }
+    }
+
+    private fun savePrinterStatus(deviceAddress: String) {
+        viewModelScope.launch {
+            setPrinterStatusUseCase.execute(
+                PrinterStatus(
+                    isPaired = true,
+                    pairedDeviceAddress = deviceAddress
+                )
+            ).collect { resultUseCaseState ->
+                validateUseCaseResult(resultUseCaseState) { result ->
+                    if (result) {
+                        //show message
+                    }
+                }
             }
         }
     }
@@ -93,13 +106,25 @@ class PrinterViewModel(
         disconnect()
     }
 
-    fun existingConnection() {
-        val device = storePreferenceUtils.getString(DEFAULT_PRINTER, "").toString()
-        if (device.isNotEmpty()) {
-            connectToDevice(device)
-            //printMessage(printData)
+    fun existingConnection(printerData: PrinterData) {
+        if (printerStatus.value.pairedDeviceAddress.isNotEmpty()) {
+            connectToDevice(printerStatus.value.pairedDeviceAddress)
+            printMessage(printerData)
         } else {
             disconnect()
+        }
+    }
+
+    override fun onStartScreen() {
+        viewModelScope.launch {
+            getPrinterStatusUseCase.execute().collect { resultUseCaseState ->
+                validateUseCaseResult(resultUseCaseState) { result ->
+                    printerStatus.value = result
+                    if(result.isPaired) {
+                        connectToDevice(result.pairedDeviceAddress)
+                    }
+                }
+            }
         }
     }
 }

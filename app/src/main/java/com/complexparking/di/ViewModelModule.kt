@@ -1,5 +1,6 @@
 package com.complexparking.di
 
+import com.complexparking.ui.cashClosing.CashClosingScreenViewModel
 import com.complexparking.ui.home.HomeScreenViewModel
 import com.complexparking.ui.login.LoginScreenViewModel
 import com.complexparking.ui.permissions.PermissionsViewModel
@@ -15,7 +16,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    viewModel { PrinterViewModel(get(), get()) }
+    viewModel { PrinterViewModel(get(), get(), get()) }
     viewModel { LoginScreenViewModel(get()) }
     viewModel { HomeScreenViewModel(get(), get(), get()) }
     viewModel { WizardScreenViewModel(get(), get(), get()) }
@@ -26,4 +27,5 @@ val viewModelModule = module {
     viewModel { ParkingSettingsScreenViewModel(get(), get()) }
     viewModel { CreateUserScreenViewModel(get()) }
     viewModel { HeaderViewModel(get()) }
+    viewModel { CashClosingScreenViewModel(get()) }
 }

@@ -6,16 +6,15 @@ import com.complexparking.data.repository.local.dto.CarGuestDto
 import com.complexparking.data.repository.local.dto.ComplexDto
 import com.complexparking.data.repository.local.dto.UserDto
 
-fun CarGuest.toGuestDto(): CarGuestDto {
-    return CarGuestDto(
-        date = this.date,
-        hourStart = this.hourStart,
-        hourEnd = this.hourEnd,
-        isInComplex = this.isInComplex,
-        house = this.house,
-        plate = this.plate
-    )
-}
+fun CarGuest.toGuestDto() = CarGuestDto(
+    date = this.date,
+    hourStart = this.hourStart,
+    hourEnd = this.hourEnd,
+    isInComplex = this.isInComplex,
+    house = this.complexUnit,
+    plate = this.plate,
+    createdBy = this.createdBy
+)
 
 fun UserData.toUserDto() = UserDto(
     id = this.id,
@@ -33,29 +32,25 @@ fun Car.toCarDto(brandDto: BrandDto) = CarDto(
     unit = this.unit
 )
 
-fun ComplexData.toComplexDto(): ComplexDto {
-    return ComplexDto(
-        id = this.id,
-        complexName = this.complexName,
-        complexUnits = this.complexUnit,
-        complexAddress = this.complexAddress,
-        quantityParking = this.parkingQuantity,
-        adminName = this.adminName,
-        maxFreeHour = this.parkingMaxFreeHour,
-        parkingPrice = this.parkingPrice
-    )
-}
+fun ComplexData.toComplexDto() = ComplexDto(
+    id = this.id,
+    complexName = this.complexName,
+    complexUnits = this.complexUnit,
+    complexAddress = this.complexAddress,
+    quantityParking = this.parkingQuantity,
+    adminName = this.adminName,
+    maxFreeHour = this.parkingMaxFreeHour,
+    parkingPrice = this.parkingPrice
+)
 
-fun ComplexConfiguration.toComplexDto(): ComplexDto {
-    return ComplexDto(
-        id = this.id,
-        complexName = this.complexName,
-        complexUnits = this.complexUnits,
-        complexAddress = this.complexAddress,
-        quantityParking = this.complexQuantityParking,
-        adminName = this.adminName,
-        maxFreeHour = this.maxFreeHour,
-        parkingPrice = this.parkingPrice
-    )
-}
+fun ComplexConfiguration.toComplexDto() = ComplexDto(
+    id = this.id,
+    complexName = this.complexName,
+    complexUnits = this.complexUnits,
+    complexAddress = this.complexAddress,
+    quantityParking = this.complexQuantityParking,
+    adminName = this.adminName,
+    maxFreeHour = this.maxFreeHour,
+    parkingPrice = this.parkingPrice
+)
 

@@ -14,4 +14,5 @@ data class CarGuestDto(
     val hourStart: Long,
     val hourEnd: Long?,
     val isInComplex: Boolean,
+    val createdBy: String
 )

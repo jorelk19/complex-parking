@@ -3,22 +3,23 @@ package com.complexparking.ui.home
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.complexparking.domain.useCase.CreateGuestUseCase
-import com.complexparking.domain.useCase.ValidateUnitUseCase
+import com.complexparking.domain.useCase.GetValidUnitsUseCase
 import com.complexparking.entities.CarGuest
 import com.complexparking.ui.base.BaseViewModel
 import com.complexparking.ui.printer.PrinterViewModel
 import com.complexparking.ui.utilities.ErrorType
 import com.complexparking.ui.utilities.formatPlate
 import com.complexparking.utils.extensions.getCurrentDate
+import com.complexparking.utils.extensions.getCurrentStringDate
 import com.complexparking.utils.extensions.getCurrentTime
+import com.complexparking.utils.extensions.getCurrentTime12H
+import com.complexparking.utils.extensions.stringToFormat
 import com.complexparking.utils.printerTools.PrinterData
 import com.complexparking.utils.qrTools.QrUtils
-import java.util.Calendar
-import java.util.Date
 import kotlinx.coroutines.launch
 
 class HomeScreenViewModel(
-    private val validateUnitUseCase: ValidateUnitUseCase,
+    private val getValidUnitsUseCase: GetValidUnitsUseCase,
     private val createGuestUnitUseCase: CreateGuestUseCase,
     private val printerViewModel: PrinterViewModel,
 ) : BaseViewModel() {
@@ -29,13 +30,10 @@ class HomeScreenViewModel(
     private val unitToVisit = mutableStateOf("")
     private val carGuest = mutableStateOf(CarGuest())
     private val _printFile = mutableStateOf(false)
+    private val _validUnits = mutableStateOf(0)
     val printFile get() = _printFile
 
-    /*   init {
-
-       }*/
     private fun loadHomeModel() {
-        val currentDate = Date()
         plate.value = ""
         unitToVisit.value = ""
         carGuest.value = CarGuest()
@@ -43,8 +41,8 @@ class HomeScreenViewModel(
             onTextPlateChange = { onPlateChange(it) },
             onTextUnitChange = { onUnitToVisitChange(it) },
             onRegisterButtonClick = { onRegisterClick() },
-            hourArrive = getCurrentTime(),
-            date = getCurrentDate(),
+            hourArrive = getCurrentTime12H(),
+            date = getCurrentStringDate(),
             plateText = "",
             unit = "",
             unitError = false,
@@ -59,16 +57,14 @@ class HomeScreenViewModel(
         if (plate.value.isEmpty() || unitToVisit.value.isEmpty()) {
             return
         }
-        validateUnit(unitToVisit.value)
+        registerCarGuest()
     }
 
     private fun registerCarGuest() {
         carGuest.value = CarGuest(
             plate = plate.value,
-            hourStart = Calendar.getInstance().timeInMillis,
-            date = Calendar.getInstance().time,
             isInComplex = true,
-            house = unitToVisit.value?.toInt() ?: 0,
+            complexUnit = unitToVisit.value.toInt(),
             hourEnd = null
         )
         viewModelScope.launch {
@@ -79,7 +75,7 @@ class HomeScreenViewModel(
                         clearForm()
                         //_printFile.value = true
                     } else {
-                        /*Show error*/
+                        /*Existing car*/
                         false
                     }
                 }
@@ -96,36 +92,52 @@ class HomeScreenViewModel(
 
     private fun onUnitToVisitChange(unit: String) {
         if (unit.isNotEmpty()) {
-            unitToVisit.value = unit
-            /*validateUnit(unit)*/
+            //unitToVisit.value = unit
+            if (unit.toInt() in 1.._validUnits.value) {
+                _homeScreenModel.value = _homeScreenModel.value.copy(
+                    unitErrorType = ErrorType.NONE,
+                    unitError = false,
+                    unit = unit
+                )
+                unitToVisit.value = unit
+            } else {
+                _homeScreenModel.value = _homeScreenModel.value.copy(
+                    unitErrorType = ErrorType.INVALID_UNIT,
+                    unitError = true,
+                    unit = unit
+                )
+            }
+            /*getValidUnits(unit)*/
         } else {
-            homeScreenModel.value = homeScreenModel.value.copy(
+            _homeScreenModel.value = _homeScreenModel.value.copy(
                 unitErrorType = ErrorType.EMPTY_UNIT,
-                unitError = true
+                unitError = true,
+                unit = ""
             )
-            validateButton()
         }
+        validateButton()
     }
 
-    private fun validateUnit(unit: String) {
+    private fun getValidUnits() {
         viewModelScope.launch {
-            validateUnitUseCase.execute(unit.toInt()).collect { useCaseResult ->
+            getValidUnitsUseCase.execute().collect { useCaseResult ->
                 validateUseCaseResult(useCaseResult) { result ->
-                    if (result) {
-                        /*unitToVisit.value = unit*/
-                        registerCarGuest()
-                        /* homeScreenModel.value = homeScreenModel.value.copy(
+                    _validUnits.value = result
+                    /* if (result) {
+                         unitToVisit.value = unit
+                         //registerCarGuest()
+                         *//* homeScreenModel.value = homeScreenModel.value.copy(
                              unitErrorType = ErrorType.NONE,
                              unitError = false,
                              unit = unit
-                         )*/
+                         )*//*
                     } else {
-                        homeScreenModel.value = homeScreenModel.value.copy(
+                        _homeScreenModel.value = _homeScreenModel.value.copy(
                             unitErrorType = ErrorType.INVALID_UNIT,
                             unitError = true
                         )
                     }
-                    validateButton()
+                    validateButton()*/
                 }
             }
         }
@@ -133,21 +145,21 @@ class HomeScreenViewModel(
 
     private fun onPlateChange(plateText: String) {
         if (plateText.isEmpty()) {
-            homeScreenModel.value = homeScreenModel.value.copy(
+            _homeScreenModel.value = _homeScreenModel.value.copy(
                 plateText = plateText,
                 plateErrorType = ErrorType.EMPTY_PLATE,
                 plateError = true,
                 isButtonRegisterEnabled = false
             )
         } else if (plateText.length < 6) {
-            homeScreenModel.value = homeScreenModel.value.copy(
+            _homeScreenModel.value = _homeScreenModel.value.copy(
                 plateErrorType = ErrorType.INVALID_PLATE,
                 plateError = true,
                 plateText = plateText,
                 isButtonRegisterEnabled = false
             )
         } else if (plateText.length == 6) {
-            homeScreenModel.value = homeScreenModel.value.copy(
+            _homeScreenModel.value = _homeScreenModel.value.copy(
                 plateErrorType = ErrorType.NONE,
                 plateError = false,
                 plateText = plateText,
@@ -158,22 +170,34 @@ class HomeScreenViewModel(
     }
 
     private fun validateButton() {
-        val enabled = if (homeScreenModel.value.plateError) {
+        val enabled = if (_homeScreenModel.value.plateError ||
+            _homeScreenModel.value.unitError ||
+            plate.value.isEmpty() ||
+            unitToVisit.value.isEmpty()
+        ) {
             false
         } else {
             true
         }
-        homeScreenModel.value = homeScreenModel.value.copy(
+        _homeScreenModel.value = _homeScreenModel.value.copy(
             isButtonRegisterEnabled = enabled
         )
     }
 
     override fun onStartScreen() {
         loadHomeModel()
+        getValidUnits()
     }
 
     private fun printProcess() {
-        printerViewModel.existingConnection()
+        val printerData = PrinterData(
+            plate = carGuest.value.plate.formatPlate(),
+            complexName = "Manzana 72",
+            date = carGuest.value.date.toString(),
+            qr = QrUtils.generateQRCode(carGuest.value.plate + "/" + carGuest.value.complexUnit),
+            hour = carGuest.value.hourStart.toString()
+        )
+        printerViewModel.existingConnection(printerData)
     }
 
     fun observePrintState() {
@@ -183,7 +207,8 @@ class HomeScreenViewModel(
                     val printerData = PrinterData(
                         plate = carGuest.value.plate.formatPlate(),
                         complexName = "Manzana 72",
-                        date = carGuest.value.date.toString(),
+                        date = carGuest.value.date.stringToFormat(),
+                        hour = carGuest.value.hourStart.stringToFormat(),
                         qr = QrUtils.generateQRCode(carGuest.value.plate)
                     )
                     printerViewModel.printMessage(printerData)

@@ -143,11 +143,7 @@ private fun CustomGeneralHeaderContainer(
                         CustomTextMediumBold(stringResource(R.string.home_screen_header_profile_greetings, uiState.userData.name))
                         Spacer(modifier = Modifier.width(size5dp))
                         CustomTextMedium(
-                            text = if (uiState.userData.isAdmin) {
-                                stringResource(R.string.home_screen_header_profile_admin)
-                            } else {
-                                stringResource(R.string.home_screen_header_profile_security_guard)
-                            }
+                            text = stringResource(uiState.getUserTypeId())
                         )
                     }
                 }

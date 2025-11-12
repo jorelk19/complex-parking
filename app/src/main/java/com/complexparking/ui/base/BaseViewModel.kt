@@ -1,6 +1,5 @@
 package com.complexparking.ui.base
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.complexparking.R
@@ -12,7 +11,6 @@ import com.complexparking.ui.controls.SnackType
 import com.complexparking.ui.utilities.LoadingManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 
